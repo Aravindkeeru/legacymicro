@@ -350,25 +350,45 @@
   const soundToggle = document.getElementById('soundToggle');
   
   if (bgAudio && soundToggle) {
-    // Set volume to 30% so it's not overpowering
-    bgAudio.volume = 0.3;
+    // Start at 0 volume for fade-in
+    bgAudio.volume = 0;
+    const targetVolume = 0.15; // Very subtle 15% max volume
+    let fadeInterval;
     
     soundToggle.addEventListener('click', () => {
       if (bgAudio.paused) {
         bgAudio.play().then(() => {
           soundToggle.classList.add('playing');
-          // Update icon to volume-2 (sound on)
           soundToggle.innerHTML = '<i data-lucide="volume-2"></i>';
           lucide.createIcons();
+          
+          // Smooth 5-second fade-in
+          clearInterval(fadeInterval);
+          fadeInterval = setInterval(() => {
+            if (bgAudio.volume < targetVolume) {
+              bgAudio.volume = Math.min(targetVolume, bgAudio.volume + 0.01);
+            } else {
+              clearInterval(fadeInterval);
+            }
+          }, 330); // 330ms * 15 steps = ~5 seconds
+          
         }).catch(err => {
           console.error("Audio playback failed:", err);
         });
       } else {
-        bgAudio.pause();
-        soundToggle.classList.remove('playing');
-        // Update icon to volume-x (sound off)
-        soundToggle.innerHTML = '<i data-lucide="volume-x"></i>';
-        lucide.createIcons();
+        // Fade out before pausing
+        clearInterval(fadeInterval);
+        fadeInterval = setInterval(() => {
+          if (bgAudio.volume > 0) {
+            bgAudio.volume = Math.max(0, bgAudio.volume - 0.01);
+          } else {
+            clearInterval(fadeInterval);
+            bgAudio.pause();
+            soundToggle.classList.remove('playing');
+            soundToggle.innerHTML = '<i data-lucide="volume-x"></i>';
+            lucide.createIcons();
+          }
+        }, 100); // Quick fade out
       }
     });
   }
