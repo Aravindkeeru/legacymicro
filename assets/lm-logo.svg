@@ -1,0 +1,153 @@
+<svg width="180" height="170" viewBox="0 0 180 170" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <!-- Base Substrate -->
+    <rect x="15" y="10" width="150" height="140" rx="8" fill="#151515" stroke="#252528" stroke-width="2"/>
+    
+    <!-- Gold Solder Pads (Top) -->
+    <g fill="#d4af37">
+      <rect x="25" y="8" width="10" height="6" rx="1"/>
+      <rect x="45" y="8" width="10" height="6" rx="1"/>
+      <rect x="65" y="8" width="10" height="6" rx="1"/>
+      <rect x="85" y="8" width="10" height="6" rx="1"/>
+      <rect x="105" y="8" width="10" height="6" rx="1"/>
+      <rect x="125" y="8" width="10" height="6" rx="1"/>
+      <rect x="145" y="8" width="10" height="6" rx="1"/>
+    </g>
+
+    <!-- Gold Solder Pads (Bottom) -->
+    <g fill="#d4af37">
+      <rect x="25" y="146" width="10" height="6" rx="1"/>
+      <rect x="45" y="146" width="10" height="6" rx="1"/>
+      <rect x="65" y="146" width="10" height="6" rx="1"/>
+      <rect x="85" y="146" width="10" height="6" rx="1"/>
+      <rect x="105" y="146" width="10" height="6" rx="1"/>
+      <rect x="125" y="146" width="10" height="6" rx="1"/>
+      <rect x="145" y="146" width="10" height="6" rx="1"/>
+    </g>
+
+    <!-- Gold Solder Pads (Left) -->
+    <g fill="#d4af37">
+      <rect x="13" y="20" width="6" height="10" rx="1"/>
+      <rect x="13" y="40" width="6" height="10" rx="1"/>
+      <rect x="13" y="60" width="6" height="10" rx="1"/>
+      <rect x="13" y="80" width="6" height="10" rx="1"/>
+      <rect x="13" y="100" width="6" height="10" rx="1"/>
+      <rect x="13" y="120" width="6" height="10" rx="1"/>
+    </g>
+
+    <!-- Gold Solder Pads (Right) -->
+    <g fill="#d4af37">
+      <rect x="161" y="20" width="6" height="10" rx="1"/>
+      <rect x="161" y="40" width="6" height="10" rx="1"/>
+      <rect x="161" y="60" width="6" height="10" rx="1"/>
+      <rect x="161" y="80" width="6" height="10" rx="1"/>
+      <rect x="161" y="100" width="6" height="10" rx="1"/>
+      <rect x="161" y="120" width="6" height="10" rx="1"/>
+    </g>
+
+    <!-- Copper Traces Routing -->
+    <g fill="none" stroke="#c87a41" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+      <!-- Top Caps to Die -->
+      <path d="M 55 25 L 55 35"/>
+      <path d="M 75 25 L 75 35"/>
+      <path d="M 105 25 L 105 35"/>
+      <path d="M 125 25 L 125 35"/>
+
+      <!-- Bottom Caps to Die -->
+      <path d="M 55 132 L 55 125"/>
+      <path d="M 75 132 L 75 125"/>
+      <path d="M 105 132 L 105 125"/>
+      <path d="M 125 132 L 125 125"/>
+      
+      <!-- Left Edge Pads to Die -->
+      <path d="M 19 25 L 25 25 L 30 30 L 40 30"/>
+      <path d="M 19 45 L 35 45 L 40 50"/>
+      <path d="M 19 65 L 40 65"/>
+      <path d="M 19 85 L 40 85"/>
+      <path d="M 19 105 L 35 105 L 40 100"/>
+      <path d="M 19 125 L 25 125 L 30 120 L 40 120"/>
+
+      <!-- Right Edge Pads to Die -->
+      <path d="M 161 25 L 155 25 L 150 30 L 140 30"/>
+      <path d="M 161 45 L 145 45 L 140 50"/>
+      <path d="M 161 65 L 140 65"/>
+      <path d="M 161 85 L 140 85"/>
+      <path d="M 161 105 L 145 105 L 140 100"/>
+      <path d="M 161 125 L 155 125 L 150 120 L 140 120"/>
+      
+      <!-- Length-matching Meanders -->
+      <path d="M 19 75 L 25 75 L 25 72 L 30 72 L 30 78 L 35 78 L 35 75 L 40 75"/>
+      <path d="M 161 75 L 155 75 L 155 78 L 150 78 L 150 72 L 145 72 L 145 75 L 140 75"/>
+    </g>
+
+    <!-- Inner Die Area -->
+    <rect x="40" y="35" width="100" height="90" rx="4" fill="#0f0f11" stroke="#2a2a2d" stroke-width="1.5"/>
+
+    <!-- Tiny Micro Capacitors (Top) -->
+    <g>
+      <rect x="49" y="19" width="12" height="6" fill="#8b6546" rx="0.5"/>
+      <rect x="49" y="19" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+      <rect x="58" y="19" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+      
+      <rect x="69" y="19" width="12" height="6" fill="#8b6546" rx="0.5"/>
+      <rect x="69" y="19" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+      <rect x="78" y="19" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+
+      <rect x="99" y="19" width="12" height="6" fill="#8b6546" rx="0.5"/>
+      <rect x="99" y="19" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+      <rect x="108" y="19" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+
+      <rect x="119" y="19" width="12" height="6" fill="#8b6546" rx="0.5"/>
+      <rect x="119" y="19" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+      <rect x="128" y="19" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+    </g>
+
+    <!-- Tiny Micro Capacitors (Bottom) -->
+    <g>
+      <rect x="49" y="132" width="12" height="6" fill="#8b6546" rx="0.5"/>
+      <rect x="49" y="132" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+      <rect x="58" y="132" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+      
+      <rect x="69" y="132" width="12" height="6" fill="#8b6546" rx="0.5"/>
+      <rect x="69" y="132" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+      <rect x="78" y="132" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+
+      <rect x="99" y="132" width="12" height="6" fill="#8b6546" rx="0.5"/>
+      <rect x="99" y="132" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+      <rect x="108" y="132" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+
+      <rect x="119" y="132" width="12" height="6" fill="#8b6546" rx="0.5"/>
+      <rect x="119" y="132" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+      <rect x="128" y="132" width="3" height="6" fill="#d0d0d0" rx="0.5"/>
+    </g>
+
+    <!-- White Silkscreen Labels -->
+    <g fill="#e0e0e0" font-family="monospace" font-weight="bold">
+      <!-- Component Labels -->
+      <text x="47" y="23" font-size="3.5" text-anchor="end">C1</text>
+      <text x="67" y="23" font-size="3.5" text-anchor="end">C2</text>
+      <text x="97" y="23" font-size="3.5" text-anchor="end">C3</text>
+      <text x="117" y="23" font-size="3.5" text-anchor="end">C4</text>
+      
+      <text x="47" y="136" font-size="3.5" text-anchor="end">C5</text>
+      <text x="67" y="136" font-size="3.5" text-anchor="end">C6</text>
+      <text x="97" y="136" font-size="3.5" text-anchor="end">C7</text>
+      <text x="117" y="136" font-size="3.5" text-anchor="end">C8</text>
+      
+      <text x="35" y="80" font-size="4" text-anchor="middle" transform="rotate(-90 35 80)">U1-CORE</text>
+    </g>
+
+    <!-- Etched Text on Die -->
+    <text x="90" y="94" fill="#4a4a50" font-family="sans-serif" font-size="44" font-weight="900" text-anchor="middle" letter-spacing="-2">LM</text>
+    <text x="90" y="112" fill="#3a3a40" font-family="monospace" font-size="8.5" text-anchor="middle" font-weight="bold">LM-RA-190526</text>
+
+    <!-- Pin 1 Indicator -->
+    <circle cx="28" cy="23" r="3" fill="#d4af37"/>
+  </g>
+</svg>

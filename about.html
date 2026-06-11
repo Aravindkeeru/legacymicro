@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — Legacy Microtronix | R&A Supply Solutions Pvt Ltd</title>
+  <meta name="description" content="Learn about Legacy Microtronix by R&A Supply Solutions Pvt Ltd — India's first independent semiconductor distributor with instant part availability search. Est. 2026, Guntur, Andhra Pradesh.">
+  <meta name="keywords" content="Legacy Microtronix, R&A Supply Solutions, about us, semiconductor distributor, electronic components, independent distributor, India">
+  <meta name="author" content="R&A Supply Solutions Pvt Ltd">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <canvas id="circuit-bg"></canvas>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="nav" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" style="display: flex; align-items: center;">
+        <img src="assets/lm-logo.svg" alt="LM" style="height: 38px; width: auto; margin-right: 12px;">
+        <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1;">
+          <span>LEGACY<span class="logo-text-accent">MICRO</span></span>
+          <span style="font-size: 0.38em; letter-spacing: 1.5px; color: #888; font-weight: 600; margin-top: 3px;">ELECTRONIC COMPONENTS</span>
+        </div>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="about.html" class="active">About</a>
+        <a href="services.html">Services</a>
+        <a href="search.html">Part Search</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <button class="btn btn-primary btn-sm nav-cta desktop-only" onclick="openQuoteModal('')">Request Quote</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="search.html">Part Search</a>
+    <a href="contact.html">Contact</a>
+    <button class="btn btn-primary mt-md" onclick="openQuoteModal('')">Request Quote</button>
+  </div>
+
+  <!-- ========== Page Header ========== -->
+  <section class="page-header reveal">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">/</span>
+        <span>About Us</span>
+      </div>
+      <span class="section-label">About Us</span>
+      <h1>Bridging Global <span>Supply Chains</span></h1>
+      <p>We connect engineers and procurement teams worldwide with the electronic components they need — fast, reliably, and at competitive prices.</p>
+    </div>
+  </section>
+
+  <!-- ========== Our Story ========== -->
+  <section class="section reveal">
+    <div class="container">
+      <div class="content-grid">
+        <div class="content-text">
+          <h2>Who We <span>Are</span></h2>
+          <p>R&A Supply Solutions Pvt Ltd, operating as <strong style="color: var(--text-primary);">Legacy Microtronix</strong>, was established in May 2026 in Nehru Nagar, Guntur, Andhra Pradesh, India. We set out with a clear mission: to become India's most trusted independent distributor for semiconductors and electronic components.</p>
+          <p>As an independent distributor, we specialize in sourcing hard-to-find, obsolete, and end-of-life (EOL) electronic components from a vast global network of trusted suppliers spanning <strong style="color: var(--text-primary);">China, the USA, and the European Union</strong>.</p>
+          <p>In a world where semiconductor supply chains can leave procurement teams waiting 24–48 hours for a simple availability check, we decided to change the game. Legacy Microtronix is built to deliver instant answers and rapid fulfillment — eliminating uncertainty from your sourcing process.</p>
+          <ul>
+            <li>India's first independent distributor with instant part search</li>
+            <li>Global sourcing from China, USA, Europe &amp; Asia Pacific</li>
+            <li>Specializing in hard-to-find, obsolete &amp; EOL components</li>
+            <li>Rigorous quality assurance and anti-counterfeit protocols</li>
+          </ul>
+        </div>
+        <div class="content-image">
+          <div style="text-align: center; padding: 2rem;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;"><i data-lucide="globe"></i></div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-primary);">Global Sourcing Network</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 260px; margin: 0 auto 1.5rem;">Connecting suppliers across 30+ countries with buyers worldwide.</p>
+            <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+              <span class="feature-tag">🇨🇳 China</span>
+              <span class="feature-tag">🇺🇸 USA</span>
+              <span class="feature-tag">🇪🇺 Europe</span>
+              <span class="feature-tag">🇮🇳 India</span>
+              <span class="feature-tag">🌏 APAC</span>
+            </div>
+            <div style="margin-top: 1.5rem; width: 120px; height: 120px; border-radius: 50%; border: 2px solid var(--border); margin-left: auto; margin-right: auto; display: flex; align-items: center; justify-content: center; animation: glow 3s infinite;">
+              <span style="font-family: var(--font-mono); font-size: 1.8rem; color: var(--accent-light); font-weight: 700;">LM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Our Mission ========== -->
+  <section class="section reveal">
+    <div class="container">
+      <div class="content-grid reverse">
+        <div class="content-text">
+          <h2>Our <span>Mission</span></h2>
+          <p>Our mission is to make electronic component sourcing <strong style="color: var(--text-primary);">transparent, fast, and stress-free</strong> for engineers, procurement managers, and manufacturing teams across the globe.</p>
+          <p>We believe that no production line should halt because of a missing component. Whether it's a current-production IC, a hard-to-find passive, or an obsolete connector that went end-of-life years ago — Legacy Microtronix has the network and expertise to find it.</p>
+          <p>By combining deep industry relationships with cutting-edge search technology, we empower our clients to source with confidence and speed — turning what used to take days into minutes.</p>
+          <ul>
+            <li>Eliminate 24–48 hour wait times for availability checks</li>
+            <li>Transparent pricing with no hidden markups</li>
+            <li>Dedicated support for hard-to-find &amp; obsolete parts</li>
+            <li>End-to-end quality assurance on every shipment</li>
+          </ul>
+        </div>
+        <div class="content-image">
+          <div style="text-align: center; padding: 2rem;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;"><i data-lucide="target"></i></div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-primary);">Our Mission</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 260px; margin: 0 auto 1.5rem;">Making component sourcing transparent, fast, and stress-free.</p>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; max-width: 220px; margin: 0 auto;">
+              <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; background: var(--accent-subtle); border: 1px solid var(--border); border-radius: var(--radius-md);">
+                <span style="color: var(--success);">✓</span>
+                <span style="font-size: 0.8rem; color: var(--text-secondary);">Instant Availability</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; background: var(--accent-subtle); border: 1px solid var(--border); border-radius: var(--radius-md);">
+                <span style="color: var(--success);">✓</span>
+                <span style="font-size: 0.8rem; color: var(--text-secondary);">Quality Assured</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; background: var(--accent-subtle); border: 1px solid var(--border); border-radius: var(--radius-md);">
+                <span style="color: var(--success);">✓</span>
+                <span style="font-size: 0.8rem; color: var(--text-secondary);">Transparent Pricing</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; background: var(--accent-subtle); border: 1px solid var(--border); border-radius: var(--radius-md);">
+                <span style="color: var(--success);">✓</span>
+                <span style="font-size: 0.8rem; color: var(--text-secondary);">EOL Specialists</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Why Choose Legacy Microtronix ========== -->
+  <section class="section reveal">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Why Us</span>
+        <h2>Why Choose <span>Legacy Microtronix</span></h2>
+        <p>We're not just another distributor. We're a technology-driven sourcing partner built to solve the hardest problems in electronic component procurement.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal reveal-delay-1">
+          <div class="card-icon"><i data-lucide="globe"></i></div>
+          <h3>Global Network</h3>
+          <p>Suppliers across China, USA, Europe, and beyond. Our extensive network ensures we find the parts you need, no matter where they are.</p>
+        </div>
+        <div class="card reveal reveal-delay-2">
+          <div class="card-icon"><i data-lucide="zap"></i></div>
+          <h3>Instant Availability</h3>
+          <p>Real-time part search — no more waiting 24–48 hours for availability checks. Get answers in minutes, not days.</p>
+        </div>
+        <div class="card reveal reveal-delay-3">
+          <div class="card-icon"><i data-lucide="shield"></i></div>
+          <h3>Quality First</h3>
+          <p>Rigorous visual inspection, functional testing, and anti-counterfeit processes ensure every component meets the highest standards.</p>
+        </div>
+        <div class="card reveal reveal-delay-1">
+          <div class="card-icon"><i data-lucide="refresh-cw"></i></div>
+          <h3>EOL Specialists</h3>
+          <p>We find parts others can't. Our team specializes in sourcing obsolete, end-of-life, and hard-to-find electronic components.</p>
+        </div>
+        <div class="card reveal reveal-delay-2">
+          <div class="card-icon"><i data-lucide="dollar-sign"></i></div>
+          <h3>Competitive Pricing</h3>
+          <p>Direct sourcing from global suppliers means better prices for you. No inflated margins, no hidden fees — just honest pricing.</p>
+        </div>
+        <div class="card reveal reveal-delay-3">
+          <div class="card-icon"><i data-lucide="users"></i></div>
+          <h3>Trusted Partner</h3>
+          <p>We build long-term relationships, not just transactions. Your success is our success — and we're here for the long haul.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Industries We Serve ========== -->
+  <section class="section reveal">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Industries</span>
+        <h2>Industries We <span>Serve</span></h2>
+        <p>From high-reliability aerospace systems to cutting-edge IoT devices, Legacy Microtronix serves the full spectrum of electronics manufacturing.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal reveal-delay-1">
+          <div class="card-icon"><i data-lucide="factory"></i></div>
+          <h3>EMS / Contract Manufacturing</h3>
+          <p>Supporting electronic manufacturing services with reliable component supply, BOM analysis, and shortage mitigation for high-volume production runs.</p>
+        </div>
+        <div class="card reveal reveal-delay-2">
+          <div class="card-icon"><i data-lucide="car"></i></div>
+          <h3>Automotive</h3>
+          <p>AEC-Q qualified components for ADAS, infotainment, powertrain, and EV applications. Meeting automotive-grade quality and traceability requirements.</p>
+        </div>
+        <div class="card reveal reveal-delay-3">
+          <div class="card-icon"><i data-lucide="radio"></i></div>
+          <h3>Telecom &amp; 5G</h3>
+          <p>RF components, power amplifiers, and networking ICs for telecommunications infrastructure, 5G base stations, and wireless systems.</p>
+        </div>
+        <div class="card reveal reveal-delay-1">
+          <div class="card-icon"><i data-lucide="plane"></i></div>
+          <h3>Aerospace &amp; Defense</h3>
+          <p>MIL-spec and hi-rel components for avionics, satellites, radar, and defense electronics. Full traceability and documentation compliance.</p>
+        </div>
+        <div class="card reveal reveal-delay-2">
+          <div class="card-icon"><i data-lucide="activity"></i></div>
+          <h3>Medical Devices</h3>
+          <p>Components for medical imaging, patient monitoring, diagnostic equipment, and implantable devices — meeting strict regulatory and reliability standards.</p>
+        </div>
+        <div class="card reveal reveal-delay-3">
+          <div class="card-icon"><i data-lucide="pager"></i></div>
+          <h3>Industrial IoT</h3>
+          <p>Sensors, microcontrollers, connectivity modules, and power management ICs for smart factory, automation, and edge computing applications.</p>
+        </div>
+      </div>
+      <div class="mt-xl" style="text-align: center;">
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Also serving: Consumer Electronics · Energy &amp; Renewables · Smart Home · Robotics · Wearables</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CTA ========== -->
+  <section class="section reveal">
+    <div class="container">
+      <div class="cta-section">
+        <span class="section-label">Get Started</span>
+        <h2>Join Our Growing Network of <span>Satisfied Customers</span></h2>
+        <p>Experience the Legacy Microtronix difference — faster sourcing, better prices, and components you can trust.</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative;">
+          <a href="contact.html" class="btn btn-primary btn-lg">Request a Quote</a>
+          <a href="search.html" class="btn btn-secondary btn-lg">Search Parts</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" style="display: flex; align-items: center;">
+            <img src="assets/lm-logo.svg" alt="LM" style="height: 38px; width: auto; margin-right: 12px;">
+            <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1;">
+              <span>LEGACY<span class="logo-text-accent">MICRO</span></span>
+              <span style="font-size: 0.38em; letter-spacing: 1.5px; color: #888; font-weight: 600; margin-top: 3px;">ELECTRONIC COMPONENTS</span>
+            </div>
+          </a>
+          <p>India's smartest independent distributor for semiconductors, hard-to-find &amp; obsolete electronic components.</p>
+          <p class="legal-name">R&amp;A Supply Solutions Pvt Ltd · Est. 2026</p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <div class="footer-links">
+            <a href="about.html">About Us</a>
+            <a href="services.html">Services</a>
+            <a href="search.html">Part Search</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <div class="footer-links">
+            <a href="services.html">Global Sourcing</a>
+            <a href="services.html">Hard-to-Find Parts</a>
+            <a href="services.html">Obsolete &amp; EOL</a>
+            <a href="services.html">Quality Assurance</a>
+          </div>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <div class="footer-links">
+            <a href="mailto:info@racomlink.com">info@racomlink.com</a>
+            <a href="tel:+91XXXXXXXXXX">+91-XXXXX-XXXXX</a>
+            <a>Nehru Nagar, Guntur</a>
+            <a>Andhra Pradesh, India</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 R&amp;A Supply Solutions Pvt Ltd. All rights reserved.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="WhatsApp">W</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
+  <script src="js/main.js"></script>
+  <script src="js/circuit.js"></script>
+<!-- ========== Quote Modal ========== -->
+<div id="quoteModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeQuoteModal()" aria-label="Close modal">
+      <i data-lucide="x"></i>
+    </button>
+    <h3 style="margin-bottom: 8px;">Request a Quote</h3>
+    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 24px;">Our team will get back to you within 24 hours.</p>
+    
+    <form id="quoteForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="modalEmail" class="form-label">Email Address *</label>
+          <input type="email" id="modalEmail" name="email" class="form-input" required placeholder="john@company.com">
+        </div>
+        <div class="form-group">
+          <label for="modalPhone" class="form-label">Phone Number</label>
+          <input type="tel" id="modalPhone" name="phone" class="form-input" placeholder="+91-XXXXXXXXXX">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="modalPart" class="form-label">Part Number</label>
+          <input type="text" id="modalPart" name="partNumber" class="form-input" style="font-family: var(--font-mono);" readonly>
+        </div>
+        <div class="form-group">
+          <label for="modalQty" class="form-label">Quantity Required *</label>
+          <input type="number" id="modalQty" name="quantity" class="form-input" required min="1" placeholder="e.g. 500">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="modalMessage" class="form-label">Additional Requirements</label>
+        <textarea id="modalMessage" name="message" class="form-textarea" rows="3" placeholder="Target price, preferred brand, urgency..."></textarea>
+      </div>
+      
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 16px;">Submit Request</button>
+      <div id="quoteFormStatus" style="margin-top: 16px; text-align: center; font-size: 0.9rem;"></div>
+    </form>
+  </div>
+</div>
+</body>
+</html>
+
+

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — Legacy Microtronix | Request a Quote</title>
+  <meta name="description" content="Contact Legacy Microtronix for component sourcing inquiries, RFQs, and BOM analysis. Reach R&A Supply Solutions Pvt Ltd at Nehru Nagar, Guntur, Andhra Pradesh, India.">
+  <meta name="keywords" content="Legacy Microtronix contact, request quote, RFQ, component inquiry, R&A Supply Solutions, Guntur, semiconductor distributor">
+  <meta name="author" content="R&A Supply Solutions Pvt Ltd">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <canvas id="circuit-bg"></canvas>
+
+  <!-- ========== Navigation ========== -->
+  <nav class="nav" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" style="display: flex; align-items: center;">
+        <img src="assets/lm-logo.svg" alt="LM" style="height: 38px; width: auto; margin-right: 12px;">
+        <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1;">
+          <span>LEGACY<span class="logo-text-accent">MICRO</span></span>
+          <span style="font-size: 0.38em; letter-spacing: 1.5px; color: #888; font-weight: 600; margin-top: 3px;">ELECTRONIC COMPONENTS</span>
+        </div>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="search.html">Part Search</a>
+        <a href="contact.html" class="active">Contact</a>
+      </div>
+      <button class="btn btn-primary btn-sm nav-cta desktop-only" onclick="openQuoteModal('')">Request Quote</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="search.html">Part Search</a>
+    <a href="contact.html">Contact</a>
+    <button class="btn btn-primary mt-md" onclick="openQuoteModal('')">Request Quote</button>
+  </div>
+
+  <!-- ========== Page Header ========== -->
+  <section class="page-header reveal">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">/</span>
+        <span>Contact</span>
+      </div>
+      <span class="section-label">Get In Touch</span>
+      <h1>Let's Work <span>Together</span></h1>
+      <p>Have a sourcing requirement? Need a quote? Or just want to learn more about how Legacy Microtronix can help? We'd love to hear from you.</p>
+    </div>
+  </section>
+
+  <!-- ========== Contact Info Cards ========== -->
+  <section class="section reveal">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-icon"><i data-lucide="mail"></i></div>
+          <h4>Email</h4>
+          <p><a href="mailto:info@racomlink.com" style="color: var(--text-accent);">info@racomlink.com</a></p>
+          <p class="text-xs mt-sm" style="color: var(--text-muted);">We respond within 24 hours</p>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon"><i data-lucide="phone"></i></div>
+          <h4>Phone</h4>
+          <p><a href="tel:+91XXXXXXXXXX" style="color: var(--text-accent);">+91-XXXXX-XXXXX</a></p>
+          <p class="text-xs mt-sm" style="color: var(--text-muted);">Mon–Sat, 9 AM – 6 PM IST</p>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon"><i data-lucide="map-pin"></i></div>
+          <h4>Office</h4>
+          <p>Nehru Nagar, Guntur</p>
+          <p class="text-xs mt-sm" style="color: var(--text-muted);">Andhra Pradesh, India 522001</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Contact Form Section ========== -->
+  <section class="section reveal">
+    <div class="container">
+      <div class="content-grid">
+
+        <!-- Left: Contact / RFQ Form -->
+        <div>
+          <h2 style="margin-bottom: var(--space-lg);">Send Us an <span>Inquiry</span></h2>
+          <!-- Replace YOUR_FORM_ID with your actual Formspree ID -->
+          <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" id="contactForm" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fullName" class="form-label">Full Name <span style="color: var(--danger);">*</span></label>
+                <input type="text" id="fullName" name="fullName" class="form-input" placeholder="John Doe" required aria-required="true">
+              </div>
+              <div class="form-group">
+                <label for="companyName" class="form-label">Company Name</label>
+                <input type="text" id="companyName" name="companyName" class="form-input" placeholder="Acme Electronics Ltd">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email" class="form-label">Email Address <span style="color: var(--danger);">*</span></label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="john@company.com" required aria-required="true">
+              </div>
+              <div class="form-group">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="tel" id="phone" name="phone" class="form-input" placeholder="+91-XXXXXXXXXX">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="partNumber" class="form-label">Part Number</label>
+                <input type="text" id="partNumber" name="partNumber" class="form-input" style="font-family: var(--font-mono);" placeholder="e.g. STM32F407VGT6">
+              </div>
+              <div class="form-group">
+                <label for="quantity" class="form-label">Quantity</label>
+                <input type="number" id="quantity" name="quantity" class="form-input" placeholder="e.g. 500" min="1">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="urgency" class="form-label">Urgency Level</label>
+              <select id="urgency" name="urgency" class="form-select" aria-label="Select urgency level">
+                <option value="standard">Standard — Normal lead time</option>
+                <option value="urgent">Urgent — Need within 1 week</option>
+                <option value="critical">Critical — Production at risk</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message" class="form-label">Message / Additional Details</label>
+              <textarea id="message" name="message" class="form-textarea" placeholder="Tell us about your requirements, target price, preferred brands, or any other details..." rows="5" aria-label="Your message"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="bomUpload" class="form-label" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                <i data-lucide="paperclip" style="width:16px;height:16px;"></i> Upload BOM <span style="color: var(--text-muted); font-weight: 400;">(optional — .xlsx, .csv, .pdf)</span>
+              </label>
+              <div style="position: relative; margin-top: 0.5rem;">
+                <input type="file" id="bomUpload" name="bomUpload" accept=".xlsx,.xls,.csv,.pdf" aria-label="Upload Bill of Materials" style="width: 100%; padding: 0.75rem 1rem; background: var(--bg-input); border: 1px dashed var(--border-hover); border-radius: var(--radius-md); font-family: var(--font-primary); font-size: 0.85rem; color: var(--text-secondary); cursor: pointer;">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: var(--space-sm);">
+              Submit Inquiry →
+            </button>
+            <div id="contactFormStatus" style="margin-top: 16px; text-align: center; font-size: 0.95rem;"></div>
+            <p class="text-xs mt-md" style="color: var(--text-muted); text-align: center;">By submitting, you agree to our privacy policy. We never share your data with third parties.</p>
+          </form>
+        </div>
+
+        <!-- Right: Additional Info -->
+        <div style="display: flex; flex-direction: column; gap: var(--space-xl);">
+
+          <!-- What happens next? -->
+          <div class="card" style="transform: none;">
+            <h4 style="margin-bottom: var(--space-lg); display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="lightbulb"></i> What happens next?
+            </h4>
+            <div style="display: flex; flex-direction: column; gap: var(--space-lg);">
+              <div style="display: flex; gap: var(--space-md); align-items: flex-start;">
+                <div style="width: 32px; height: 32px; background: var(--accent-subtle); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: var(--accent-light); flex-shrink: 0;">1</div>
+                <div>
+                  <p style="color: var(--text-primary); font-weight: 500; font-size: 0.9rem;">We receive your inquiry</p>
+                  <p class="text-xs" style="color: var(--text-muted);">Your request is logged and assigned to a sourcing specialist.</p>
+                </div>
+              </div>
+              <div style="display: flex; gap: var(--space-md); align-items: flex-start;">
+                <div style="width: 32px; height: 32px; background: var(--accent-subtle); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: var(--accent-light); flex-shrink: 0;">2</div>
+                <div>
+                  <p style="color: var(--text-primary); font-weight: 500; font-size: 0.9rem;">Our team sources the best options</p>
+                  <p class="text-xs" style="color: var(--text-muted);">We search our global network for availability, pricing, and quality-verified stock.</p>
+                </div>
+              </div>
+              <div style="display: flex; gap: var(--space-md); align-items: flex-start;">
+                <div style="width: 32px; height: 32px; background: var(--accent-subtle); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: var(--accent-light); flex-shrink: 0;">3</div>
+                <div>
+                  <p style="color: var(--text-primary); font-weight: 500; font-size: 0.9rem;">You receive a competitive quote within 24hrs</p>
+                  <p class="text-xs" style="color: var(--text-muted);">A detailed quote with pricing, lead time, and quality documentation arrives in your inbox.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Contact -->
+          <div class="card" style="transform: none;">
+            <h4 style="margin-bottom: var(--space-lg); display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="zap"></i> Quick Contact
+            </h4>
+            <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+              <a href="#" style="display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md); background: var(--accent-subtle); border: 1px solid var(--border); border-radius: var(--radius-md); text-decoration: none; transition: all 0.2s;">
+                <span style="font-size: 1.3rem;"><i data-lucide="message-circle"></i></span>
+                <div>
+                  <p style="color: var(--text-primary); font-weight: 500; font-size: 0.9rem;">WhatsApp</p>
+                  <p class="text-xs" style="color: var(--text-muted);">Chat with us instantly</p>
+                </div>
+              </a>
+              <a href="mailto:info@racomlink.com" style="display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md); background: var(--accent-subtle); border: 1px solid var(--border); border-radius: var(--radius-md); text-decoration: none; transition: all 0.2s;">
+                <span style="font-size: 1.3rem;"><i data-lucide="mail"></i></span>
+                <div>
+                  <p style="color: var(--text-primary); font-weight: 500; font-size: 0.9rem;">Email</p>
+                  <p class="text-xs" style="color: var(--text-muted);">info@racomlink.com</p>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Business Hours -->
+          <div class="card" style="transform: none;">
+            <h4 style="margin-bottom: var(--space-lg); display: flex; align-items: center; gap: 0.5rem;">
+              <i data-lucide="clock"></i> Business Hours
+            </h4>
+            <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-sm) 0; border-bottom: 1px solid var(--border-card);">
+                <span style="font-size: 0.9rem; color: var(--text-secondary);">Monday – Friday</span>
+                <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-primary); font-weight: 500;">9:00 AM – 6:00 PM</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-sm) 0; border-bottom: 1px solid var(--border-card);">
+                <span style="font-size: 0.9rem; color: var(--text-secondary);">Saturday</span>
+                <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-primary); font-weight: 500;">9:00 AM – 6:00 PM</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-sm) 0;">
+                <span style="font-size: 0.9rem; color: var(--text-secondary);">Sunday</span>
+                <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">Closed</span>
+              </div>
+            </div>
+            <p class="text-xs mt-md" style="color: var(--text-muted);">All times in IST (Indian Standard Time, UTC+5:30)</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Map Section ========== -->
+  <section class="section reveal">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Our Location</span>
+        <h2>Find Us in <span>Guntur</span></h2>
+        <p>Visit our office at Nehru Nagar, Guntur, Andhra Pradesh, India.</p>
+      </div>
+      <div class="map-container">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15311.938974474177!2d80.4300!3d16.3067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a4a754b1e5c1f27%3A0x74df4a9ae9e69c49!2sNehru%20Nagar%2C%20Guntur%2C%20Andhra%20Pradesh!5e0!3m2!1sen!2sin!4v1717980000000!5m2!1sen!2sin"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Legacy Microtronix Office Location — Nehru Nagar, Guntur, Andhra Pradesh">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Footer ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" style="display: flex; align-items: center;">
+            <img src="assets/lm-logo.svg" alt="LM" style="height: 38px; width: auto; margin-right: 12px;">
+            <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1;">
+              <span>LEGACY<span class="logo-text-accent">MICRO</span></span>
+              <span style="font-size: 0.38em; letter-spacing: 1.5px; color: #888; font-weight: 600; margin-top: 3px;">ELECTRONIC COMPONENTS</span>
+            </div>
+          </a>
+          <p>India's smartest independent distributor for semiconductors, hard-to-find &amp; obsolete electronic components.</p>
+          <p class="legal-name">R&amp;A Supply Solutions Pvt Ltd · Est. 2026</p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <div class="footer-links">
+            <a href="about.html">About Us</a>
+            <a href="services.html">Services</a>
+            <a href="search.html">Part Search</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <div class="footer-links">
+            <a href="services.html">Global Sourcing</a>
+            <a href="services.html">Hard-to-Find Parts</a>
+            <a href="services.html">Obsolete &amp; EOL</a>
+            <a href="services.html">Quality Assurance</a>
+          </div>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <div class="footer-links">
+            <a href="mailto:info@racomlink.com">info@racomlink.com</a>
+            <a href="tel:+91XXXXXXXXXX">+91-XXXXX-XXXXX</a>
+            <a>Nehru Nagar, Guntur</a>
+            <a>Andhra Pradesh, India</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 R&amp;A Supply Solutions Pvt Ltd. All rights reserved.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="WhatsApp">W</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
+  <script src="js/main.js"></script>
+  <script src="js/circuit.js"></script>
+<!-- ========== Quote Modal ========== -->
+<div id="quoteModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeQuoteModal()" aria-label="Close modal">
+      <i data-lucide="x"></i>
+    </button>
+    <h3 style="margin-bottom: 8px;">Request a Quote</h3>
+    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 24px;">Our team will get back to you within 24 hours.</p>
+    
+    <form id="quoteForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="modalEmail" class="form-label">Email Address *</label>
+          <input type="email" id="modalEmail" name="email" class="form-input" required placeholder="john@company.com">
+        </div>
+        <div class="form-group">
+          <label for="modalPhone" class="form-label">Phone Number</label>
+          <input type="tel" id="modalPhone" name="phone" class="form-input" placeholder="+91-XXXXXXXXXX">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="modalPart" class="form-label">Part Number</label>
+          <input type="text" id="modalPart" name="partNumber" class="form-input" style="font-family: var(--font-mono);" readonly>
+        </div>
+        <div class="form-group">
+          <label for="modalQty" class="form-label">Quantity Required *</label>
+          <input type="number" id="modalQty" name="quantity" class="form-input" required min="1" placeholder="e.g. 500">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="modalMessage" class="form-label">Additional Requirements</label>
+        <textarea id="modalMessage" name="message" class="form-textarea" rows="3" placeholder="Target price, preferred brand, urgency..."></textarea>
+      </div>
+      
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 16px;">Submit Request</button>
+      <div id="quoteFormStatus" style="margin-top: 16px; text-align: center; font-size: 0.9rem;"></div>
+    </form>
+  </div>
+</div>
+</body>
+</html>
+
+

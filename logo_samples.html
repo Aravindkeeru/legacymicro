@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legacy Micro - Logo Concepts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09090b;
+      --card-bg: #18181b;
+      --border: #27272a;
+      --text: #ffffff;
+      --text-muted: #a1a1aa;
+      --accent: #00f0ff;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+    .concept-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .concept-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--accent);
+    }
+    .concept-desc {
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      line-height: 1.5;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      background: #000;
+      border-radius: 8px;
+      border: 1px solid #333;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    /* Concept 1 Specifics */
+    .c1-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 42px;
+      fill: #fff;
+      letter-spacing: -1px;
+    }
+    .c1-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      fill: #00f0ff;
+      letter-spacing: 2px;
+    }
+    
+    /* Concept 2 Specifics */
+    .c2-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 38px;
+      fill: #fff;
+    }
+    .c2-sub {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 10px;
+      fill: #a1a1aa;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+    
+    /* Concept 3 Specifics */
+    .c3-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 48px;
+      fill: #fff;
+      letter-spacing: -2px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Legacy Micro - Brand Identity Concepts</h1>
+  <p style="color: #a1a1aa; max-width: 600px; text-align: center; margin-top:-20px; margin-bottom: 20px;">
+    These are raw SVG (vector) code concepts generated directly in your browser. They are scalable, crisp, and perfect for modern web use.
+  </p>
+
+  <!-- CONCEPT 1 -->
+  <div class="concept-card">
+    <div class="concept-title">Concept 1: The Ampersand Circuit</div>
+    <div class="concept-desc">Uses the R&A ampersand (&) stylized as a copper PCB trace that connects directly into the 'L' and 'M' of Legacy Micro.</div>
+    <div class="logo-container">
+      <svg width="400" height="120" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+        <!-- Ampersand Circuit Icon -->
+        <g transform="translate(20, 25)">
+          <path d="M40 70 L20 70 L10 60 L10 40 L25 25 L40 25 L50 35 L50 45 L35 60 L60 85" fill="none" stroke="#00f0ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M25 25 L10 10 L10 0" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="10" cy="0" r="4" fill="#00f0ff" />
+          <circle cx="60" cy="85" r="4" fill="#00f0ff" />
+          <circle cx="40" cy="70" r="4" fill="#ffffff" />
+        </g>
+        <!-- Text Lockup -->
+        <text x="100" y="65" class="c1-text">LEGACY MICRO</text>
+        <text x="105" y="90" class="c1-sub">R&amp;A SUPPLY SOLUTIONS</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- CONCEPT 2 -->
+  <div class="concept-card">
+    <div class="concept-title">Concept 2: The Supply Node</div>
+    <div class="concept-desc">An isometric cube representing logistics/supply (R&A), with the faces etched as a microchip (Legacy Micro). Highly professional B2B look.</div>
+    <div class="logo-container">
+      <svg width="450" height="120" viewBox="0 0 450 120" xmlns="http://www.w3.org/2000/svg">
+        <!-- Isometric Cube Node -->
+        <g transform="translate(30, 20)">
+          <!-- Top face -->
+          <path d="M40 0 L80 20 L40 40 L0 20 Z" fill="#00f0ff" opacity="0.8"/>
+          <!-- Left face -->
+          <path d="M0 20 L40 40 L40 80 L0 60 Z" fill="#009099" opacity="0.6"/>
+          <!-- Right face -->
+          <path d="M40 40 L80 20 L80 60 L40 80 Z" fill="#004044" opacity="0.9"/>
+          
+          <!-- Circuit traces on right face -->
+          <path d="M45 45 L65 35 M50 55 L70 45 M55 65 L75 55" stroke="#00f0ff" stroke-width="2" stroke-linecap="square"/>
+          <circle cx="65" cy="35" r="2" fill="#fff"/>
+          <circle cx="70" cy="45" r="2" fill="#fff"/>
+          <circle cx="75" cy="55" r="2" fill="#fff"/>
+        </g>
+        <!-- Text Lockup -->
+        <text x="130" y="60" class="c2-text">LEGACY MICRO</text>
+        <text x="133" y="85" class="c2-sub">AN R&amp;A SUPPLY COMPANY</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- CONCEPT 3 -->
+  <div class="concept-card">
+    <div class="concept-title">Concept 3: The Hidden Monogram</div>
+    <div class="concept-desc">A heavy corporate 'LM'. Look closely: The loop in the L forms an 'R', and the negative space in the M forms an 'A'. Subtle, established, and premium.</div>
+    <div class="logo-container">
+      <svg width="400" height="120" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+        <!-- Monogram -->
+        <g transform="translate(20, 25)">
+          <!-- The L / R -->
+          <path d="M10 10 L10 70 L40 70 L40 50 L30 50 L30 30 L40 30 C50 30, 50 10, 40 10 Z" fill="#00f0ff"/>
+          <!-- The M / A (negative space A) -->
+          <path d="M50 70 L50 10 L65 10 L75 40 L85 10 L100 10 L100 70 L85 70 L85 45 L80 60 L70 60 L65 45 L65 70 Z" fill="#ffffff"/>
+        </g>
+        <!-- Text Lockup -->
+        <text x="140" y="70" class="c3-text">LEGACY MICRO</text>
+      </svg>
+    </div>
+  </div>
+
+</body>
+</html>
