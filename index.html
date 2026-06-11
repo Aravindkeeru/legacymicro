@@ -18,7 +18,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-  <canvas id="circuit-bg"></canvas>
+  <!-- ========== Pure CSS Animated Background ========== -->
+  <div class="css-bg-mesh">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
 
   <!-- ========== Navigation ========== -->
   <nav class="nav" id="navbar">
@@ -161,7 +166,7 @@
         <div class="card">
           <div class="card-icon"><i data-lucide="globe"></i></div>
           <h3>Global Sourcing</h3>
-          <p>Source components from China, USA, EU and global markets. Our worldwide network of trusted suppliers ensures competitive pricing and reliable availability.</p>
+          <p>Source components from the USA, EU, Taiwan, and global markets. Our worldwide network of trusted suppliers ensures competitive pricing and reliable availability.</p>
         </div>
         <div class="card">
           <div class="card-icon"><i data-lucide="search"></i></div>
@@ -446,9 +451,9 @@
           <p class="text-secondary">Long after a part goes end-of-life, we maintain relationships with excess inventory holders globally. No component is too old.</p>
         </div>
         <div class="capability-card">
-          <div class="capability-icon">🇨🇳</div>
-          <h3 class="capability-title">China Direct Sourcing</h3>
-          <p class="text-secondary">Shenzhen relationships mean 40–60% savings on high-volume orders vs. Western distribution — with full authenticity verification.</p>
+          <div class="capability-icon">🌐</div>
+          <h3 class="capability-title">Global Direct Sourcing</h3>
+          <p class="text-secondary">Strategic international relationships mean 40-60% savings on high-volume orders vs. domestic distribution - with full authenticity verification.</p>
         </div>
         <div class="capability-card">
           <div class="capability-icon">📦</div>
@@ -722,7 +727,7 @@
     lucide.createIcons();
   </script>
   <script src="js/main.js"></script>
-  <script src="js/circuit.js"></script>
+  <script src="js/search.js"></script>
 <!-- ========== Quote Modal ========== -->
 <div id="quoteModal" class="modal-overlay">
   <div class="modal-content">
