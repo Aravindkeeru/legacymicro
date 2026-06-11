@@ -618,6 +618,32 @@ p {
   color: var(--text-primary);
 }
 
+/* Mobile Search Tweaks */
+@media (max-width: 768px) {
+  .search-wrapper {
+    padding: 2px;
+    flex-direction: column;
+    border-radius: var(--radius-md);
+  }
+  
+  .search-icon {
+    display: none; /* Hide icon on mobile to save space */
+  }
+  
+  .search-input {
+    padding: 12px 16px;
+    font-size: 1rem; /* Larger touch target */
+    text-align: center;
+  }
+  
+  .search-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.9rem;
+    border-radius: var(--radius-sm);
+  }
+}
+
 /* ---------- Search Tags ---------- */
 .search-tags {
   display: flex;
