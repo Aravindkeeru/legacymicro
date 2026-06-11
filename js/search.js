@@ -108,7 +108,54 @@
     lucide.createIcons();
   }
 
-  // ─── Render Sourcing Funnel Results ───────────────────────────────────────────
+  // ─── Render Live API Results ────────────────────────────────────────────────────
+  function renderLiveResults(query, results) {
+    if (!results || results.length === 0) {
+      // If API found nothing, fall back to the Manual RFQ Sourcing Card
+      renderSourcingCard(query);
+      return;
+    }
+
+    let rowsHtml = results.map(item => `
+      <div class="result-details" style="padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
+        <div class="result-detail-item">
+          <div class="label">Part Number</div>
+          <div class="value" style="color: var(--accent);">${escapeHTML(item.mpn)}</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">${escapeHTML(item.manufacturer)}</div>
+        </div>
+        <div class="result-detail-item">
+          <div class="label">Stock</div>
+          <div class="value">${escapeHTML(item.stock)}</div>
+        </div>
+        <div class="result-detail-item">
+          <div class="label">Price</div>
+          <div class="value">${escapeHTML(item.price)}</div>
+        </div>
+        <div class="result-detail-item" style="text-align: right;">
+           <button class="btn btn-primary btn-sm" onclick="openQuoteModal('${escapeHTML(item.mpn)}')">
+             Buy / RFQ
+           </button>
+        </div>
+      </div>
+    `).join('');
+
+    resultsDiv.innerHTML = `
+      <div class="result-card" style="animation: fadeInUp 0.4s ease forwards;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 15px;">
+           <h3 style="margin:0;">Live Global Inventory</h3>
+           <span class="status-badge status-available"><div class="status-dot"></div> Live Connection</span>
+        </div>
+        ${rowsHtml}
+        <div style="text-align: center; margin-top: 20px;">
+           <p style="font-size: 0.85rem; color: var(--text-secondary);">Don't see exactly what you need? Our team can source it from excess inventory.</p>
+           <button class="btn btn-secondary btn-sm" style="margin-top: 10px;" onclick="openQuoteModal('${escapeHTML(query)}')">Request Manual Sourcing</button>
+        </div>
+      </div>
+    `;
+    emptyState.style.display = 'none';
+  }
+
+  // ─── Render Sourcing Funnel Results (Fallback) ────────────────────────────────
   function renderSourcingCard(query) {
     const q = escapeHTML(query);
     resultsDiv.innerHTML = `
@@ -125,14 +172,6 @@
             <i data-lucide="file-text" style="width: 18px; height: 18px; margin-right: 8px;"></i> Request Official Quote
           </button>
         </div>
-        <div style="margin-top:var(--space-xl); display: flex; justify-content: center; gap: var(--space-xl); opacity: 0.7;">
-          <div style="display: flex; align-items: center; font-size: 0.8rem;">
-            <i data-lucide="shield-check" style="width: 16px; height: 16px; margin-right: 6px; color: var(--success);"></i> Verified Suppliers
-          </div>
-          <div style="display: flex; align-items: center; font-size: 0.8rem;">
-            <i data-lucide="clock" style="width: 16px; height: 16px; margin-right: 6px; color: var(--accent-light);"></i> 24-48h Turnaround
-          </div>
-        </div>
       </div>
     `;
     emptyState.style.display = 'none';
@@ -140,7 +179,7 @@
   }
 
   // ─── Execute Search ───────────────────────────────────────────────────────────
-  function executeSearch(query) {
+  async function executeSearch(query) {
     const q = (query || '').trim();
     if (!q) return;
 
@@ -153,11 +192,33 @@
     url.searchParams.set('q', q);
     window.history.replaceState({}, '', url);
 
-    // Simulated delay to show the map
-    setTimeout(() => {
-      renderSourcingCard(q);
-      scrollToResults();
-    }, randomDelay());
+    scrollToResults();
+
+    try {
+      // Call our secure Cloudflare Backend Function
+      const response = await fetch('/api/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q })
+      });
+
+      if (!response.ok) {
+        throw new Error('Backend API error or Key not configured');
+      }
+
+      const data = await response.json();
+      
+      // Artificial slight delay so the map animation looks cool
+      setTimeout(() => {
+        renderLiveResults(q, data.results);
+      }, 1500);
+
+    } catch (err) {
+      console.warn("API Search Failed (Fallback to Manual Mode):", err);
+      setTimeout(() => {
+        renderSourcingCard(q); // Graceful fallback
+      }, 1500);
+    }
   }
 
   // ─── Clear Search ─────────────────────────────────────────────────────────────
