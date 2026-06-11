@@ -2302,3 +2302,54 @@ p {
   content: "→";
   color: var(--accent);
 }
+
+/* ---------- Comprehensive Mobile Responsiveness Fixes ---------- */
+@media (max-width: 768px) {
+  .component-gallery {
+    grid-template-columns: 1fr;
+  }
+  
+  .hero-content {
+    padding: 0 var(--space-sm);
+  }
+
+  .carousel-track {
+    /* Ensure the carousel doesn't overflow the page horizontally on mobile */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    gap: var(--space-md);
+  }
+
+  .carousel-track .component-card {
+    min-width: 250px;
+    scroll-snap-align: center;
+  }
+
+  .search-input {
+    font-size: 1rem;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-col h4 {
+    margin-top: var(--space-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-actions {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  .btn {
+    width: 100%;
+  }
+}
