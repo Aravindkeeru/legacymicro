@@ -11,11 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let width, height;
     
     // Gradient Orbs Configuration
+    // Increased opacity and velocity so the effect is clearly visible and alive
     const orbs = [
-        { color: 'rgba(59, 130, 246, 0.15)', x: 0, y: 0, vx: 0.3, vy: 0.2, radius: 0, baseRadius: 0.6 }, // Brand Blue
-        { color: 'rgba(30, 64, 175, 0.12)', x: 0, y: 0, vx: -0.2, vy: 0.3, radius: 0, baseRadius: 0.5 }, // Deep Blue
-        { color: 'rgba(124, 58, 237, 0.08)', x: 0, y: 0, vx: 0.2, vy: -0.2, radius: 0, baseRadius: 0.7 }, // Subtle Purple
-        { color: 'rgba(14, 165, 233, 0.10)', x: 0, y: 0, vx: -0.3, vy: -0.1, radius: 0, baseRadius: 0.4 }  // Light Cyan
+        { color: 'rgba(59, 130, 246, 0.40)', x: 0, y: 0, vx: 0.8, vy: 0.5, radius: 0, baseRadius: 0.6 }, // Brand Blue
+        { color: 'rgba(30, 64, 175, 0.35)', x: 0, y: 0, vx: -0.6, vy: 0.7, radius: 0, baseRadius: 0.5 }, // Deep Blue
+        { color: 'rgba(124, 58, 237, 0.25)', x: 0, y: 0, vx: 0.5, vy: -0.6, radius: 0, baseRadius: 0.7 }, // Subtle Purple
+        { color: 'rgba(14, 165, 233, 0.30)', x: 0, y: 0, vx: -0.7, vy: -0.4, radius: 0, baseRadius: 0.4 }  // Light Cyan
     ];
     
     function resize() {
