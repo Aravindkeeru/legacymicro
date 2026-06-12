@@ -115,7 +115,8 @@ body {
   width: 100vw;
   height: 100vh;
   object-fit: cover;
-  opacity: 1.0; /* Increased visibility significantly */
+  opacity: 0.6; /* Increased visibility significantly */
+  transform: scale(1.4); /* Zooms in to crop out the black bars burned into the MP4 */
 }
 
 .video-overlay {
