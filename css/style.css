@@ -82,9 +82,8 @@
 
 html {
   scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   font-size: 16px;
+  background-color: var(--bg-primary);
 }
 
 body {
@@ -95,6 +94,37 @@ body {
   overflow-x: hidden;
   min-height: 100vh;
   position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Cinematic Video Background ---------- */
+.video-bg-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -3; /* Deepest layer */
+  overflow: hidden;
+  background-color: var(--bg-primary); /* Fallback to black if video doesn't load */
+}
+
+.video-bg {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  opacity: 0.25; /* Very subtle so it doesn't distract */
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  /* Fades to black at the bottom to transition smoothly into the rest of the site */
+  background: linear-gradient(to bottom, rgba(9, 9, 11, 0.4) 0%, rgba(9, 9, 11, 0.8) 70%, rgba(9, 9, 11, 1) 100%);
 }
 
 #circuit-bg {
@@ -103,7 +133,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1;
+  z-index: -2; /* Sits above the video, but behind the text */
   pointer-events: none;
 }
 
