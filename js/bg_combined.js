@@ -1,6 +1,6 @@
 /**
- * Cinematic Floating Dust Background
- * Renders slow, out-of-focus dust particles to compliment a realistic background video.
+ * Optical Inspection Scanner Background
+ * Renders a slow-moving, high-tech laser scanline to compliment industrial PCB video backgrounds.
  */
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('circuit-bg');
@@ -8,8 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const ctx = canvas.getContext('2d');
     let width, height;
-    let particles = [];
-    const particleCount = 150; // Amount of dust particles
+    
+    // Scanner variables
+    let scanY = 0;
+    const scanSpeed = 1.5; // Pixels per frame
+    
+    // Crosshairs
+    const crosshairs = [];
     
     function resize() {
         width = window.innerWidth;
@@ -21,81 +26,70 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', resize);
     resize();
     
-    class DustParticle {
-        constructor() {
-            this.reset();
-            // Start particles at random heights initially
-            this.y = Math.random() * height;
-        }
-        
-        reset() {
-            this.x = Math.random() * width;
-            this.y = height + Math.random() * 100; // Start slightly below screen
-            this.size = Math.random() * 3 + 0.5; // Size between 0.5 and 3.5
-            
-            // Speed: Very slow drift upwards
-            this.speedY = -(Math.random() * 0.3 + 0.1);
-            this.speedX = (Math.random() - 0.5) * 0.2;
-            
-            // Opacity: Varying levels of subtlety
-            this.baseOpacity = Math.random() * 0.4 + 0.1; 
-            this.pulseSpeed = Math.random() * 0.02 + 0.005;
-            this.pulseTime = Math.random() * Math.PI * 2;
-        }
-        
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            
-            // Gentle swaying motion
-            this.x += Math.sin(this.pulseTime) * 0.2;
-            
-            // Pulse opacity slightly
-            this.pulseTime += this.pulseSpeed;
-            this.currentOpacity = this.baseOpacity + Math.sin(this.pulseTime) * 0.1;
-            if (this.currentOpacity < 0) this.currentOpacity = 0;
-            
-            // Reset if it floats off the top
-            if (this.y < -10) {
-                this.reset();
-            }
-        }
-        
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255, 255, 255, ${this.currentOpacity})`;
-            ctx.fill();
-            
-            // Add a slight "glow" effect for larger particles to simulate bokeh
-            if (this.size > 2) {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.currentOpacity * 0.2})`;
-                ctx.fill();
-            }
-        }
-    }
-    
-    function init() {
-        particles = [];
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new DustParticle());
-        }
-    }
-    
     function draw() {
-        // Clear previous frame (keeping it completely transparent to show video underneath)
+        // Clear previous frame
         ctx.clearRect(0, 0, width, height);
         
-        particles.forEach(p => {
-            p.update();
-            p.draw();
+        // 1. Draw the Scanning Laser Line
+        scanY += scanSpeed;
+        if (scanY > height + 100) {
+            scanY = -50; // Reset above screen
+            
+            // Randomize crosshairs occasionally
+            crosshairs.length = 0;
+            for(let i=0; i<3; i++) {
+                crosshairs.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 20 + 10,
+                    opacity: Math.random() * 0.5 + 0.1
+                });
+            }
+        }
+        
+        // The core bright line
+        ctx.beginPath();
+        ctx.moveTo(0, scanY);
+        ctx.lineTo(width, scanY);
+        ctx.strokeStyle = 'rgba(59, 130, 246, 0.8)'; // Brand Blue
+        ctx.lineWidth = 2;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = 'rgba(59, 130, 246, 1)';
+        ctx.stroke();
+        
+        // The soft glowing trail behind the line
+        const trailGradient = ctx.createLinearGradient(0, scanY - 40, 0, scanY);
+        trailGradient.addColorStop(0, 'rgba(59, 130, 246, 0)');
+        trailGradient.addColorStop(1, 'rgba(59, 130, 246, 0.15)');
+        
+        ctx.fillStyle = trailGradient;
+        ctx.fillRect(0, scanY - 40, width, 40);
+        
+        // Turn off shadow for standard drawing
+        ctx.shadowBlur = 0;
+        
+        // 2. Draw subtle targeting crosshairs
+        crosshairs.forEach(c => {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(59, 130, 246, ${c.opacity})`;
+            ctx.lineWidth = 1;
+            
+            // Horizontal line
+            ctx.moveTo(c.x - c.size, c.y);
+            ctx.lineTo(c.x + c.size, c.y);
+            // Vertical line
+            ctx.moveTo(c.x, c.y - c.size);
+            ctx.lineTo(c.x, c.y + c.size);
+            
+            // Corner ticks
+            const t = c.size / 2;
+            ctx.strokeRect(c.x - t, c.y - t, t*2, t*2);
+            
+            ctx.stroke();
         });
         
         requestAnimationFrame(draw);
     }
     
-    init();
     draw();
 });
