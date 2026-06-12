@@ -142,9 +142,10 @@ body {
 /* ---------- Custom Logo Split Text ---------- */
 .half-blue {
   background: linear-gradient(to right, #ffffff 50%, var(--primary) 50%);
+  background-clip: text;
   -webkit-background-clip: text;
+  color: transparent;
   -webkit-text-fill-color: transparent;
-  display: inline-block;
 }
 
 /* ---------- Pure CSS Animated Background ---------- */
