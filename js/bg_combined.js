@@ -1,6 +1,6 @@
 /**
- * Background Option D: The Ultimate High-Tech Aesthetic
- * Combines a subtle scrolling Cyberpunk Grid with floating Neural Constellation Nodes.
+ * Cinematic Floating Dust Background
+ * Renders slow, out-of-focus dust particles to compliment a realistic background video.
  */
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('circuit-bg');
@@ -8,134 +8,94 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const ctx = canvas.getContext('2d');
     let width, height;
-    
-    // Grid variables
-    let gridOffset = 0;
-    const GRID_SPACING = 50;
-    
-    // Node variables
     let particles = [];
-    const PARTICLE_COUNT = 60;
-    const CONNECT_DISTANCE = 160;
+    const particleCount = 150; // Amount of dust particles
     
     function resize() {
         width = window.innerWidth;
         height = window.innerHeight;
         canvas.width = width;
         canvas.height = height;
-        initParticles();
-    }
-    
-    function initParticles() {
-        particles = [];
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-            particles.push({
-                x: Math.random() * width,
-                y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 0.6,
-                vy: (Math.random() - 0.5) * 0.6,
-                radius: Math.random() * 1.5 + 1
-            });
-        }
     }
     
     window.addEventListener('resize', resize);
+    resize();
     
-    function update() {
-        // Update Grid
-        gridOffset = (gridOffset + 0.3) % GRID_SPACING;
+    class DustParticle {
+        constructor() {
+            this.reset();
+            // Start particles at random heights initially
+            this.y = Math.random() * height;
+        }
         
-        // Update Nodes
-        particles.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
+        reset() {
+            this.x = Math.random() * width;
+            this.y = height + Math.random() * 100; // Start slightly below screen
+            this.size = Math.random() * 3 + 0.5; // Size between 0.5 and 3.5
             
-            // Soft bounce off edges
-            if (p.x < 0 || p.x > width) p.vx *= -1;
-            if (p.y < 0 || p.y > height) p.vy *= -1;
-        });
-    }
-    
-    function draw() {
-        // Clear previous frame
-        ctx.clearRect(0, 0, width, height);
-        
-        // ==========================================
-        // 1. Draw Subtle Scrolling Grid (Background Layer)
-        // ==========================================
-        ctx.strokeStyle = 'rgba(14, 165, 233, 0.06)'; // Extremely subtle Cyan
-        ctx.lineWidth = 1;
-        
-        // Horizontal moving lines
-        for (let y = gridOffset; y < height; y += GRID_SPACING) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(width, y);
-            ctx.stroke();
+            // Speed: Very slow drift upwards
+            this.speedY = -(Math.random() * 0.3 + 0.1);
+            this.speedX = (Math.random() - 0.5) * 0.2;
+            
+            // Opacity: Varying levels of subtlety
+            this.baseOpacity = Math.random() * 0.4 + 0.1; 
+            this.pulseSpeed = Math.random() * 0.02 + 0.005;
+            this.pulseTime = Math.random() * Math.PI * 2;
         }
         
-        // Vertical static lines
-        for (let x = 0; x < width; x += GRID_SPACING) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, height);
-            ctx.stroke();
-        }
-        
-        // Fade the edges of the grid into darkness using radial gradient
-        const bgGradient = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height) / 1.5);
-        bgGradient.addColorStop(0, 'rgba(9, 9, 11, 0)');
-        bgGradient.addColorStop(1, 'rgba(9, 9, 11, 1)');
-        
-        ctx.fillStyle = bgGradient;
-        ctx.fillRect(0, 0, width, height);
-
-        // ==========================================
-        // 2. Draw Floating Nodes (Foreground Layer)
-        // ==========================================
-        ctx.lineWidth = 1;
-        
-        // Draw Laser Connections
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                let dx = particles[i].x - particles[j].x;
-                let dy = particles[i].y - particles[j].y;
-                let dist = Math.sqrt(dx * dx + dy * dy);
-                
-                if (dist < CONNECT_DISTANCE) {
-                    let opacity = 1 - (dist / CONNECT_DISTANCE);
-                    // Beautiful fade between brand blue and purple depending on distance
-                    ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.4})`; 
-                    ctx.beginPath();
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.stroke();
-                }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            
+            // Gentle swaying motion
+            this.x += Math.sin(this.pulseTime) * 0.2;
+            
+            // Pulse opacity slightly
+            this.pulseTime += this.pulseSpeed;
+            this.currentOpacity = this.baseOpacity + Math.sin(this.pulseTime) * 0.1;
+            if (this.currentOpacity < 0) this.currentOpacity = 0;
+            
+            // Reset if it floats off the top
+            if (this.y < -10) {
+                this.reset();
             }
         }
         
-        // Draw the Node Dots
-        particles.forEach(p => {
-            // Give nodes a soft glowing orb effect
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = 'rgba(124, 58, 237, 0.8)';
-            ctx.fillStyle = 'rgba(124, 58, 237, 0.9)'; // Purple dots
-            
+        draw() {
             ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.currentOpacity})`;
             ctx.fill();
             
-            // Reset shadow so it doesn't bleed into grid lines on next frame
-            ctx.shadowBlur = 0;
+            // Add a slight "glow" effect for larger particles to simulate bokeh
+            if (this.size > 2) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.currentOpacity * 0.2})`;
+                ctx.fill();
+            }
+        }
+    }
+    
+    function init() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new DustParticle());
+        }
+    }
+    
+    function draw() {
+        // Clear previous frame (keeping it completely transparent to show video underneath)
+        ctx.clearRect(0, 0, width, height);
+        
+        particles.forEach(p => {
+            p.update();
+            p.draw();
         });
+        
+        requestAnimationFrame(draw);
     }
     
-    function animate() {
-        update();
-        draw();
-        requestAnimationFrame(animate);
-    }
-    
-    resize();
-    animate();
+    init();
+    draw();
 });
