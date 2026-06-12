@@ -108,6 +108,7 @@ body {
   z-index: -3; /* Deepest layer */
   overflow: hidden;
   background-color: var(--bg-primary); /* Fallback to black if video doesn't load */
+  pointer-events: none; /* Ensure it never blocks Chatbot clicks */
 }
 
 .video-bg {
