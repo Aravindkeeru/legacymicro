@@ -142,10 +142,11 @@ body {
 /* ---------- Custom Logo Split Text ---------- */
 .half-blue {
   background: linear-gradient(to right, #ffffff 50%, var(--primary) 50%);
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
 /* ---------- Pure CSS Animated Background ---------- */
@@ -640,10 +641,11 @@ p {
 .search-wrapper {
   display: flex;
   align-items: center;
-  background: rgba(9, 9, 11, 0.4);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05); /* Lighter to look like real frosted glass */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
   border-radius: var(--radius-lg);
   padding: 4px;
   transition: border-color var(--duration) var(--ease);
