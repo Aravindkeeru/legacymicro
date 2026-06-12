@@ -18,7 +18,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- ========== Canvas Animated Background ========== -->
+  <!-- ========== Cinematic Video Background ========== -->
+  <div class="video-bg-container">
+    <video id="bg-video-player" autoplay loop muted playsinline class="video-bg">
+      <source src="factory_broll.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+  </div>
+
+  <!-- ========== Canvas Animated Background (Grid + Nodes) ========== -->
   <canvas id="circuit-bg"></canvas>
 
   <!-- ========== Navigation ========== -->
@@ -723,7 +731,7 @@
     lucide.createIcons();
   </script>
   <script src="js/main.js"></script>
-  <script src="js/circuit.js"></script>
+  <script src="js/bg_combined.js"></script>
   <script src="js/search.js"></script>
 <!-- ========== Quote Modal ========== -->
 <div id="quoteModal" class="modal-overlay">
