@@ -115,7 +115,7 @@ body {
   width: 100vw;
   height: 100vh;
   object-fit: cover;
-  opacity: 0.6; /* Increased visibility significantly */
+  opacity: 1.0; /* Increased visibility significantly */
 }
 
 .video-overlay {
