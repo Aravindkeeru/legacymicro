@@ -57,9 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function draw() {
-        // Clear background with deep dark color
-        ctx.fillStyle = '#09090b';
-        ctx.fillRect(0, 0, width, height);
+        // Clear previous frame
+        ctx.clearRect(0, 0, width, height);
         
         // ==========================================
         // 1. Draw Subtle Scrolling Grid (Background Layer)
