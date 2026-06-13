@@ -21,7 +21,11 @@
     .logo-legacy { transition: color 0.3s ease; }
     .logo-y { transition: all 0.3s ease; }
     .nav-logo:hover .logo-legacy { color: var(--accent) !important; }
-    .nav-logo:hover .logo-y { background: var(--accent) !important; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-logo:hover .logo-y { 
+      background: linear-gradient(to right, var(--accent) 0%, var(--accent) 100%) !important; 
+      -webkit-background-clip: text !important; 
+      -webkit-text-fill-color: transparent !important; 
+    }
   </style>
 </head>
 <body>
@@ -42,10 +46,10 @@
       <a href="index.html" class="nav-logo" style="display: flex; align-items: center;">
         <img src="assets/lm-logo.svg" alt="LM" style="height: 38px; width: auto; margin-right: 12px;">
         <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1;">
-          <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem; display: flex; align-items: center;">
-            <span class="logo-legacy" style="color: #ffffff;">LEGAC</span>
-            <span class="logo-y" style="background: linear-gradient(to right, #ffffff 49%, var(--accent) 51%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: relative; z-index: 1;">Y</span>
-            <span style="color: var(--accent); margin-left: -0.26em; position: relative; z-index: 2;">MICRO</span>
+          <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem; display: flex; align-items: baseline;">
+            <span class="logo-legacy" style="color: #ffffff; position: relative; z-index: 2;">LEGAC</span>
+            <span class="logo-y" style="background: linear-gradient(to right, #ffffff 49%, var(--accent) 51%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: relative; z-index: 2;">Y</span>
+            <span style="color: var(--accent); margin-left: -0.38em; position: relative; z-index: 1;">MICRO</span>
           </span>
           <span style="font-size: 0.38em; letter-spacing: 1.5px; color: #888; font-weight: 600; margin-top: 3px;">ELECTRONIC COMPONENTS</span>
         </div>
