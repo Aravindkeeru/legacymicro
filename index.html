@@ -20,8 +20,8 @@
 <body>
   <!-- ========== Cinematic Video Background ========== -->
   <div class="video-bg-container">
-    <video id="bg-video-player" autoplay loop muted playsinline class="video-bg">
-      <source src="factory_broll.mp4?v=2" type="video/mp4">
+    <video id="bg-video-player" autoplay loop muted="muted" playsinline webkit-playsinline class="video-bg" style="pointer-events: none;">
+      <source src="factory_broll.mp4?v=3" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
   </div>
@@ -793,6 +793,18 @@
         }
         v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
     })(document, 'script');
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var video = document.getElementById("bg-video-player");
+      if (video) {
+        video.muted = true;
+        video.defaultMuted = true;
+        video.play().catch(function() {
+          console.log("Autoplay prevented by mobile OS");
+        });
+      }
+    });
   </script>
 </body>
 </html>
