@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-            .nav-logo { transition: transform 0.3s ease; }
+                .nav-logo { transition: transform 0.3s ease; }
     .logo-legacy-group {
       display: inline-flex;
       align-items: baseline;
@@ -25,7 +25,7 @@
       animation: slideLegacyOut 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .logo-legacy { 
-      color: #ffffff; 
+      color: #ffffff !important; 
       transition: color 0.3s ease; 
     }
     .logo-y { 
@@ -45,7 +45,6 @@
     }
     .logo-m {
       color: var(--accent);
-      /* Slant left side to match Y right arm perfectly */
       clip-path: polygon(30% 0, 100% 0, 100% 100%, 25% 100%);
       margin-left: -0.36em;
       position: relative;
@@ -57,27 +56,39 @@
       margin-left: -0.05em;
       transition: opacity 0.4s ease, transform 0.4s ease;
     }
-    .logo-mu {
+    .logo-trusted {
       position: absolute;
-      left: -0.3em;
-      color: var(--accent);
+      left: -0.2em;
+      top: 0;
+      display: inline-flex;
+      align-items: baseline;
       opacity: 0;
-      transform: translateY(10px) scale(0.8);
+      transform: translateY(10px) scale(0.9);
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       pointer-events: none;
+      color: var(--accent);
+      text-transform: lowercase;
+      font-size: 1.05em;
+    }
+    .logo-mu {
       font-family: 'Times New Roman', Times, serif;
       font-style: italic;
       font-weight: bold;
       font-size: 1.1em;
+      margin: 0 0.02em;
+    }
+    .logo-tr, .logo-sted {
+      color: var(--accent);
+      letter-spacing: -0.5px;
     }
     .nav-logo:hover .logo-m,
     .nav-logo:hover .logo-icro {
       opacity: 0;
       transform: translateY(-5px);
     }
-    .nav-logo:hover .logo-mu {
+    .nav-logo:hover .logo-trusted {
       opacity: 1;
-      transform: translateY(0) scale(1.1);
+      transform: translateY(0) scale(1);
     }
     .nav-logo:hover .logo-legacy { color: #ffffff !important; }
     .nav-logo:hover .logo-y { 
@@ -88,14 +99,11 @@
     @keyframes microFade {
       0% { opacity: 0; transform: translateX(-10px); }
       100% { opacity: 1; transform: translateX(0); }
+    }
     @keyframes slideLegacyOut {
       0% { opacity: 0; transform: translateX(20px); clip-path: inset(0 100% 0 0); }
       100% { opacity: 1; transform: translateX(0); clip-path: inset(0 -20px 0 0); }
-      100% {
-        opacity: 1;
-        transform: translateX(0);
-        clip-path: inset(0 -20px 0 0);
-      }
+    }
     </style>
 </head>
 <body>
@@ -116,17 +124,20 @@
       <a href="index.html" class="nav-logo" style="display: flex; align-items: center;">
         <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 12px;">
         <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1;">
-                                        <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem; display: flex; align-items: baseline;">
+                                                  <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem; display: flex; align-items: baseline;">
             <span class="logo-legacy-group">
-              <span class="logo-legacy">LEGAC</span>
+              <span class="logo-legacy" style="color: #ffffff !important;">LEGAC</span>
               <span class="logo-y">Y</span>
             </span>
             <span class="logo-micro-group">
               <span class="logo-m">M</span>
               <span class="logo-icro">ICRO</span>
-              <span class="logo-mu">&#956;</span>
+              <span class="logo-trusted">
+                <span class="logo-tr">tr</span><span class="logo-mu">&#956;</span><span class="logo-sted">sted</span>
+              </span>
             </span>
           </span>
+
           <span style="font-size: 0.38em; letter-spacing: 1.5px; color: #888; font-weight: 600; margin-top: 3px;">ELECTRONIC COMPONENTS</span>
         </div>
       </a>
@@ -761,17 +772,20 @@
           <a href="index.html" class="nav-logo" style="display: flex; align-items: center;">
             <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 12px;">
             <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1;">
-                                            <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem; display: flex; align-items: baseline;">
+                                                      <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem; display: flex; align-items: baseline;">
             <span class="logo-legacy-group">
-              <span class="logo-legacy">LEGAC</span>
+              <span class="logo-legacy" style="color: #ffffff !important;">LEGAC</span>
               <span class="logo-y">Y</span>
             </span>
             <span class="logo-micro-group">
               <span class="logo-m">M</span>
               <span class="logo-icro">ICRO</span>
-              <span class="logo-mu">&#956;</span>
+              <span class="logo-trusted">
+                <span class="logo-tr">tr</span><span class="logo-mu">&#956;</span><span class="logo-sted">sted</span>
+              </span>
             </span>
           </span>
+
           <span style="font-size: 0.38em; letter-spacing: 1.5px; color: #888; font-weight: 600; margin-top: 3px;">ELECTRONIC COMPONENTS</span>
             </div>
           </a>
