@@ -49,7 +49,11 @@ export async function onRequestPost(context) {
             const mData = JSON.parse(rawText);
             if (mData.SearchResults && mData.SearchResults.Parts) {
               mData.SearchResults.Parts.forEach(part => {
-                const stockNum = parseStock(part.FactoryStock || part.Availability);
+                const stockNum = Math.max(
+                  parseStock(part.AvailabilityInStock),
+                  parseStock(part.Availability),
+                  parseStock(part.FactoryStock)
+                );
                 
                 // BUSINESS LOGIC: Only show if stock is strictly greater than 0
                 if (stockNum > 0) {
