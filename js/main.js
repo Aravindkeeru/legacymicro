@@ -360,7 +360,7 @@
         bgAudio.play().then(() => {
           soundToggle.classList.add('playing');
           soundToggle.innerHTML = '<i data-lucide="volume-2"></i>';
-          lucide.createIcons();
+          if (typeof lucide !== 'undefined') lucide.createIcons();
           
           // Smooth 5-second fade-in
           clearInterval(fadeInterval);
@@ -386,7 +386,7 @@
             bgAudio.pause();
             soundToggle.classList.remove('playing');
             soundToggle.innerHTML = '<i data-lucide="volume-x"></i>';
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
           }
         }, 100); // Quick fade out
       }
@@ -401,7 +401,7 @@
   if (partParam) {
     const partInput = document.getElementById('partNumber');
     if (partInput) {
-      partInput.value = decodeURIComponent(partParam);
+      partInput.value = partParam;
       // Optional: Add a subtle highlight effect to show it was auto-filled
       partInput.style.borderColor = 'var(--accent)';
       partInput.style.boxShadow = '0 0 0 1px var(--accent)';
@@ -413,6 +413,8 @@
     }
   }
 
+  // TODO: Replace YOUR_PROPERTY_ID with actual Tawk.to property ID before uncommenting
+  /*
   // ───────────────────────────────────────────────
   // 10. Tawk.to Live Chat Widget Placeholder
   // ───────────────────────────────────────────────
@@ -420,12 +422,12 @@
   (function(){
   var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
   s1.async=true;
-  // Replace YOUR_PROPERTY_ID with actual Tawk.to ID before deployment
   s1.src='https://embed.tawk.to/YOUR_PROPERTY_ID/default';
   s1.charset='UTF-8';
   s1.setAttribute('crossorigin','*');
   if(s0 && s0.parentNode) s0.parentNode.insertBefore(s1,s0);
   })();
+  */
   // ───────────────────────────────────────────────
   // 12. Quote Modal Logic
   // ───────────────────────────────────────────────
@@ -491,7 +493,7 @@
             }, 3000);
           } else {
             const result = await response.json();
-            if (Object.hasOwn(result, 'errors')) {
+            if (result.hasOwnProperty('errors')) {
               status.innerHTML = '<span style="color: var(--danger);">' + result.errors.map(err => err.message).join(', ') + '</span>';
             } else {
               status.innerHTML = '<span style="color: var(--danger);">Oops! There was a problem submitting your form.</span>';

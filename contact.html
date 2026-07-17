@@ -7,6 +7,10 @@
   <meta name="description" content="Contact Legacy Microtronix for component sourcing inquiries, RFQs, and BOM analysis. Reach R&A Supply Solutions Pvt Ltd at Nehru Nagar, Guntur, Andhra Pradesh, India.">
   <meta name="keywords" content="Legacy Microtronix contact, request quote, RFQ, component inquiry, R&A Supply Solutions, Guntur, semiconductor distributor">
   <meta name="author" content="R&A Supply Solutions Pvt Ltd">
+  <meta property="og:title" content="Contact Legacy Microtronix — Request a Quote">
+  <meta property="og:description" content="Contact Legacy Microtronix for component sourcing, RFQs, and BOM analysis. Based in Guntur, Andhra Pradesh, India.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://racomlink.com/contact.html">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,20 +20,20 @@
 <body>
   <!-- ========== Cinematic Video Background ========== -->
   <div class="video-bg-container">
-    <video id="bg-video-player" autoplay loop muted playsinline class="video-bg">
+    <video id="bg-video-player" aria-hidden="true" autoplay loop muted playsinline class="video-bg">
       <source src="factory_broll.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
   </div>
 
   <!-- ========== Canvas Animated Background (Grid + Nodes) ========== -->
-  <canvas id="circuit-bg"></canvas>
+  <canvas id="circuit-bg" aria-hidden="true"></canvas>
 
   <!-- ========== Navigation ========== -->
   <nav class="nav" id="navbar">
     <div class="nav-inner">
       <a href="index.html" class="nav-logo" style="display: flex; align-items: center;">
-        <img src="assets/lm-logo.svg" alt="LM" style="height: 38px; width: auto; margin-right: 12px;">
+        <img src="assets/lm-logo.svg" alt="Legacy Microtronix Logo" style="height: 38px; width: auto; margin-right: 12px;">
         <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1;">
           <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.3rem; display: flex; align-items: center;">
             <span style="color: #ffffff;">LEGAC</span>
@@ -296,7 +300,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="index.html" class="nav-logo" style="display: flex; align-items: center;">
-            <img src="assets/lm-logo.svg" alt="LM" style="height: 38px; width: auto; margin-right: 12px;">
+            <img src="assets/lm-logo.svg" alt="Legacy Microtronix Logo" style="height: 38px; width: auto; margin-right: 12px;">
             <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1;">
               <span>LEGACY<span class="logo-text-accent">MICRO</span></span>
               <span style="font-size: 0.38em; letter-spacing: 1.5px; color: #888; font-weight: 600; margin-top: 3px;">ELECTRONIC COMPONENTS</span>
@@ -328,8 +332,8 @@
           <div class="footer-links">
             <a href="mailto:info@racomlink.com">info@racomlink.com</a>
             <a href="tel:+919063977251">+91 90639 77251</a>
-            <a>Nehru Nagar, Guntur</a>
-            <a>Andhra Pradesh, India</a>
+            <span>Nehru Nagar, Guntur</span>
+            <span>Andhra Pradesh, India</span>
           </div>
         </div>
       </div>
@@ -346,6 +350,7 @@
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/main.js"></script>
+  <script>lucide.createIcons();</script>
   <script src="js/bg_combined.js"></script>
   <script src="js/search.js"></script>
 <!-- ========== Quote Modal ========== -->
