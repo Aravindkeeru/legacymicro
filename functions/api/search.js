@@ -179,7 +179,45 @@ export async function onRequestPost(context) {
     }
 
     // =========================================================================
-    // 3. RETURN MERGED RESULTS TO FRONTEND
+    // 3. FETCH FROM LOCAL EXCESS INVENTORY (CSV)
+    // =========================================================================
+    try {
+      // Use env.ASSETS to fetch the static file directly from Cloudflare Pages
+      const csvUrl = new URL("/data/excess_inventory.csv", request.url);
+      const csvRes = await env.ASSETS.fetch(new Request(csvUrl));
+      
+      if (csvRes.ok) {
+        const csvText = await csvRes.text();
+        const lines = csvText.split(/\r?\n/);
+        
+        // Skip header line if it exists
+        const dataLines = (lines[0] && lines[0].toLowerCase().includes("partnumber")) ? lines.slice(1) : lines;
+        
+        dataLines.forEach(line => {
+          if (!line.trim()) return;
+          const cols = line.split(',');
+          const mpn = cols[0] ? cols[0].trim() : "";
+          const mfr = cols[1] ? cols[1].trim() : "Unknown";
+          const qty = cols[2] ? cols[2].trim() : "0";
+          
+          // Simple case-insensitive prefix/includes match
+          if (mpn.toLowerCase().includes(query.toLowerCase())) {
+            standardizedResults.unshift({
+              source: "Legacy Micro Excess",
+              mpn: mpn,
+              manufacturer: mfr,
+              stock: `${qty} (RFQ to confirm)`,
+              price: "RFQ / Reconfirm"
+            });
+          }
+        });
+      }
+    } catch (err) {
+      console.error("Excess Inventory Fetch Error:", err);
+    }
+
+    // =========================================================================
+    // 4. RETURN MERGED RESULTS TO FRONTEND
     // =========================================================================
     let debugInfo = { mouserDebug };
     if (standardizedResults.length === 0) {
