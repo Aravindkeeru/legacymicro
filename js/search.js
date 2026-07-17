@@ -1,178 +1,82 @@
-/* ==========================================================================
-   Legacy Microtronix — Part Search Engine
-   Funnel Mode: Directs all searches to Request Quote
-   R&A Supply Solutions Pvt Ltd
-   ========================================================================== */
+(function() {
+  const searchInput = document.getElementById('searchInput');
+  const searchBtn = document.getElementById('searchBtn');
+  const resultsDiv = document.getElementById('searchResults');
+  const emptyState = document.getElementById('searchEmpty');
+  const popularTags = document.querySelectorAll('#popularTags .search-tag');
 
-(() => {
-  'use strict';
+  let inventoryData = [];
+  let isInventoryLoaded = false;
 
-  // ─── DOM Elements ─────────────────────────────────────────────────────────────
-  const searchInput    = document.getElementById('searchInput');
-  const searchBtn      = document.getElementById('searchBtn');
-  const resultsDiv     = document.getElementById('searchResults');
-  const emptyState     = document.getElementById('searchEmpty');
-  const recentDiv      = document.getElementById('recentSearches');
-  const recentTagsDiv  = document.getElementById('recentTags');
-  const popularTags    = document.querySelectorAll('#popularTags .search-tag');
-
-  // ─── Search History (localStorage) ────────────────────────────────────────────
-  const HISTORY_KEY = 'lm_search_history';
-  const MAX_HISTORY = 5;
-
-  function getHistory() {
-    try {
-      return JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
-    } catch {
-      return [];
-    }
-  }
-
-  function saveToHistory(query) {
-    if (!query || !query.trim()) return;
-    const q = query.trim().toUpperCase();
-    let history = getHistory().filter(h => h !== q);
-    history.unshift(q);
-    if (history.length > MAX_HISTORY) history = history.slice(0, MAX_HISTORY);
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-    renderRecentSearches();
-  }
-
-  function renderRecentSearches() {
-    if (!recentDiv || !recentTagsDiv) return;
-    const history = getHistory();
-    if (!history.length) {
-      recentDiv.style.display = 'none';
-      return;
-    }
-    recentDiv.style.display = 'block';
-    recentTagsDiv.innerHTML = history.map(q =>
-      `<button class="search-tag" data-query="${escapeHTML(q)}">${escapeHTML(q)}</button>`
-    ).join('');
-
-    // Attach click handlers
-    recentTagsDiv.querySelectorAll('.search-tag').forEach(tag => {
-      tag.addEventListener('click', () => {
-        const query = tag.getAttribute('data-query');
-        if (searchInput) searchInput.value = query;
-        executeSearch(query);
-      });
-    });
-  }
-
-  // ─── Utility Helpers ──────────────────────────────────────────────────────────
+  // Escape HTML utility
   function escapeHTML(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+    return String(str).replace(/[&<>'"]/g, 
+      tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[tag])
+    );
   }
+  
+  window.escapeAttr = function(str) {
+    return String(str).replace(/"/g, '&quot;');
+  };
 
-  function escapeAttr(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/'/g, '&#39;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  }
-
-  function randomDelay() {
-    // Simulated network delay: allow map animation to play (2000ms - 2500ms)
-    return 2000 + Math.random() * 500;
-  }
-
-  // ─── Loading State ────────────────────────────────────────────────────────────
-  function showLoading() {
-    if (!emptyState || !resultsDiv) return;
-    emptyState.style.display = 'none';
-    resultsDiv.innerHTML = `
-      <div class="search-map-container">
-        <div class="map-wrapper">
-          <svg class="map-svg" viewBox="0 0 1008 650" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="currentColor" opacity="0.3" d="M141.4 141.8c-.8.8-1.5 2.1-1.5 3 0 1 .4 1.4 1.4 1.4.9 0 2.2-.6 3-1.4 1-1 1-2.2 0-3-.8-1-2.1-1-3 0zm4.5 4.5c-.8.8-1.5 2.1-1.5 3 0 1 .4 1.4 1.4 1.4.9 0 2.2-.6 3-1.4 1-1 1-2.2 0-3-.8-1-2.1-1-3 0zm4.5 4.5c-.8.8-1.5 2.1-1.5 3 0 1 .4 1.4 1.4 1.4.9 0 2.2-.6 3-1.4 1-1 1-2.2 0-3-.8-1-2.1-1-3 0z" />
-            <path fill="currentColor" opacity="0.3" d="M220 180 c-10 -20 -30 -30 -50 -10 c-20 20 -10 50 10 60 c20 10 50 -20 40 -50 z" />
-            <path fill="currentColor" opacity="0.3" d="M280 120 c-15 -10 -40 5 -30 30 c10 20 40 10 30 -30 z" />
-            <path fill="currentColor" opacity="0.3" d="M350 250 c-20 -10 -50 10 -40 40 c10 20 50 0 40 -40 z" />
-            <!-- North America -->
-            <path fill="currentColor" d="M120 150 Q 150 100 250 100 T 350 150 T 300 250 T 200 300 T 100 250 Z" />
-            <!-- South America -->
-            <path fill="currentColor" d="M250 350 Q 300 350 350 450 T 300 550 T 250 450 Z" />
-            <!-- Europe -->
-            <path fill="currentColor" d="M450 150 Q 500 100 600 100 T 550 200 T 450 200 Z" />
-            <!-- Africa -->
-            <path fill="currentColor" d="M450 250 Q 550 200 600 300 T 550 450 T 450 400 Z" />
-            <!-- Asia -->
-            <path fill="currentColor" d="M600 100 Q 750 50 900 150 T 800 350 T 600 250 Z" />
-            <!-- Australia -->
-            <path fill="currentColor" d="M750 450 Q 800 400 900 450 T 850 550 T 750 500 Z" />
-          </svg>
-          <div class="map-node node-us"></div>
-          <div class="map-node node-eu"></div>
-          <div class="map-node node-in"></div>
-          <div class="map-node node-cn"></div>
-        </div>
-        <div class="searching-text">
-          <i data-lucide="radar"></i> Pinging global supplier network...
-        </div>
-      </div>
-    `;
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-  }
-
-  // ─── Render Live API Results ────────────────────────────────────────────────────
-  function renderLiveResults(query, results) {
-    if (!results || results.length === 0) {
-      // If API found nothing, fall back to the Manual RFQ Sourcing Card
-      renderSourcingCard(query);
-      return;
+  // 1. Fetch and Parse the CSV
+  async function loadInventoryCSV() {
+    if (isInventoryLoaded) return;
+    try {
+      const response = await fetch('inventory.csv');
+      if (!response.ok) throw new Error('Could not fetch inventory.csv');
+      
+      const csvText = await response.text();
+      const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== '');
+      
+      if (lines.length > 1) {
+        // Assume first line is header
+        const headers = lines[0].split(',').map(h => h.trim());
+        inventoryData = lines.slice(1).map(line => {
+          const cols = line.split(',');
+          let obj = {};
+          headers.forEach((header, i) => {
+            obj[header] = cols[i] ? cols[i].trim() : '';
+          });
+          return obj;
+        });
+        isInventoryLoaded = true;
+      }
+    } catch (e) {
+      console.warn("CSV Engine Warning: No inventory.csv found, defaulting to Global Sourcing Fallback.", e);
     }
-
-    let rowsHtml = results.map(item => `
-      <div class="result-details" style="padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
-        <div class="result-detail-item">
-          <div class="label">Part Number</div>
-          <div class="value" style="color: var(--accent);">${escapeHTML(item.mpn)}</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted);">${escapeHTML(item.manufacturer)}</div>
-        </div>
-        <div class="result-detail-item">
-          <div class="label">Stock</div>
-          <div class="value">${escapeHTML(item.stock)}</div>
-        </div>
-        <div class="result-detail-item">
-          <div class="label">Price</div>
-          <div class="value">${escapeHTML(item.price)}</div>
-        </div>
-        <div class="result-detail-item" style="text-align: right;">
-           <button class="btn btn-primary btn-sm" onclick="openQuoteModal('${escapeAttr(item.mpn)}', '${escapeAttr(item.price)}')">
-             Buy / RFQ
-           </button>
-        </div>
-      </div>
-    `).join('');
-
-    resultsDiv.innerHTML = `
-      <div class="result-card" style="animation: fadeInUp 0.4s ease forwards;">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 15px;">
-           <h3 style="margin:0;">Live Global Inventory</h3>
-           <span class="status-badge status-available"><div class="status-dot"></div> Live Connection</span>
-        </div>
-        ${rowsHtml}
-        <div style="text-align: center; margin-top: 20px;">
-           <p style="font-size: 0.85rem; color: var(--text-secondary);">Don't see exactly what you need? Our team can source it from excess inventory.</p>
-           <button class="btn btn-secondary btn-sm" style="margin-top: 10px;" onclick="openQuoteModal('${escapeAttr(query)}')">Request Manual Sourcing</button>
-        </div>
-      </div>
-    `;
-    emptyState.style.display = 'none';
   }
 
-  // ─── Render Sourcing Funnel Results (Fallback) ────────────────────────────────
+  function showLoading() {
+    if (resultsDiv) {
+      resultsDiv.innerHTML = `
+        <div class="loading-state" style="text-align:center; padding:var(--space-2xl);">
+          <i data-lucide="loader-2" class="spin" style="width: 48px; height: 48px; color: var(--accent); opacity: 0.8;"></i>
+          <p style="margin-top:var(--space-md); color: var(--text-secondary);">Querying global inventory...</p>
+        </div>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+    }
+    if (emptyState) emptyState.style.display = 'none';
+  }
+
   function renderSourcingCard(query) {
     const q = escapeHTML(query);
     if (resultsDiv) {
       resultsDiv.innerHTML = `
-      <div class="result-card" style="text-align:center; padding:var(--space-2xl); animation: fadeInUp 0.6s ease forwards;">
+      <div class="result-card card" style="text-align:center; padding:var(--space-2xl); animation: fadeInUp 0.6s ease forwards;">
         <div style="display: inline-flex; justify-content: center; align-items: center; background: rgba(59, 130, 246, 0.1); width: 64px; height: 64px; border-radius: 50%; margin-bottom:var(--space-md);">
           <i data-lucide="globe" style="width: 32px; height: 32px; color: var(--accent-light);"></i>
         </div>
-        <h3 style="margin-bottom:var(--space-sm);">Global Sourcing Initiated</h3>
+        <h3 style="margin-bottom:var(--space-sm);">Part Not in Excess Stock</h3>
         <p style="margin-bottom:var(--space-lg); max-width:500px; margin-left:auto; margin-right:auto; color: var(--text-secondary); line-height: 1.6;">
-          We leverage our global network of verified suppliers to source <strong style="font-family:var(--font-mono); color:var(--text-primary);">${q}</strong> quickly. Request an instant quote, and our procurement team will get back to you with pricing and lead times within 24–48 hours.
+          We leverage our global network of verified suppliers to source <strong style="font-family:var(--font-mono); color:white;">${q}</strong>. Request an instant quote, and our procurement team will get back to you with pricing and lead times within 24 hours.
         </p>
         <div class="result-actions" style="justify-content:center; gap: var(--space-md);">
           <button class="btn btn-primary" style="padding: 0.8rem 2rem; font-size: 1rem;" onclick="openQuoteModal('${escapeAttr(query)}')">
@@ -186,65 +90,96 @@
     if (window.lucide) window.lucide.createIcons();
   }
 
-  // ─── Execute Search ───────────────────────────────────────────────────────────
+  function renderCSVResults(query, matches) {
+    let html = `<h3 style="margin-bottom: var(--space-lg);">Found ${matches.length} Excess Inventory Result${matches.length > 1 ? 's' : ''}</h3>`;
+    html += `<div class="grid-2" style="gap: var(--space-md);">`;
+    
+    matches.forEach(item => {
+      const pn = escapeHTML(item['Part Number'] || '');
+      const mfg = escapeHTML(item['Manufacturer'] || '');
+      const desc = escapeHTML(item['Description'] || '');
+      const dc = escapeHTML(item['Date Code'] || '');
+      const qty = escapeHTML(item['Quantity'] || '');
+      const cond = escapeHTML(item['Condition'] || '');
+
+      html += `
+        <div class="card result-card" style="animation: fadeInUp 0.5s ease forwards; border-left: 4px solid var(--accent); padding: var(--space-lg);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-md);">
+            <div>
+              <div style="color: var(--accent); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">${mfg}</div>
+              <h4 style="font-family: var(--font-mono); font-size: 1.25rem; margin: 0; color: white;">${pn}</h4>
+            </div>
+            <div class="hero-badge" style="margin: 0; background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.3); color: #4ade80;">
+              <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> In Stock
+            </div>
+          </div>
+          
+          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: var(--space-md); border-bottom: 1px solid var(--border); padding-bottom: var(--space-md);">
+            ${desc}
+          </p>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); margin-bottom: var(--space-lg); font-size: 0.9rem;">
+            <div><strong style="color: white;">D/C:</strong> <span style="color: var(--text-secondary);">${dc}</span></div>
+            <div><strong style="color: white;">Qty:</strong> <span style="color: var(--text-secondary);">${qty}</span></div>
+            <div style="grid-column: 1 / -1;"><strong style="color: white;">Condition:</strong> <span style="color: var(--text-secondary);">${cond}</span></div>
+          </div>
+          
+          <button class="btn btn-primary" style="width: 100%;" onclick="openQuoteModal('${escapeAttr(pn)}', '${escapeAttr(mfg)}')">
+            Request Price & Availability
+          </button>
+        </div>
+      `;
+    });
+    
+    html += `</div>`;
+    
+    if (resultsDiv) {
+      resultsDiv.innerHTML = html;
+    }
+    if (emptyState) emptyState.style.display = 'none';
+    if (window.lucide) window.lucide.createIcons();
+  }
+
   async function executeSearch(query) {
     const q = (query || '').trim();
     if (!q) return;
 
     if (searchInput) searchInput.value = q;
     showLoading();
-    saveToHistory(q);
 
-    // Update URL without reload
-    const url = new URL(window.location);
-    url.searchParams.set('q', q);
-    window.history.replaceState({}, '', url);
+    // Ensure CSV is loaded
+    await loadInventoryCSV();
 
-    scrollToResults();
+    setTimeout(() => {
+      if (inventoryData.length > 0) {
+        // Filter CSV
+        const queryLower = q.toLowerCase();
+        const matches = inventoryData.filter(item => {
+          const pn = (item['Part Number'] || '').toLowerCase();
+          const mfg = (item['Manufacturer'] || '').toLowerCase();
+          return pn.includes(queryLower) || mfg.includes(queryLower);
+        });
 
-    try {
-      // Call our secure Cloudflare Backend Function
-      const response = await fetch('/api/search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: q })
-      });
-
-      if (!response.ok) {
-        throw new Error('Backend API error or Key not configured');
+        if (matches.length > 0) {
+          renderCSVResults(q, matches);
+        } else {
+          renderSourcingCard(q);
+        }
+      } else {
+        // No CSV found or empty, just show global sourcing fallback
+        renderSourcingCard(q);
       }
-
-      const data = await response.json();
-      
-      // Artificial slight delay so the map animation looks cool
-      setTimeout(() => {
-        renderLiveResults(q, data.results);
-      }, 1500);
-
-    } catch (err) {
-      console.warn("API Search Failed (Fallback to Manual Mode):", err);
-      setTimeout(() => {
-        renderSourcingCard(q); // Graceful fallback
-      }, 1500);
-    }
+    }, 600); // UI visual delay
   }
 
-  // ─── Clear Search ─────────────────────────────────────────────────────────────
   window.clearSearch = function() {
     if (searchInput) searchInput.value = '';
     if (resultsDiv) resultsDiv.innerHTML = '';
     if (emptyState) emptyState.style.display = 'block';
     if (searchInput) searchInput.focus();
-
-    // Clean URL
-    const url = new URL(window.location);
-    url.searchParams.delete('q');
-    window.history.replaceState({}, '', url);
   };
 
-  // ─── Debounce ─────────────────────────────────────────────────────────────────
   let debounceTimer = null;
-
   function debounce(fn, delay = 300) {
     return (...args) => {
       clearTimeout(debounceTimer);
@@ -252,31 +187,16 @@
     };
   }
 
-  function scrollToResults() {
-    setTimeout(() => {
-      const mapContainer = document.querySelector('.search-map-container') || document.querySelector('.search-results');
-      if (mapContainer) {
-        mapContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }, 50);
-  }
-
-  // ─── Event Listeners ─────────────────────────────────────────────────────────
-
   if (searchInput && searchBtn) {
-    // Search button click
     searchBtn.addEventListener('click', () => {
       executeSearch(searchInput.value);
-      scrollToResults();
     });
 
-    // Keyboard: Enter to search, Escape to clear
     searchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
         executeSearch(searchInput.value);
-        searchInput.blur(); // Remove focus to prevent browser from snapping back up
-        scrollToResults();
+        searchInput.blur();
       }
       if (e.key === 'Escape') {
         e.preventDefault();
@@ -284,7 +204,6 @@
       }
     });
 
-    // Live search with debounce (only trigger if input length >= 3)
     searchInput.addEventListener('input', debounce(() => {
       const q = searchInput.value.trim();
       if (q.length >= 3) {
@@ -292,43 +211,36 @@
       } else if (q.length === 0) {
         window.clearSearch();
       }
-    }, 500)); // Increased debounce for funnel mode so it doesn't trigger wildly on every key
+    }, 400));
   }
 
-  // Popular search tags
   popularTags.forEach(tag => {
     tag.addEventListener('click', () => {
       const query = tag.getAttribute('data-query');
-      if (searchInput) searchInput.value = query;
       executeSearch(query);
-      scrollToResults();
     });
   });
-
-  // ─── URL Param Auto-search ────────────────────────────────────────────────────
-  function checkURLParams() {
-    const params = new URLSearchParams(window.location.search);
-    const q = params.get('q');
-    if (q && q.trim()) {
-      if (searchInput) searchInput.value = q.trim();
-      executeSearch(q.trim());
-      scrollToResults();
+  
+  // Hook up modified modal open function
+  window.openQuoteModal = function(partNumber = '', mfg = '') {
+    const modal = document.getElementById('quoteModal');
+    const inputPart = document.getElementById('modalPart');
+    const inputMessage = document.getElementById('modalMessage');
+    
+    if (modal) modal.classList.add('active');
+    
+    if (inputPart) {
+      inputPart.value = partNumber;
+      // Also pre-fill manufacturer into message if known
+      if (mfg && inputMessage) {
+        if (!inputMessage.value.includes(mfg)) {
+          inputMessage.value = `Manufacturer: ${mfg}\n` + inputMessage.value;
+        }
+      }
     }
-  }
+  };
 
-  // ─── Init ─────────────────────────────────────────────────────────────────────
-  function init() {
-    renderRecentSearches();
-    checkURLParams();
-    // Auto-focus search input (slight delay for page load animation)
-    if (searchInput) setTimeout(() => searchInput.focus(), 500);
-  }
-
-  // Run on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  // Pre-load CSV in background on page init
+  loadInventoryCSV();
 
 })();
