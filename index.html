@@ -16,108 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-                                .nav-logo { transition: transform 0.3s ease; position: relative; }
-    
-    /* Initial mu fades out */
-    .logo-init-mu {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--accent);
-      font-family: 'Times New Roman', Times, serif;
-      font-style: italic;
-      font-size: 2rem;
-      pointer-events: none;
-      animation: initialMuFade 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.5s forwards;
-      z-index: 5;
-    }
-    @keyframes initialMuFade {
-      0% { opacity: 0; transform: scale(0.5); }
-      10% { opacity: 1; transform: scale(1.1); }
-      30% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(0.8); visibility: hidden; }
-    }
-
-    /* Primary wrappers */
-    .logo-primary {
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      z-index: 2;
-    }
-    .logo-hover {
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    /* Hover interactions on the wrapper, NOT !important */
-    .nav-logo:hover .logo-primary {
-      opacity: 0;
-      transform: translateY(-10px) scale(0.95);
-    }
-    .nav-logo:hover .logo-hover {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Pure Typographic Logo Reveal */
-    .logo-main-text {
-      background: linear-gradient(to right, #ffffff 51%, var(--accent) 51%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      opacity: 0;
-      clip-path: inset(0 50% 0 50%);
-      animation: textWipeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
-    }
-    @keyframes textWipeIn {
-      0% { opacity: 0; clip-path: inset(0 50% 0 50%); letter-spacing: -2px; transform: scale(0.95); }
-      10% { opacity: 1; }
-      100% { opacity: 1; clip-path: inset(0 0 0 0); letter-spacing: -0.5px; transform: scale(1); }
-    }
-
-    /* Trusted texts */
-    .logo-tr, .logo-sted { color: #ffffff; }
-    .logo-trusted-mu {
-      color: var(--accent);
-      font-family: 'Times New Roman', Times, serif;
-      font-style: italic;
-      font-size: 1.15em;
-      margin: 0 0.05em;
-    }
-
-    /* Subtitle fade and slide */
-    .logo-subtitle {
-      opacity: 0;
-      transform: translateY(5px);
-      animation: fadeSubtitle 1s cubic-bezier(0.16, 1, 0.3, 1) 1.8s forwards;
-      transition: transform 0.4s ease, color 0.4s ease;
-    }
-    @keyframes fadeSubtitle {
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    .nav-logo:hover .logo-subtitle {
-      transform: translateX(12px);
-      color: #aaa;
-    }
-            /* Flawless Inline SVG CSS */
-    .manufacturer-logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 40px;
-    }
-    .manufacturer-logo svg {
-      color: rgba(255, 255, 255, 0.4);
-      filter: grayscale(100%);
-      transition: all 0.4s ease;
-    }
-    .manufacturer-logo:hover svg {
-      color: rgba(255, 255, 255, 1);
-      filter: grayscale(0%);
-    }
-    </style>
+  
 </head>
 <body>
   <!-- ========== Cinematic Video Background ========== -->
@@ -184,12 +83,12 @@
   <section class="hero">
     <div class="hero-content">
       <div class="hero-badge">
-        India's First Instant Part Search
+        India's Premier Component Sourcing
       </div>
 
       <h1>
         Source Any Electronic Component.<br>
-        <span>Instantly.</span>
+        <span>Reliably.</span>
       </h1>
 
       <p>
