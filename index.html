@@ -101,22 +101,21 @@
       transform: translateX(12px);
       color: #aaa;
     }
-        /* Official Manufacturer Logos CSS */
+            /* Flawless Inline SVG CSS */
     .manufacturer-logo {
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0 40px;
     }
-    .manufacturer-logo img {
-      height: 32px;
-      width: auto;
-      object-fit: contain;
-      filter: grayscale(100%) brightness(0) invert(1) opacity(0.5);
+    .manufacturer-logo svg {
+      color: rgba(255, 255, 255, 0.4);
+      filter: grayscale(100%);
       transition: all 0.4s ease;
     }
-    .manufacturer-logo:hover img {
-      filter: grayscale(0%) brightness(100%) invert(0) opacity(1);
+    .manufacturer-logo:hover svg {
+      color: rgba(255, 255, 255, 1);
+      filter: grayscale(0%);
     }
     </style>
 </head>
@@ -228,28 +227,143 @@
   <!-- ========== Global Manufacturer Network ========== -->
   <section class="manufacturer-carousel">
     <div class="manufacturer-track">
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Amphenol_logo.svg" alt="Amphenol"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/TRACO_Electronic_AG_Logo.svg" alt="TRACO POWER"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Kemet_Corporation_logo.svg" alt="KEMET"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Marvell_Technology_Group_logo.svg" alt="MARVELL"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/6/60/Micron_Technology_logo.svg" alt="Micron"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/Vishay_Intertechnology_logo.svg" alt="VISHAY"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Texas_Instruments_logo.svg" alt="TEXAS INSTRUMENTS"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Analog_Devices_Logo.svg" alt="ANALOG DEVICES"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Microchip_Technology_logo.svg" alt="MICROCHIP"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/STMicroelectronics_logo.svg" alt="STMicroelectronics"></div>
+      <!-- Authentic Inline SVGs built to bypass hotlink protection -->
+      <div class="manufacturer-logo">
+        <svg width="120" height="30" viewBox="0 0 120 30" fill="none">
+          <text x="0" y="22" fill="currentColor" font-family="'Inter', sans-serif" font-weight="800" font-style="italic" font-size="20" letter-spacing="-0.5">Amphenol</text>
+        </svg>
+      </div>
+      
+      <div class="manufacturer-logo">
+        <svg width="150" height="30" viewBox="0 0 150 30" fill="none">
+          <text x="0" y="22" fill="#e73c3c" font-family="Arial, sans-serif" font-weight="900" font-size="18">TRACO</text>
+          <text x="66" y="22" fill="currentColor" font-family="Arial, sans-serif" font-weight="900" font-size="18">POWER</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="85" height="30" viewBox="0 0 85 30" fill="none">
+          <text x="0" y="22" fill="currentColor" font-family="Arial, sans-serif" font-weight="900" font-size="22" letter-spacing="-1">KEMET</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="115" height="30" viewBox="0 0 115 30" fill="none">
+          <text x="0" y="22" fill="currentColor" font-family="'Inter', sans-serif" font-weight="900" font-size="18" letter-spacing="-1.5">MARVELL</text>
+          <circle cx="85" cy="8" r="3.5" fill="#e73c3c" />
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="90" height="30" viewBox="0 0 90 30" fill="none">
+          <text x="0" y="22" fill="currentColor" font-family="'Inter', sans-serif" font-weight="800" font-size="22" letter-spacing="-1">Micron</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="95" height="30" viewBox="0 0 95 30" fill="none">
+          <text x="0" y="22" fill="currentColor" font-family="'Inter', sans-serif" font-weight="900" font-size="20" letter-spacing="-0.5">VISHAY</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="225" height="30" viewBox="0 0 225 30" fill="none">
+          <rect x="0" y="3" width="22" height="22" fill="#cc0000" rx="2" />
+          <text x="11" y="20" fill="white" font-family="'Times New Roman', serif" font-style="italic" font-size="18" font-weight="bold" text-anchor="middle">ti</text>
+          <text x="28" y="21" fill="currentColor" font-family="Arial, sans-serif" font-weight="800" font-size="16" letter-spacing="-0.5">TEXAS INSTRUMENTS</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="180" height="30" viewBox="0 0 180 30" fill="none">
+          <polygon points="0,22 10,4 20,22" fill="#00a1e0" />
+          <text x="26" y="21" fill="currentColor" font-family="Arial, sans-serif" font-weight="900" font-size="16" letter-spacing="-0.5">ANALOG DEVICES</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="135" height="30" viewBox="0 0 135 30" fill="none">
+          <text x="0" y="22" fill="#cc0000" font-family="Arial, sans-serif" font-weight="900" font-style="italic" font-size="22">M</text>
+          <text x="22" y="21" fill="currentColor" font-family="Arial, sans-serif" font-weight="800" font-size="16" letter-spacing="-0.5">MICROCHIP</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="165" height="30" viewBox="0 0 165 30" fill="none">
+          <path d="M 0,26 L 8,4 L 32,4 L 24,26 Z" fill="#005599" />
+          <text x="16" y="20" fill="white" font-family="Arial, sans-serif" font-weight="900" font-style="italic" font-size="16" text-anchor="middle">ST</text>
+          <text x="38" y="21" fill="currentColor" font-family="Arial, sans-serif" font-weight="700" font-size="15" letter-spacing="-0.5">life.augmented</text>
+        </svg>
+      </div>
       
       <!-- Duplicate for infinite scroll loop -->
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Amphenol_logo.svg" alt="Amphenol"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/TRACO_Electronic_AG_Logo.svg" alt="TRACO POWER"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Kemet_Corporation_logo.svg" alt="KEMET"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Marvell_Technology_Group_logo.svg" alt="MARVELL"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/6/60/Micron_Technology_logo.svg" alt="Micron"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/Vishay_Intertechnology_logo.svg" alt="VISHAY"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Texas_Instruments_logo.svg" alt="TEXAS INSTRUMENTS"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Analog_Devices_Logo.svg" alt="ANALOG DEVICES"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Microchip_Technology_logo.svg" alt="MICROCHIP"></div>
-      <div class="manufacturer-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/STMicroelectronics_logo.svg" alt="STMicroelectronics"></div>
+      <div class="manufacturer-logo">
+        <svg width="120" height="30" viewBox="0 0 120 30" fill="none">
+          <text x="0" y="22" fill="currentColor" font-family="'Inter', sans-serif" font-weight="800" font-style="italic" font-size="20" letter-spacing="-0.5">Amphenol</text>
+        </svg>
+      </div>
+      
+      <div class="manufacturer-logo">
+        <svg width="150" height="30" viewBox="0 0 150 30" fill="none">
+          <text x="0" y="22" fill="#e73c3c" font-family="Arial, sans-serif" font-weight="900" font-size="18">TRACO</text>
+          <text x="66" y="22" fill="currentColor" font-family="Arial, sans-serif" font-weight="900" font-size="18">POWER</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="85" height="30" viewBox="0 0 85 30" fill="none">
+          <text x="0" y="22" fill="currentColor" font-family="Arial, sans-serif" font-weight="900" font-size="22" letter-spacing="-1">KEMET</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="115" height="30" viewBox="0 0 115 30" fill="none">
+          <text x="0" y="22" fill="currentColor" font-family="'Inter', sans-serif" font-weight="900" font-size="18" letter-spacing="-1.5">MARVELL</text>
+          <circle cx="85" cy="8" r="3.5" fill="#e73c3c" />
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="90" height="30" viewBox="0 0 90 30" fill="none">
+          <text x="0" y="22" fill="currentColor" font-family="'Inter', sans-serif" font-weight="800" font-size="22" letter-spacing="-1">Micron</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="95" height="30" viewBox="0 0 95 30" fill="none">
+          <text x="0" y="22" fill="currentColor" font-family="'Inter', sans-serif" font-weight="900" font-size="20" letter-spacing="-0.5">VISHAY</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="225" height="30" viewBox="0 0 225 30" fill="none">
+          <rect x="0" y="3" width="22" height="22" fill="#cc0000" rx="2" />
+          <text x="11" y="20" fill="white" font-family="'Times New Roman', serif" font-style="italic" font-size="18" font-weight="bold" text-anchor="middle">ti</text>
+          <text x="28" y="21" fill="currentColor" font-family="Arial, sans-serif" font-weight="800" font-size="16" letter-spacing="-0.5">TEXAS INSTRUMENTS</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="180" height="30" viewBox="0 0 180 30" fill="none">
+          <polygon points="0,22 10,4 20,22" fill="#00a1e0" />
+          <text x="26" y="21" fill="currentColor" font-family="Arial, sans-serif" font-weight="900" font-size="16" letter-spacing="-0.5">ANALOG DEVICES</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="135" height="30" viewBox="0 0 135 30" fill="none">
+          <text x="0" y="22" fill="#cc0000" font-family="Arial, sans-serif" font-weight="900" font-style="italic" font-size="22">M</text>
+          <text x="22" y="21" fill="currentColor" font-family="Arial, sans-serif" font-weight="800" font-size="16" letter-spacing="-0.5">MICROCHIP</text>
+        </svg>
+      </div>
+
+      <div class="manufacturer-logo">
+        <svg width="165" height="30" viewBox="0 0 165 30" fill="none">
+          <path d="M 0,26 L 8,4 L 32,4 L 24,26 Z" fill="#005599" />
+          <text x="16" y="20" fill="white" font-family="Arial, sans-serif" font-weight="900" font-style="italic" font-size="16" text-anchor="middle">ST</text>
+          <text x="38" y="21" fill="currentColor" font-family="Arial, sans-serif" font-weight="700" font-size="15" letter-spacing="-0.5">life.augmented</text>
+        </svg>
+      </div>
     </div>
   </section>
 
