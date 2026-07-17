@@ -14,163 +14,153 @@
     margin: 0;
   }
   
-  /* Original variables */
   :root {
-    --accent: #3b82f6; /* Blue */
+    --accent: #3b82f6;
   }
 
-  /* Logo Animation Container */
   .nav-logo { 
     display: flex; 
     align-items: center; 
     text-decoration: none; 
     color: white;
     cursor: pointer;
+    position: relative;
   }
   
   .logo-text-wrapper {
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
+    align-items: center; /* Center everything */
     line-height: 1;
+    position: relative;
+    width: 280px; /* Fixed width to prevent jumping */
   }
 
   .logo-top-line {
     font-weight: 800; 
     letter-spacing: -0.5px; 
-    font-size: 2.5rem; /* Larger for testing */
+    font-size: 1.5rem; /* Larger for test */
     display: flex; 
-    align-items: baseline;
+    align-items: center;
+    justify-content: center;
     position: relative;
+    height: 1.2em;
+    width: 100%;
   }
 
-  /* 1. Slower transition */
-  .logo-legacy-group {
-    display: inline-flex;
-    align-items: baseline;
-    opacity: 0;
-    /* Increased from 1s to 2s for noticeability */
-    animation: slideLegacyOut 2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards; 
-  }
-  
-  .logo-legacy { 
-    color: #ffffff; /* LEGAC in white */
-    transition: color 0.5s ease; 
-  }
-  
-  /* 2. Joining Y and M */
-  .logo-y {
-    /* Left half white, right half blue */
-    background: linear-gradient(to right, #ffffff 50%, var(--accent) 50%);
-    -webkit-background-clip: text; 
-    -webkit-text-fill-color: transparent; 
-    position: relative; 
-    z-index: 2;
-    transition: all 0.5s ease;
-  }
-  
-  .logo-micro-group {
-    display: inline-flex;
-    align-items: baseline;
-    /* Slower fade */
-    animation: microFade 1.5s ease-out 1s forwards;
-    opacity: 0;
-    position: relative;
-  }
-  
-  /* The M has a negative margin to overlap the Y */
-  .logo-m {
-    color: var(--accent);
-    margin-left: -0.45em; /* Adjusted to overlap the right arm of Y */
-    clip-path: polygon(30% 0, 100% 0, 100% 100%, 30% 100%); /* Clip left arm so they join */
-    position: relative;
-    z-index: 1;
-    transition: opacity 0.4s ease;
-  }
-  
-  .logo-icro {
-    color: var(--accent);
-    margin-left: -0.05em;
-    transition: opacity 0.4s ease;
-  }
-
-  /* The hidden 'μ' symbol */
-  .logo-mu {
+  /* 1. Initial Mu State */
+  .logo-init-mu {
     position: absolute;
-    left: -0.45em; /* Align with M */
     color: var(--accent);
+    font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
+    font-size: 1.8rem;
+    opacity: 1;
+    animation: initialMuFade 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    z-index: 3;
+  }
+
+  @keyframes initialMuFade {
+    0% { transform: scale(0.5); opacity: 0; }
+    20% { transform: scale(1.2); opacity: 1; }
+    60% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(3); opacity: 0; visibility: hidden; }
+  }
+
+  /* 2. Legacy Micro State (Expands from center) */
+  .logo-legacy-micro {
+    position: absolute;
+    display: flex;
+    align-items: baseline;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: expandLegacyMicro 1.5s cubic-bezier(0.25, 1, 0.5, 1) 1.5s forwards;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  
+  .logo-legacy { color: #ffffff; }
+  .logo-micro { color: var(--accent); }
+
+  @keyframes expandLegacyMicro {
+    0% { opacity: 0; transform: scale(0.8) translateY(10px); letter-spacing: -2px; }
+    100% { opacity: 1; transform: scale(1) translateY(0); letter-spacing: -0.5px; }
+  }
+
+  /* 3. Trusted State (Hover) */
+  .logo-trusted-state {
+    position: absolute;
+    display: flex;
+    align-items: baseline;
     opacity: 0;
     transform: translateY(10px);
-    transition: all 0.4s ease;
-    pointer-events: none;
-    font-family: 'Times New Roman', serif; /* Better looking mu */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: #ffffff;
+  }
+  .logo-tr, .logo-sted { color: var(--accent); }
+  .logo-trusted-mu {
+    color: var(--accent);
+    font-family: 'Times New Roman', Times, serif;
     font-style: italic;
+    font-size: 1.15em;
+    margin: 0 0.05em;
   }
 
-  /* 3. Transition on Hover */
-  .nav-logo:hover .logo-m,
-  .nav-logo:hover .logo-icro {
-    opacity: 0; /* Hide MICRO */
+  /* 4. Hover Interactions */
+  .nav-logo:hover .logo-legacy-micro {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
   }
   
-  .nav-logo:hover .logo-mu {
-    opacity: 1; /* Show μ */
+  .nav-logo:hover .logo-trusted-state {
+    opacity: 1;
     transform: translateY(0);
   }
 
-  /* Hover legacy turns completely white or stays white */
-  .nav-logo:hover .logo-legacy { color: #ffffff !important; }
-  .nav-logo:hover .logo-y { 
-    background: linear-gradient(to right, #ffffff 50%, var(--accent) 50%) !important; 
-    -webkit-background-clip: text !important; 
-    -webkit-text-fill-color: transparent !important; 
-  }
-
-  @keyframes microFade {
-    0% { opacity: 0; transform: scale(0.95); }
-    100% { opacity: 1; transform: scale(1); }
-  }
-  
-  @keyframes slideLegacyOut {
-    0% {
-      opacity: 0;
-      transform: translateX(40px);
-      clip-path: inset(0 100% 0 0);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-      clip-path: inset(0 -20px 0 0);
-    }
-  }
-
-  .subtitle {
-    font-size: 0.8rem; 
-    letter-spacing: 2px; 
+  /* Subtitle with slight shift */
+  .logo-subtitle {
+    font-size: 0.48em; 
+    letter-spacing: 1.5px; 
     color: #888; 
     font-weight: 600; 
     margin-top: 5px;
+    transition: transform 0.4s ease;
   }
+
+  .nav-logo:hover .logo-subtitle {
+    /* Shifts right slightly to center under Trμsted */
+    transform: translateX(2px);
+    color: #aaa;
+  }
+
 </style>
 </head>
 <body>
 
   <a href="#" class="nav-logo">
+    <img src="assets/lm-logo.svg" alt="LM Logo" style="height: 38px; margin-right: 12px; opacity: 0; animation: fadeIn 1s 1.5s forwards;">
     <div class="logo-text-wrapper">
-      <span class="logo-top-line">
-        <span class="logo-legacy-group">
-          <span class="logo-legacy">LEGAC</span>
-          <span class="logo-y">Y</span>
+      <div class="logo-top-line">
+        <!-- The Initial Greek U -->
+        <span class="logo-init-mu">&#956;</span>
+        
+        <!-- The Main Text -->
+        <span class="logo-legacy-micro">
+          <span class="logo-legacy">LEGACY</span>
+          <span class="logo-micro">MICRO</span>
         </span>
-        <span class="logo-micro-group">
-          <span class="logo-m">M</span>
-          <span class="logo-icro">ICRO</span>
-          <span class="logo-mu">μ</span>
+        
+        <!-- The Hover Text -->
+        <span class="logo-trusted-state">
+          <span class="logo-tr">Tr</span><span class="logo-trusted-mu">&#956;</span><span class="logo-sted">sted</span>
         </span>
-      </span>
-      <span class="subtitle">ELECTRONIC COMPONENTS</span>
+      </div>
+      <span class="logo-subtitle">ELECTRONIC COMPONENTS</span>
     </div>
   </a>
 
+  <style>
+    @keyframes fadeIn { to { opacity: 1; } }
+  </style>
 </body>
 </html>
