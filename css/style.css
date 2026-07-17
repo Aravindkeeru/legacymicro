@@ -1163,6 +1163,13 @@ p {
 
 .footer-links a:hover { color: var(--text-primary); }
 
+.footer-links span {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 3px 0;
+}
+
 .footer-bottom {
   display: flex;
   align-items: center;
