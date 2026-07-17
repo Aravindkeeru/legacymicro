@@ -1,3 +1,3 @@
-PartNumber,Manufacturer,Quantity
-MH1608A-151Y,Bourns,5000
-STM32F407VGT6,STMicroelectronics,250
+PartNumber,Manufacturer,Quantity,DateCode
+MH1608A-151Y,Bourns,5000,22+
+STM32F407VGT6,STMicroelectronics,250,21+

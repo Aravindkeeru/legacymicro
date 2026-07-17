@@ -199,14 +199,20 @@ export async function onRequestPost(context) {
           const mpn = cols[0] ? cols[0].trim() : "";
           const mfr = cols[1] ? cols[1].trim() : "Unknown";
           const qty = cols[2] ? cols[2].trim() : "0";
+          const dc = cols[3] ? cols[3].trim() : "";
           
           // Simple case-insensitive prefix/includes match
           if (mpn.toLowerCase().includes(query.toLowerCase())) {
+            let stockDisplay = `${qty} (RFQ to confirm)`;
+            if (dc) {
+              stockDisplay += ` | DC: ${dc}`;
+            }
+            
             standardizedResults.unshift({
               source: "Legacy Micro Excess",
               mpn: mpn,
               manufacturer: mfr,
-              stock: `${qty} (RFQ to confirm)`,
+              stock: stockDisplay,
               price: "RFQ / Reconfirm"
             });
           }
