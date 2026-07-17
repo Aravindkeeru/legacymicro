@@ -138,7 +138,7 @@
           <div class="value">${escapeHTML(item.price)}</div>
         </div>
         <div class="result-detail-item" style="text-align: right;">
-           <button class="btn btn-primary btn-sm" onclick="openQuoteModal('${escapeAttr(item.mpn)}')">
+           <button class="btn btn-primary btn-sm" onclick="openQuoteModal('${escapeAttr(item.mpn)}', '${escapeAttr(item.price)}')">
              Buy / RFQ
            </button>
         </div>

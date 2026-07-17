@@ -431,12 +431,16 @@
   // ───────────────────────────────────────────────
   // 12. Quote Modal Logic
   // ───────────────────────────────────────────────
-  window.openQuoteModal = function(partNumber) {
+  window.openQuoteModal = function(partNumber, price) {
     const modal = document.getElementById('quoteModal');
     const partInput = document.getElementById('modalPart');
+    const priceInput = document.getElementById('modalPrice');
     if (modal) {
       if (partInput && partNumber) {
         partInput.value = partNumber;
+      }
+      if (priceInput) {
+        priceInput.value = price || "N/A";
       }
       modal.classList.add('active');
     }
