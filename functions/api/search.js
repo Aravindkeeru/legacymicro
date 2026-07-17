@@ -12,7 +12,7 @@ export async function onRequestPost(context) {
     }
 
     const standardizedResults = [];
-    const MARGIN = 1.30; // 30% Markup on all prices
+    const MARGIN = parseFloat(env.PRICE_MARGIN) || 1.30; // Set PRICE_MARGIN in Cloudflare Pages environment variables
 
     // Helper: Safely parse stock strings into numbers so we can filter out zeros
     function parseStock(stockStr) {
