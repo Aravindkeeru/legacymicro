@@ -29,7 +29,6 @@
     height: 60px;
   }
 
-  /* Center the whole animation */
   .logo-text-wrapper {
     position: absolute;
     top: 50%;
@@ -38,6 +37,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 280px;
   }
 
   .logo-top-line {
@@ -47,79 +47,70 @@
     align-items: center;
     justify-content: center;
     font-weight: 800;
-    font-size: 1.5rem;
-    letter-spacing: -0.5px;
+    font-size: 1.5rem; /* Larger for test */
   }
 
-  /* 1. Initial Mu */
+  /* Initial Mu */
   .logo-init-mu {
     position: absolute;
     color: var(--accent);
     font-family: 'Times New Roman', Times, serif;
     font-style: italic;
     font-size: 2.2rem;
-    animation: fadeMuOut 1s 1s forwards;
+    animation: fadeMuOut 0.8s 0.5s forwards;
+    z-index: 5;
+    pointer-events: none;
   }
 
   @keyframes fadeMuOut {
-    0% { opacity: 1; transform: scale(1); }
+    0% { opacity: 0; transform: scale(0.5); }
+    10% { opacity: 1; transform: scale(1.1); }
+    30% { opacity: 1; transform: scale(1); }
     100% { opacity: 0; transform: scale(0.8); visibility: hidden; }
   }
 
-  /* 2. YM SVG */
-  .logo-ym-svg {
+  /* Primary State */
+  .logo-primary {
     position: absolute;
-    width: 44px; /* Adjust based on YM width */
-    height: 24px;
-    opacity: 0;
-    transform: scale(0.8);
-    animation: fadeYMIn 1s 1s forwards;
+    top: 0; left: 0; width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.4s ease, transform 0.4s ease;
     z-index: 2;
   }
   
-  @keyframes fadeYMIn {
-    0% { opacity: 0; transform: scale(0.8); }
-    100% { opacity: 1; transform: scale(1); }
-  }
-
-  /* 3. Text sliding out */
-  .logo-legac {
-    position: absolute;
-    right: 50%; /* Right edge of LEGAC anchors to center */
-    margin-right: 18px; /* Half of YM width approx */
-    color: #ffffff;
+  /* The single typographic element */
+  .logo-main-text {
+    /* 5.5 letters out of 11 is 50%. Let's put the stop exactly at 50% */
+    background: linear-gradient(to right, #ffffff 51%, var(--accent) 51%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* Expanding animation */
     opacity: 0;
-    clip-path: inset(0 0 0 100%); /* Hidden by clipping left side */
-    animation: slideLegac 1s 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-  @keyframes slideLegac {
-    0% { opacity: 0; transform: translateX(20px); clip-path: inset(0 0 0 100%); }
-    100% { opacity: 1; transform: translateX(0); clip-path: inset(0 0 0 0); }
+    clip-path: inset(0 50% 0 50%);
+    animation: textWipeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
   }
 
-  .logo-icro {
-    position: absolute;
-    left: 50%; /* Left edge anchors to center */
-    margin-left: 20px; /* Half of YM width approx */
-    color: var(--accent);
-    opacity: 0;
-    clip-path: inset(0 100% 0 0);
-    animation: slideIcro 1s 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-  @keyframes slideIcro {
-    0% { opacity: 0; transform: translateX(-20px); clip-path: inset(0 100% 0 0); }
-    100% { opacity: 1; transform: translateX(0); clip-path: inset(0 0 0 0); }
+  @keyframes textWipeIn {
+    0% { opacity: 0; clip-path: inset(0 50% 0 50%); letter-spacing: -2px; transform: scale(0.95); }
+    10% { opacity: 1; }
+    100% { opacity: 1; clip-path: inset(0 0 0 0); letter-spacing: -0.5px; transform: scale(1); }
   }
 
-  /* 4. Trusted State */
-  .logo-trusted-state {
+  /* Trusted State */
+  .logo-hover {
     position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
     display: flex;
     align-items: baseline;
+    justify-content: center;
     opacity: 0;
     transform: translateY(10px);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 10;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: 3;
+    pointer-events: none;
   }
   .logo-tr, .logo-sted { color: #ffffff; }
   .logo-trusted-mu {
@@ -131,30 +122,30 @@
   }
 
   /* Hover logic */
-  .nav-logo:hover .logo-legac,
-  .nav-logo:hover .logo-icro,
-  .nav-logo:hover .logo-ym-svg {
-    opacity: 0 !important;
-    transition: opacity 0.3s ease;
+  .nav-logo:hover .logo-primary {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
   }
   
-  .nav-logo:hover .logo-trusted-state {
+  .nav-logo:hover .logo-hover {
     opacity: 1;
     transform: translateY(0);
   }
 
+  /* Subtitle */
   .logo-subtitle {
-    font-size: 0.38em; 
+    font-size: 0.48em; 
     letter-spacing: 1.5px; 
     color: #888; 
     font-weight: 600; 
     margin-top: 5px;
     opacity: 0;
-    animation: fadeSubtitle 1s 2.5s forwards;
+    transform: translateY(5px);
+    animation: fadeSubtitle 1s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
     transition: transform 0.4s ease, color 0.4s ease;
   }
   @keyframes fadeSubtitle {
-    to { opacity: 1; }
+    100% { opacity: 1; transform: translateY(0); }
   }
 
   .nav-logo:hover .logo-subtitle {
@@ -173,35 +164,15 @@
         <!-- Center initial mu -->
         <span class="logo-init-mu">&#956;</span>
         
-        <!-- YM SVG symbol -->
-        <!-- Y left arm: \ (white) -->
-        <!-- Shared arm: / (blue) -->
-        <!-- M mid arm: \ (blue) -->
-        <!-- M right arm: | (blue) -->
-        <svg class="logo-ym-svg" viewBox="0 0 50 24" preserveAspectRatio="xMidYMid meet">
-          <!-- White Y arm -->
-          <path d="M 0 0 L 15 24 L 23 24 L 8 0 Z" fill="#ffffff" />
-          
-          <!-- Blue shared arm (Y right + M left) -->
-          <!-- It must overlap/connect at the bottom of the white arm -->
-          <!-- Top right of Y is roughly x=28, y=0. Bottom is x=19, y=24. -->
-          <path d="M 28 0 L 15 24 L 23 24 L 36 0 Z" fill="#3b82f6" />
-          
-          <!-- Blue M middle arm -->
-          <!-- Starts at top of shared arm (x=28, y=0) -->
-          <path d="M 28 0 L 36 0 L 44 24 L 36 24 Z" fill="#3b82f6" />
-          
-          <!-- Blue M right vertical stem -->
-          <!-- Actually an M right leg is usually straight down -->
-          <path d="M 36 0 L 44 0 L 44 24 L 36 24 Z" fill="#3b82f6" />
-        </svg>
+        <!-- Primary typographic text -->
+        <div class="logo-primary">
+          <span class="logo-main-text">LEGACYMICRO</span>
+        </div>
         
-        <span class="logo-legac">LEGAC</span>
-        <span class="logo-icro">ICRO</span>
-        
-        <span class="logo-trusted-state">
+        <!-- Hover Text -->
+        <div class="logo-hover">
           <span class="logo-tr">Tr</span><span class="logo-trusted-mu">&#956;</span><span class="logo-sted">sted</span>
-        </span>
+        </div>
       </div>
       <span class="logo-subtitle">ELECTRONIC COMPONENTS</span>
     </div>
