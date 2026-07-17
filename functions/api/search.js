@@ -21,6 +21,7 @@ export async function onRequestPost(context) {
       return isNaN(num) ? 0 : num;
     }
 
+    let mouserDebug = null;
     // =========================================================================
     // 1. FETCH FROM MOUSER
     // =========================================================================
@@ -40,38 +41,44 @@ export async function onRequestPost(context) {
           body: JSON.stringify(mouserPayload)
         });
 
-        if (mouserResponse.ok) {
-          const mData = await mouserResponse.json();
-          if (mData.SearchResults && mData.SearchResults.Parts) {
-            mData.SearchResults.Parts.forEach(part => {
-              const stockNum = parseStock(part.FactoryStock || part.Availability);
-              
-              // BUSINESS LOGIC: Only show if stock is strictly greater than 0
-              if (stockNum > 0) {
-                let displayPrice = "Call for Quote";
-                if (part.PriceBreaks && part.PriceBreaks.length > 0) {
-                  let rawPriceStr = part.PriceBreaks[0].Price;
-                  let numericPrice = parseFloat(rawPriceStr.replace(/[^0-9.]/g, ''));
-                  let currencySymbol = rawPriceStr.replace(/[0-9.,]/g, '').trim() || "$";
-                  
-                  if (!isNaN(numericPrice) && numericPrice > 0) {
-                    displayPrice = currencySymbol + (numericPrice * MARGIN).toFixed(3);
-                  }
-                }
+        const rawText = await mouserResponse.text();
+        mouserDebug = { status: mouserResponse.status, body: rawText };
 
-                standardizedResults.push({
-                  source: "Global Partner Network",
-                  mpn: part.ManufacturerPartNumber || "Unknown MPN",
-                  manufacturer: part.Manufacturer || "Unknown",
-                  stock: stockNum.toLocaleString(), // Add commas back (e.g. 1,000)
-                  price: displayPrice
-                });
-              }
-            });
-          }
+        if (mouserResponse.ok) {
+          try {
+            const mData = JSON.parse(rawText);
+            if (mData.SearchResults && mData.SearchResults.Parts) {
+              mData.SearchResults.Parts.forEach(part => {
+                const stockNum = parseStock(part.FactoryStock || part.Availability);
+                
+                // BUSINESS LOGIC: Only show if stock is strictly greater than 0
+                if (stockNum > 0) {
+                  let displayPrice = "Call for Quote";
+                  if (part.PriceBreaks && part.PriceBreaks.length > 0) {
+                    let rawPriceStr = part.PriceBreaks[0].Price;
+                    let numericPrice = parseFloat(rawPriceStr.replace(/[^0-9.]/g, ''));
+                    let currencySymbol = rawPriceStr.replace(/[0-9.,]/g, '').trim() || "$";
+                    
+                    if (!isNaN(numericPrice) && numericPrice > 0) {
+                      displayPrice = currencySymbol + (numericPrice * MARGIN).toFixed(3);
+                    }
+                  }
+
+                  standardizedResults.push({
+                    source: "Global Partner Network",
+                    mpn: part.ManufacturerPartNumber || "Unknown MPN",
+                    manufacturer: part.Manufacturer || "Unknown",
+                    stock: stockNum.toLocaleString(), // Add commas back (e.g. 1,000)
+                    price: displayPrice
+                  });
+                }
+              });
+            }
+          } catch(e) { mouserDebug.parseError = e.message; }
         }
       } catch (err) {
         console.error("Mouser Fetch Error:", err);
+        mouserDebug = { error: err.message };
       }
     }
 
@@ -170,7 +177,14 @@ export async function onRequestPost(context) {
     // =========================================================================
     // 3. RETURN MERGED RESULTS TO FRONTEND
     // =========================================================================
-    return new Response(JSON.stringify({ results: standardizedResults }), {
+    let debugInfo = { mouserDebug };
+    if (standardizedResults.length === 0) {
+       debugInfo.message = "No results found with stock > 0";
+       debugInfo.query = query;
+       debugInfo.hasMouserKey = !!env.MOUSER_API_KEY;
+       debugInfo.hasNexarKey = !!env.NEXAR_CLIENT_ID;
+    }
+    return new Response(JSON.stringify({ results: standardizedResults, _debug: debugInfo }), {
       status: 200,
       headers: { "Content-Type": "application/json" }
     });
