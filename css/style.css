@@ -607,6 +607,22 @@ p {
   justify-content: center;
   text-align: center;
   padding: calc(var(--nav-height) + var(--space-3xl)) var(--space-xl) var(--space-4xl);
+  position: relative;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90vw;
+  height: 90vw;
+  max-width: 900px;
+  max-height: 900px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 60%);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .hero-content {
@@ -637,7 +653,9 @@ p {
 
 .hero h1 {
   margin-bottom: var(--space-lg);
-  line-height: 1.15;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-weight: 800;
 }
 
 .hero p {
