@@ -17,16 +17,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    .nav-logo { transition: transform 0.3s ease; }
+        .nav-logo { transition: transform 0.3s ease; }
     .logo-legacy-group {
       display: inline-flex;
       align-items: baseline;
       opacity: 0;
-      animation: slideLegacyOut 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+      animation: slideLegacyOut 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
     }
-    .logo-legacy { transition: color 0.3s ease; }
+    .logo-legacy { 
+      color: #ffffff; 
+      transition: opacity 0.3s ease; 
+    }
     .logo-y { 
-      background: linear-gradient(to right, #ffffff 49%, var(--accent) 51%); 
+      background: linear-gradient(to right, #ffffff 47%, var(--accent) 53%); 
       -webkit-background-clip: text; 
       -webkit-text-fill-color: transparent; 
       position: relative; 
@@ -36,24 +39,44 @@
     .logo-micro-group {
       display: inline-flex;
       align-items: baseline;
-      animation: microFade 0.6s ease-out forwards;
+      animation: microFade 1.2s ease-out 1.2s forwards;
+      opacity: 0;
+      position: relative;
     }
     .logo-m {
       color: var(--accent);
-      clip-path: polygon(20% 0, 100% 0, 100% 100%, 20% 100%);
-      margin-left: -0.36em;
+      clip-path: polygon(25% 0, 100% 0, 100% 100%, 25% 100%);
+      margin-left: -0.40em;
       position: relative;
       z-index: 1;
+      transition: opacity 0.4s ease, transform 0.4s ease;
     }
     .logo-icro {
       color: var(--accent);
       margin-left: -0.05em;
+      transition: opacity 0.4s ease, transform 0.4s ease;
     }
-    .nav-logo:hover .logo-legacy { color: var(--accent) !important; }
-    .nav-logo:hover .logo-y { 
-      background: linear-gradient(to right, var(--accent) 0%, var(--accent) 100%) !important; 
-      -webkit-background-clip: text !important; 
-      -webkit-text-fill-color: transparent !important; 
+    .logo-mu {
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateY(10px) scale(0.8);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+      font-family: 'Times New Roman', Times, serif;
+      font-style: italic;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    .nav-logo:hover .logo-m,
+    .nav-logo:hover .logo-icro {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    .nav-logo:hover .logo-mu {
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
     @keyframes microFade {
       0% { opacity: 0; transform: scale(0.95); }
@@ -71,7 +94,7 @@
         clip-path: inset(0 -20px 0 0);
       }
     }
-  </style>
+    </style>
 </head>
 <body>
   <!-- ========== Cinematic Video Background ========== -->
@@ -91,11 +114,17 @@
       <a href="index.html" class="nav-logo" style="display: flex; align-items: center;">
         <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 12px;">
         <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1;">
-          <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem; display: flex; align-items: baseline;">
+                    <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem; display: flex; align-items: baseline;">
             <span class="logo-legacy-group">
-              <span class="logo-legacy" style="color: #ffffff;">LEGAC</span>
+              <span class="logo-legacy">LEGAC</span>
               <span class="logo-y">Y</span>
             </span>
+            <span class="logo-micro-group">
+              <span class="logo-m">M</span>
+              <span class="logo-icro">ICRO</span>
+              <span class="logo-mu">Î¼</span>
+            </span>
+          </span>
             <span class="logo-micro-group">
               <span class="logo-m">M</span>
               <span class="logo-icro">ICRO</span>
@@ -735,7 +764,17 @@
           <a href="index.html" class="nav-logo" style="display: flex; align-items: center;">
             <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 12px;">
             <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1;">
-              <span>LEGACY<span class="logo-text-accent">MICRO</span></span>
+                        <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem; display: flex; align-items: baseline;">
+            <span class="logo-legacy-group">
+              <span class="logo-legacy">LEGAC</span>
+              <span class="logo-y">Y</span>
+            </span>
+            <span class="logo-micro-group">
+              <span class="logo-m">M</span>
+              <span class="logo-icro">ICRO</span>
+              <span class="logo-mu">Î¼</span>
+            </span>
+          </span>
               <span style="font-size: 0.38em; letter-spacing: 1.5px; color: #888; font-weight: 600; margin-top: 3px;">ELECTRONIC COMPONENTS</span>
             </div>
           </a>
