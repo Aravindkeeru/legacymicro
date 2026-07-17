@@ -516,3 +516,31 @@
   setupFormspree('contactForm', 'contactFormStatus');
 
 })();
+
+// Custom Toast Notification System
+window.showToast = function(message) {
+  let container = document.getElementById('toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toast-container';
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = <i data-lucide="info"></i> <span> + message + </span>;
+  
+  container.appendChild(toast);
+  if (window.lucide) window.lucide.createIcons();
+
+  // Trigger animation
+  requestAnimationFrame(() => {
+    toast.classList.add('show');
+  });
+
+  // Remove after 4 seconds
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400); // Wait for transition
+  }, 4000);
+};
