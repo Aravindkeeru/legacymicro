@@ -27,7 +27,7 @@ export async function onRequestPost(context) {
     // =========================================================================
     if (env.MOUSER_API_KEY) {
       try {
-        const mouserUrl = `https://api.mouser.com/api/v1/search/partnumber?apiKey=${env.MOUSER_API_KEY}`;
+        const mouserUrl = `https://api.mouser.com/api/v2/search/partnumber?apiKey=${env.MOUSER_API_KEY}`;
         const mouserPayload = {
           SearchByPartRequest: {
             mouserPartNumber: query,
