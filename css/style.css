@@ -2677,11 +2677,14 @@ h1, h2, h3 {
   to { background-position: 200% center; }
 }
 
-/* reveal-mobile-fix */
-@media (max-width: 768px) {
-  .reveal {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
+
+
+/* Logo Hover Effect */
+.nav-logo:hover .logo-primary {
+  opacity: 0 !important;
+  transform: translateY(-10px) !important;
+}
+.nav-logo:hover .logo-hover {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }

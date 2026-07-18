@@ -11,7 +11,7 @@
   <meta property="og:description" content="Learn about Legacy Micro, India's first independent distributor for semiconductors and electronic components.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://legacy-micro.com/about.html">
-  <link rel="stylesheet" href="css/style.css?v=25">
+  <link rel="stylesheet" href="css/style.css?v=26">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,11 +32,21 @@
   <!-- ========== Navigation ========== -->
   <nav class="nav" id="navbar">
     <div class="nav-inner">
-            <a href="index.html" class="nav-logo" style="display: flex; align-items: center; text-decoration: none;">
-        <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 12px;">
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start; line-height: 1;">
-          <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.25rem; color: var(--text-primary);">LEGACYMICRO</span>
-          <span style="font-size: 0.45rem; letter-spacing: 1.5px; color: var(--text-secondary); font-weight: 600; margin-top: 4px;">ELECTRONIC COMPONENTS</span>
+                  <a href="index.html" class="nav-logo" style="display: flex; align-items: center; text-decoration: none; overflow: hidden; white-space: nowrap;">
+        <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 12px; flex-shrink: 0;">
+        <div class="logo-text-wrapper" style="position: relative; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; line-height: 1; width: 140px; overflow: hidden;">
+          <div class="logo-top-line" style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.15rem; position: relative; height: 1.2em; width: 100%; color: var(--text-primary);">
+            <!-- Primary typographic text -->
+            <div class="logo-primary" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: flex-start; transition: opacity 0.3s ease, transform 0.3s ease;">
+              <span class="logo-main-text">LEGACYMICRO<sup style="font-size: 0.4em; font-weight: 500; margin-left: 2px;">&reg;</sup></span>
+            </div>
+            
+            <!-- Hover Text -->
+            <div class="logo-hover" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: baseline; justify-content: flex-start; opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease;">
+              <span class="logo-tr">In </span><span class="logo-trusted-mu" style="color: #f59e0b; font-size: 1.2em; margin: 0 4px;">&#956;</span><span class="logo-sted"> we trust</span>
+            </div>
+          </div>
+          <span class="logo-subtitle" style="font-size: 0.4rem; letter-spacing: 1.5px; color: var(--text-secondary); font-weight: 600; margin-top: 4px;">ELECTRONIC COMPONENTS</span>
         </div>
       </a>
       <div class="nav-links" id="navLinks">
@@ -266,11 +276,21 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-                <a href="index.html" class="nav-logo" style="display: flex; align-items: center; text-decoration: none;">
-        <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 12px;">
-        <div style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start; line-height: 1;">
-          <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.25rem; color: var(--text-primary);">LEGACYMICRO</span>
-          <span style="font-size: 0.45rem; letter-spacing: 1.5px; color: var(--text-secondary); font-weight: 600; margin-top: 4px;">ELECTRONIC COMPONENTS</span>
+                      <a href="index.html" class="nav-logo" style="display: flex; align-items: center; text-decoration: none; overflow: hidden; white-space: nowrap;">
+        <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 12px; flex-shrink: 0;">
+        <div class="logo-text-wrapper" style="position: relative; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; line-height: 1; width: 140px; overflow: hidden;">
+          <div class="logo-top-line" style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.15rem; position: relative; height: 1.2em; width: 100%; color: var(--text-primary);">
+            <!-- Primary typographic text -->
+            <div class="logo-primary" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: flex-start; transition: opacity 0.3s ease, transform 0.3s ease;">
+              <span class="logo-main-text">LEGACYMICRO<sup style="font-size: 0.4em; font-weight: 500; margin-left: 2px;">&reg;</sup></span>
+            </div>
+            
+            <!-- Hover Text -->
+            <div class="logo-hover" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: baseline; justify-content: flex-start; opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease;">
+              <span class="logo-tr">In </span><span class="logo-trusted-mu" style="color: #f59e0b; font-size: 1.2em; margin: 0 4px;">&#956;</span><span class="logo-sted"> we trust</span>
+            </div>
+          </div>
+          <span class="logo-subtitle" style="font-size: 0.4rem; letter-spacing: 1.5px; color: var(--text-secondary); font-weight: 600; margin-top: 4px;">ELECTRONIC COMPONENTS</span>
         </div>
       </a>
           <p>India's smartest independent distributor for semiconductors, hard-to-find &amp; obsolete electronic components.</p>
