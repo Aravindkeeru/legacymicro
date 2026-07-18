@@ -2737,3 +2737,14 @@ p {
 .v-3 { animation-delay: 2.2s; }
 
 @keyframes fadeInVia { to { opacity: 1; } }
+
+/* Trusted Hover Animation */
+.nav-logo:hover .logo-tr,
+.nav-logo:hover .logo-sted {
+  animation: turnGoldHover 0.4s ease forwards 0.2s; /* Slight delay to let it appear white first */
+}
+
+@keyframes turnGoldHover {
+  0% { color: var(--text-primary); }
+  100% { color: #fef3c7; }
+}
