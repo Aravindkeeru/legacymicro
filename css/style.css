@@ -2648,8 +2648,8 @@ p {
 .nav-pcb-bg {
   position: absolute;
   top: 0;
-  left: 280px;
-  width: calc(100% - 280px);
+  left: -20px; /* Start slightly offscreen left */
+  width: 320px; /* Stop exactly where the logo ends */
   height: 100%;
   pointer-events: none;
   opacity: 0;
