@@ -11,7 +11,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://legacy-micro.com">
   <title>Legacy Micro — Source Any Electronic Component. Instantly.</title>
-  <link rel="stylesheet" href="css/style.css?v=68">
+  <link rel="stylesheet" href="css/style.css?v=69">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,14 +26,64 @@
     </video>
     <div class="video-overlay"></div>
   </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Legacy Micro — India's first independent distributor with instant part availability search. Source semiconductors, hard-to-find & obsolete electronic components globally.">
+  <meta name="keywords" content="electronic components, semiconductor distributor, hard-to-find parts, obsolete components, EOL parts, India distributor, Legacy Micro, Legacy Micro">
+  <meta name="author" content="Legacy Micro">
+  <meta property="og:title" content="Legacy Micro — Source Any Component. Instantly.">
+  <meta property="og:description" content="India's smartest independent distributor for semiconductors, hard-to-find & obsolete electronic components.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://legacy-micro.com">
+  <title>Legacy Micro — Source Any Electronic Component. Instantly.</title>
+  <link rel="stylesheet" href="css/style.css?v=69">
+  <link rel="icon" type="image/png" href="assets/favicon.png?v=69">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@800&family=Montserrat:ital,wght@0,800;1,800&display=swap" rel="stylesheet">
+  
+</head>
+<body>
+  <!-- ========== Cinematic Video Background ========== -->
+  <div class="video-bg-container">
+    <video aria-hidden="true" id="bg-video-player" autoplay loop muted="muted" playsinline webkit-playsinline class="video-bg" style="pointer-events: none;">
+      <source src="factory_broll.mp4?v=69" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+  </div>
 
   <!-- ========== Canvas Animated Background (Grid + Nodes) ========== -->
   <canvas id="circuit-bg" aria-hidden="true"></canvas>
 
   <!-- ========== Navigation ========== -->
   <nav class="nav" id="navbar">
-    <div class="nav-inner">
-                                                                              <a href="index.html" class="nav-logo" style="display: flex; align-items: center; text-decoration: none; white-space: nowrap;">
+    <div class="nav-inner" style="position: relative;">
+      
+      <!-- Premium Animated PCB Background -->
+      <svg class="nav-pcb-bg" viewBox="0 0 800 100" preserveAspectRatio="xMinYMid slice">
+          <g stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path class="pcb-trace t-1" d="M 0 50 L 50 50 L 70 70 L 150 70 L 170 50 L 350 50 L 370 30 L 500 30" />
+              <circle cx="500" cy="30" r="3" class="pcb-node n-1" />
+              
+              <path class="pcb-trace t-2" d="M 20 20 L 60 20 L 90 50 L 180 50 L 200 70 L 450 70 L 470 50 L 600 50" />
+              <circle cx="600" cy="50" r="3" class="pcb-node n-2" />
+              
+              <path class="pcb-trace t-3" d="M 10 80 L 100 80 L 120 60 L 280 60 L 310 90 L 500 90 L 520 70 L 700 70" />
+              <circle cx="700" cy="70" r="3" class="pcb-node n-3" />
+              
+              <!-- Interconnections -->
+              <path class="pcb-trace t-4" d="M 150 70 L 180 100 L 270 100 L 290 80 L 400 80" />
+              <circle cx="400" cy="80" r="2.5" class="pcb-node n-4" />
+              
+              <path class="pcb-trace t-5" d="M 350 50 L 380 20 L 480 20 L 510 50 L 650 50" />
+              <circle cx="650" cy="50" r="2.5" class="pcb-node n-5" />
+          </g>
+      </svg>
+      
+      <a href="index.html" class="nav-logo" style="display: flex; align-items: center; text-decoration: none; white-space: nowrap; position: relative; z-index: 10;">
         <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 12px; flex-shrink: 0;">
         <div class="logo-text-wrapper" style="position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; line-height: 1; width: 230px;">
           <div class="logo-top-line" style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.15rem; position: relative; height: 1.2em; width: 100%; display: flex; justify-content: center; align-items: center;">

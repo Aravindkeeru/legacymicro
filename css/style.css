@@ -2641,3 +2641,57 @@ p {
   text-align: center;
   width: 100%;
 }
+
+/* ==========================================================================
+   PCB Animated Background for Navbar
+   ========================================================================== */
+.nav-pcb-bg {
+  position: absolute;
+  top: 0;
+  left: 280px;
+  width: calc(100% - 280px);
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 1;
+  animation: pulsePcbBg 8s ease-in-out infinite alternate 5s;
+}
+
+.pcb-trace {
+  stroke: rgba(255, 255, 255, 0.15);
+  stroke-dasharray: 800;
+  stroke-dashoffset: 800;
+  animation: drawTrace 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.pcb-node {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  animation: fadeInPcbNode 0.5s ease forwards;
+}
+
+/* Drawing delays to simulate data flow */
+.t-1 { animation-delay: 2.2s; } .n-1 { animation-delay: 4.5s; }
+.t-2 { animation-delay: 2.8s; } .n-2 { animation-delay: 5.1s; }
+.t-3 { animation-delay: 3.4s; } .n-3 { animation-delay: 5.7s; }
+.t-4 { animation-delay: 4.0s; } .n-4 { animation-delay: 6.3s; }
+.t-5 { animation-delay: 4.6s; } .n-5 { animation-delay: 6.9s; }
+
+@keyframes drawTrace {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes fadeInPcbNode {
+  to { 
+    opacity: 1; 
+    fill: #fde68a; 
+    stroke: #fde68a; 
+    filter: drop-shadow(0 0 4px rgba(253, 230, 138, 0.6)); 
+  }
+}
+
+@keyframes pulsePcbBg {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.7; }
+}
