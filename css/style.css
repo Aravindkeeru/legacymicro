@@ -2470,7 +2470,7 @@ p {
 }
 
                                 /* ---------- Final Polished Logo Masterpiece ---------- */
-.nav-logo { transition: transform 0.3s ease; position: relative; }
+.nav-logo { transition: transform 0.3s ease; position: relative; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
 
 /* Primary State Container */
 .logo-primary {
@@ -2537,7 +2537,8 @@ p {
 /* Typographic innovation: Skewing MICRO to create a massive single slanting slash with Y */
 .logo-micro {
   display: inline-block;
-  transform: skewX(-14deg);
+  transform: skewX(-14deg) translateZ(0);
+  backface-visibility: hidden;
   margin-left: -0.22em; /* Heavily overlaps the skewed M leg perfectly into the Y arm */
   letter-spacing: inherit;
   transform-origin: bottom left;
