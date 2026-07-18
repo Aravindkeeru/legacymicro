@@ -352,7 +352,7 @@
   if (bgAudio && soundToggle) {
     // Start at 0 volume for fade-in
     bgAudio.volume = 0.15;
-    const targetVolume = 0.15; // Very subtle 15% max volume
+    const targetVolume = 1.0; // Very subtle 15% max volume
     let fadeInterval;
     
           soundToggle.addEventListener('click', () => {
