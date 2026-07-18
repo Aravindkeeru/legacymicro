@@ -2533,15 +2533,31 @@ p {
   animation: textWipeIn 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
 }
 
+/* Typographic innovation: Merging Y and M physically */
+.logo-merge {
+  margin-left: -0.11em; /* Tightly overlaps M into Y's right arm */
+  letter-spacing: inherit;
+}
+
+/* Glowing trademark */
+.logo-reg {
+  font-size: 0.35em;
+  font-weight: 500;
+  margin-left: 2px;
+  color: var(--accent);
+  text-shadow: 0 0 6px rgba(59, 130, 246, 0.8), 0 0 12px rgba(59, 130, 246, 0.4);
+  transform: translateY(-1em);
+  display: inline-block;
+}
+
 .logo-layer-base {
   color: var(--text-primary);
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   padding-right: 2px;
   padding-left: 2px;
   position: relative;
-}
-
-.logo-layer-accent {
+}.logo-layer-accent {
   color: var(--accent);
   position: absolute;
   left: 0;
