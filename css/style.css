@@ -2672,10 +2672,10 @@ h1, h2, h3 {
 
 
 
-/* ---------- Logo Masterpiece Animations ---------- */
+/* ---------- Typographic Logo Masterpiece ---------- */
 .nav-logo { transition: transform 0.3s ease; position: relative; }
 
-/* Primary State (Slides out) */
+/* Primary State Container */
 .logo-primary {
   transition: opacity 0.4s ease, transform 0.4s ease;
   z-index: 2;
@@ -2695,40 +2695,6 @@ h1, h2, h3 {
   color: #aaa !important;
 }
 
-/* YM SVG fades in */
-.logo-ym-svg {
-  opacity: 0;
-  transform: scale(0.8);
-  animation: fadeYMIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 1.0s forwards;
-}
-@keyframes fadeYMIn {
-  0% { opacity: 0; transform: scale(0.8); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* Text slides out from center */
-.logo-legac {
-  color: var(--text-primary);
-  opacity: 0;
-  transform: translateX(30px);
-  animation: slideLegac 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
-}
-@keyframes slideLegac {
-  0% { opacity: 0; transform: translateX(30px); clip-path: inset(0 0 0 100%); }
-  100% { opacity: 1; transform: translateX(0); clip-path: inset(0 0 0 0); }
-}
-
-.logo-icro {
-  color: var(--accent);
-  opacity: 0;
-  transform: translateX(-30px);
-  animation: slideIcro 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
-}
-@keyframes slideIcro {
-  0% { opacity: 0; transform: translateX(-30px); clip-path: inset(0 100% 0 0); }
-  100% { opacity: 1; transform: translateX(0); clip-path: inset(0 0 0 0); }
-}
-
 /* Initial State (Mu) */
 .logo-init-mu {
   color: var(--accent);
@@ -2745,6 +2711,36 @@ h1, h2, h3 {
   20% { transform: scale(1.2); opacity: 1; }
   60% { transform: scale(1); opacity: 1; }
   100% { transform: scale(2.5); opacity: 0; visibility: hidden; }
+}
+
+/* 
+  CRITICAL iOS SAFARI FIX:
+  iOS Safari completely breaks when clip-path, transform, and background-clip: text 
+  are applied to the exact same element (renders as a solid box).
+  The fix is to separate concerns: the wrapper handles animations, the inner span handles text gradient.
+*/
+
+/* Wrapper handles animation and clip-path */
+.logo-text-animator {
+  display: inline-flex;
+  align-items: center;
+  opacity: 0;
+  clip-path: inset(0 50% 0 50%);
+  animation: textWipeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
+}
+@keyframes textWipeIn {
+  0% { opacity: 0; clip-path: inset(0 50% 0 50%); letter-spacing: -2px; transform: scale(0.95); }
+  10% { opacity: 1; }
+  100% { opacity: 1; clip-path: inset(0 0 0 0); letter-spacing: -0.5px; transform: scale(1); }
+}
+
+/* Inner text handles background gradient */
+.logo-main-text {
+  background: linear-gradient(to right, var(--text-primary) 51.5%, var(--accent) 51.5%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding-right: 2px; /* Prevent italics or descenders from clipping */
 }
 
 /* Subtitle */
