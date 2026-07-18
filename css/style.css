@@ -2522,14 +2522,39 @@ p {
   100% { opacity: 1; clip-path: inset(0 -10px 0 -10px); -webkit-clip-path: inset(0 -10px 0 -10px); letter-spacing: -0.5px; transform: scale(1); }
 }
 
-/* Inner text handles background gradient safely for iOS Safari */
-.logo-main-text {
-  background: linear-gradient(to right, var(--text-primary) 50.5%, var(--accent) 50.5%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Rock-solid iOS Safari fix: Dual layer text, NO background-clip */
+.logo-text-animator {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  opacity: 0;
+  clip-path: inset(0 50% 0 50%);
+  -webkit-clip-path: inset(0 50% 0 50%);
+  animation: textWipeIn 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+}
+
+.logo-layer-base {
+  color: var(--text-primary);
   display: inline-block;
   padding-right: 2px;
   padding-left: 2px;
+  position: relative;
+}
+
+.logo-layer-accent {
+  color: var(--accent);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  padding-right: 2px;
+  padding-left: 2px;
+  clip-path: inset(0 0 0 50.5%);
+  -webkit-clip-path: inset(0 0 0 50.5%);
+  pointer-events: none;
 }
 
 /* Subtitle */
