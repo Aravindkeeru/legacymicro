@@ -2605,13 +2605,13 @@ p {
   font-weight: 800;
   font-style: normal;
   letter-spacing: -1px; /* Tighter geometric tracking */
-  animation: turnGold 2s ease forwards 5s; /* Turns gold after the slide transition */
+  animation: turnGold 2s ease forwards 2.5s; /* Turns gold earlier */
 }
 @keyframes turnGold {
   0% { color: var(--text-primary); text-shadow: none; }
   100% { 
-    color: #fbbf24; /* Premium metallic gold */
-    text-shadow: 0 0 15px rgba(251, 191, 36, 0.3); 
+    color: #fcd34d; /* Premium lighter metallic gold */
+    text-shadow: 0 0 15px rgba(252, 211, 77, 0.4); 
   }
 }
 
