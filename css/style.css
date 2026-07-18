@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    Legacy Microtronix — Design System v2
    R&A Supply Solutions Pvt Ltd
    Professional dark theme — inspired by Linear, Vercel, Stripe
@@ -2561,7 +2561,7 @@ p {
   display: inline-block;
   font-family: 'Gilroy', 'TT Norms Pro', 'Nexa', 'Mont', 'Outfit', 'Montserrat', sans-serif;
   font-weight: 800;
-  font-style: italic;
+  font-style: normal; /* Restored to upright to preserve exact geometric structure */
   /* Keep skew to maintain the exact 14deg Y/M merge, scaleX to increase width by 5% */
   transform: scaleX(1.05) skewX(-14deg) translateZ(0); 
   /* Reduce gap by 10% (from -0.32em to -0.35em) */
