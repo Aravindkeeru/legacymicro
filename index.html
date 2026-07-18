@@ -11,7 +11,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://legacy-micro.com">
   <title>Legacy Micro — Source Any Electronic Component. Instantly.</title>
-  <link rel="stylesheet" href="css/style.css?v=84">
+  <link rel="stylesheet" href="css/style.css?v=85">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -79,26 +79,32 @@
           <!-- Animated structural traces -->
           <!-- Gold Trace (Legacy Side) -->
           <path class="trace-line trace-gold draw-in" style="animation-delay: 0.5s" d="M -10 30 L 20 30 L 40 10 L 110 10 L 130 30 L 200 30" />
-          <path class="data-packet packet-gold flow-1" d="M -10 30 L 20 30 L 40 10 L 110 10 L 130 30 L 200 30" />
+          <!-- Completely removed data-packet here so no dot travels diagonally behind G -->
           <g class="pcb-via v-1">
               <circle cx="200" cy="30" r="3.5" class="via-gold" />
               <circle cx="200" cy="30" r="1.5" class="via-dark" />
           </g>
 
-          <!-- LM IC Chip Connection (New) -->
-          <!-- Takes connection from the right-side pins of the IC chip (X=55) and routes safely underneath the text -->
+          <!-- LM IC Chip Connections (New - 3 Traces) -->
+          <!-- Top IC Trace (Routes above text) -->
+          <path class="trace-line trace-gold draw-in" style="animation-delay: 1.2s" d="M 55 20 L 70 20 L 80 5 L 120 5" />
+          
+          <!-- Middle IC Trace (Routes below text) -->
           <path class="trace-line trace-gold draw-in" style="animation-delay: 1.5s" d="M 55 45 L 68 45 L 85 80 L 180 80" />
           <path class="data-packet packet-gold flow-1" d="M 55 45 L 68 45 L 85 80 L 180 80" />
 
+          <!-- Bottom IC Trace (Routes deeper below text) -->
+          <path class="trace-line trace-gold draw-in" style="animation-delay: 1.7s" d="M 55 65 L 65 65 L 75 90 L 150 90" />
+
           <!-- Blue Trace (Micro Side) -->
-          <!-- Moved blue trace and via to align beautifully above the R (X=265) in MICRO -->
-          <path class="trace-line trace-blue draw-in" style="animation-delay: 0.8s" d="M 160 10 L 180 10 L 200 30 L 245 30 L 265 10 L 350 10" />
-          <path class="data-packet packet-blue flow-2" d="M 160 10 L 180 10 L 200 30 L 245 30 L 265 10 L 350 10" />
+          <!-- Moved blue trace and via to align beautifully above the R (X=272) in MICRO -->
+          <path class="trace-line trace-blue draw-in" style="animation-delay: 0.8s" d="M 160 10 L 180 10 L 200 30 L 252 30 L 272 10 L 350 10" />
+          <path class="data-packet packet-blue flow-2" d="M 160 10 L 180 10 L 200 30 L 252 30 L 272 10 L 350 10" />
           <g class="pcb-via v-2">
               <circle cx="200" cy="30" r="2.5" class="via-blue" />
               <!-- Blue dot with golden inside perfectly above R -->
-              <circle cx="265" cy="10" r="3.5" stroke="#3b82f6" stroke-width="1.5" fill="#09090b" filter="drop-shadow(0 0 3px rgba(59, 130, 246, 0.5))" />
-              <circle cx="265" cy="10" r="1.5" fill="#fde68a" filter="drop-shadow(0 0 3px rgba(253, 230, 138, 0.8))" />
+              <circle cx="272" cy="10" r="3.5" stroke="#3b82f6" stroke-width="1.5" fill="#09090b" filter="drop-shadow(0 0 3px rgba(59, 130, 246, 0.5))" />
+              <circle cx="272" cy="10" r="1.5" fill="#fde68a" filter="drop-shadow(0 0 3px rgba(253, 230, 138, 0.8))" />
           </g>
 
           <!-- Mixed Central Trace -->
