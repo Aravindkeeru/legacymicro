@@ -350,12 +350,18 @@
   const soundToggle = document.getElementById('soundToggle');
   
   if (bgAudio && soundToggle) {
-    // Set to 100% volume so it's clearly audible on all devices
-    bgAudio.volume = 1.0;
-    
+    let fadeInterval = null;
+    const fadeStep = 0.05;
+    const fadeSpeed = 50; // 50ms * 20 steps = 1000ms = 1s fade
+    const maxVolume = 1.0;
+
+    const clearFade = () => { if (fadeInterval) clearInterval(fadeInterval); };
+
     soundToggle.addEventListener('click', () => {
+      clearFade();
+      
       if (bgAudio.paused) {
-        // Instant visual feedback for slow connections
+        bgAudio.volume = 0; // Start at 0 for fade in
         soundToggle.classList.add('playing');
         soundToggle.innerHTML = '<i data-lucide="loader" style="animation: spin 1s linear infinite;"></i>';
         if (typeof window.lucide !== 'undefined') window.lucide.createIcons();
@@ -363,6 +369,14 @@
         bgAudio.play().then(() => {
           soundToggle.innerHTML = '<i data-lucide="volume-2"></i>';
           if (typeof window.lucide !== 'undefined') window.lucide.createIcons();
+          
+          fadeInterval = setInterval(() => {
+            if (bgAudio.volume < maxVolume) {
+              bgAudio.volume = Math.min(maxVolume, bgAudio.volume + fadeStep);
+            } else {
+              clearFade();
+            }
+          }, fadeSpeed);
         }).catch(err => {
           console.error("Audio playback failed:", err);
           soundToggle.classList.remove('playing');
@@ -374,10 +388,19 @@
           }
         });
       } else {
-        bgAudio.pause();
+        // Start fading out
         soundToggle.classList.remove('playing');
         soundToggle.innerHTML = '<i data-lucide="volume-x"></i>';
         if (typeof window.lucide !== 'undefined') window.lucide.createIcons();
+        
+        fadeInterval = setInterval(() => {
+          if (bgAudio.volume > 0) {
+            bgAudio.volume = Math.max(0, bgAudio.volume - fadeStep);
+          } else {
+            clearFade();
+            bgAudio.pause();
+          }
+        }, fadeSpeed);
       }
     });
   }
@@ -435,3 +458,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   revealElements.forEach(el => revealObserver.observe(el));
 });
+
+
