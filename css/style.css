@@ -2534,9 +2534,13 @@ p {
 }
 
 /* Typographic innovation: Merging Y and M physically */
-.logo-merge {
-  margin-left: -0.11em; /* Tightly overlaps M into Y's right arm */
+/* Typographic innovation: Skewing MICRO to create a massive single slanting slash with Y */
+.logo-micro {
+  display: inline-block;
+  transform: skewX(-14deg);
+  margin-left: -0.22em; /* Heavily overlaps the skewed M leg perfectly into the Y arm */
   letter-spacing: inherit;
+  transform-origin: bottom left;
 }
 
 /* Glowing trademark */

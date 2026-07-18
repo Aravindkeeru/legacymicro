@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { background: #0a0f16; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; font-size: 5rem; font-weight: 800; }
+        .logo-y {
+            display: inline-block;
+            clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+            margin-right: -0.1em;
+        }
+        .logo-slash {
+            display: inline-block;
+            width: 0.16em;
+            height: 0.75em;
+            background: linear-gradient(to right, white 50%, #3b82f6 50%);
+            transform: rotate(23deg) translateY(-0.05em);
+            position: relative;
+            z-index: 10;
+        }
+        .logo-m {
+            display: inline-block;
+            clip-path: polygon(25% 0, 100% 0, 100% 100%, 15% 100%);
+            margin-left: -0.15em;
+            color: #3b82f6;
+        }
+        .wrap { display: flex; align-items: center; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        LEGAC
+        <span class="logo-y">Y</span>
+        <span class="logo-slash"></span>
+        <span class="logo-m">M</span>
+        ICRO
+    </div>
+</body>
+</html>
