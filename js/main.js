@@ -351,8 +351,9 @@
   
   if (bgAudio && soundToggle) {
     let fadeInterval = null;
-    const fadeStep = 0.05;
-    const fadeSpeed = 50; // 50ms * 20 steps = 1000ms = 1s fade
+    const fadeInStep = 0.005; // 1.0 / 0.005 = 200 steps. 200 * 50ms = 10000ms (10 seconds)
+    const fadeOutStep = 0.05; // 1.0 / 0.05 = 20 steps. 20 * 50ms = 1000ms (1 second)
+    const fadeSpeed = 50;
     const maxVolume = 1.0;
 
     const clearFade = () => { if (fadeInterval) clearInterval(fadeInterval); };
@@ -372,7 +373,7 @@
           
           fadeInterval = setInterval(() => {
             if (bgAudio.volume < maxVolume) {
-              bgAudio.volume = Math.min(maxVolume, bgAudio.volume + fadeStep);
+              bgAudio.volume = Math.min(maxVolume, bgAudio.volume + fadeInStep);
             } else {
               clearFade();
             }
@@ -395,7 +396,7 @@
         
         fadeInterval = setInterval(() => {
           if (bgAudio.volume > 0) {
-            bgAudio.volume = Math.max(0, bgAudio.volume - fadeStep);
+            bgAudio.volume = Math.max(0, bgAudio.volume - fadeOutStep);
           } else {
             clearFade();
             bgAudio.pause();
@@ -458,5 +459,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   revealElements.forEach(el => revealObserver.observe(el));
 });
+
 
 
