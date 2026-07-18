@@ -2507,6 +2507,31 @@ p {
   100% { transform: translateX(-30px); opacity: 0; clip-path: inset(0 100% 0 0); visibility: hidden; }
 }
 
+/* Wrapper handles animation and clip-path */
+.logo-text-animator {
+  display: inline-flex;
+  align-items: center;
+  opacity: 0;
+  clip-path: inset(0 50% 0 50%);
+  -webkit-clip-path: inset(0 50% 0 50%);
+  animation: textWipeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+}
+@keyframes textWipeIn {
+  0% { opacity: 0; clip-path: inset(0 50% 0 50%); -webkit-clip-path: inset(0 50% 0 50%); letter-spacing: -2px; transform: scale(0.95); }
+  10% { opacity: 1; }
+  100% { opacity: 1; clip-path: inset(0 -10px 0 -10px); -webkit-clip-path: inset(0 -10px 0 -10px); letter-spacing: -0.5px; transform: scale(1); }
+}
+
+/* Inner text handles background gradient safely for iOS Safari */
+.logo-main-text {
+  background: linear-gradient(to right, var(--text-primary) 50.5%, var(--accent) 50.5%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding-right: 2px;
+  padding-left: 2px;
+}
+
 /* Subtitle */
 .logo-subtitle {
   transition: color 0.4s ease;
