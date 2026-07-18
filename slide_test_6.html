@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { background: #0a0f16; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; font-size: 8rem; font-weight: 800; letter-spacing: -3px; }
+        
+        .logo-core-wrapper {
+            display: inline-flex;
+            align-items: baseline; /* ensuring baselines match perfectly */
+        }
+
+        .logo-legacy {
+            color: white;
+            display: inline-block;
+            /* Inherits -3px letter-spacing */
+        }
+
+        .logo-micro {
+            color: #3b82f6;
+            display: inline-block;
+            transform: skewX(-14deg) translateZ(0);
+            margin-left: -0.22em;
+            transform-origin: bottom left;
+            letter-spacing: 2px; /* widen out MICRO */
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-core-wrapper">
+        <span class="logo-legacy">LEGACY</span><!--
+        --><span class="logo-micro">MICRO</span>
+    </div>
+</body>
+</html>
