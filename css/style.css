@@ -2507,33 +2507,52 @@ p {
   100% { transform: translateX(-30px); opacity: 0; clip-path: inset(0 100% 0 0); visibility: hidden; }
 }
 
-/* Wrapper handles animation and clip-path */
-.logo-text-animator {
-  display: inline-flex;
-  align-items: center;
-  opacity: 0;
-  clip-path: inset(0 50% 0 50%);
-  animation: textWipeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
-}
-@keyframes textWipeIn {
-  0% { opacity: 0; clip-path: inset(0 50% 0 50%); letter-spacing: -2px; transform: scale(0.95); }
-  10% { opacity: 1; }
-  100% { opacity: 1; clip-path: inset(0 0 0 0); letter-spacing: -0.5px; transform: scale(1); }
-}
-
-/* Inner text handles background gradient */
-.logo-main-text {
-  background: linear-gradient(to right, var(--text-primary) 50%, var(--accent) 50%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-  padding-right: 2px;
-}
-
 /* Subtitle */
 .logo-subtitle {
   transition: color 0.4s ease;
   display: block;
   text-align: center;
   width: 100%;
+}/* Center YM typographic fade in */
+.logo-ym-center {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: fadeYMIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.8s forwards;
+  display: flex;
+}
+@keyframes fadeYMIn {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* LEGAC slides out to the left */
+.logo-legac {
+  position: relative;
+  z-index: 1;
+  color: var(--text-primary);
+  opacity: 0;
+  transform: translateX(45px);
+  animation: slideLegac 1s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
+}
+@keyframes slideLegac {
+  0% { opacity: 0; transform: translateX(45px); clip-path: inset(0 0 0 100%); }
+  10% { opacity: 1; }
+  100% { opacity: 1; transform: translateX(0); clip-path: inset(0 0 0 0); }
+}
+
+/* ICRO slides out to the right */
+.logo-icro {
+  position: relative;
+  z-index: 1;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateX(-45px);
+  animation: slideIcro 1s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
+}
+@keyframes slideIcro {
+  0% { opacity: 0; transform: translateX(-45px); clip-path: inset(0 100% 0 0); }
+  10% { opacity: 1; }
+  100% { opacity: 1; transform: translateX(0); clip-path: inset(0 0 0 0); }
 }
