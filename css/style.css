@@ -2603,7 +2603,7 @@ p {
 .logo-reg {
   font-size: 0.35em;
   font-weight: 500;
-  margin-left: 8px; /* Increased to clear the skewed O */
+  margin-left: 3px; /* Reduced to pull it closer to the O */
   position: relative;
   z-index: 10; /* Ensures it renders above MICRO */
   color: #ef4444 !important; /* High definition red */
@@ -2611,8 +2611,8 @@ p {
   transform: translateY(-1em) translateZ(0);
   display: inline-block;
   opacity: 0;
-  /* Fades in ONLY after LEGACY is completely fully visible (1.8s + 4.5s = 6.3s) */
-  animation: regFadeIn 2s ease 6.0s forwards; 
+  /* Fades in shortly after MICRO flips in, while LEGACY is still sliding (1.0s + 1.2s = 2.2s) */
+  animation: regFadeIn 1.5s ease 2.5s forwards; 
 }
 @keyframes regFadeIn {
   0% { opacity: 0; transform: translateY(-1em) translateZ(0) scale(0.8); }
