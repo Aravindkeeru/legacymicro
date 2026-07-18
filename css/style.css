@@ -2608,10 +2608,10 @@ p {
   animation: turnGold 2s ease forwards 2.5s; /* Turns gold earlier */
 }
 @keyframes turnGold {
-  0% { color: var(--text-primary); text-shadow: none; }
+  0% { color: var(--text-primary); }
   100% { 
-    color: #fde68a; /* Ultra-pale premium champagne gold */
-    text-shadow: 0 0 15px rgba(253, 230, 138, 0.4); 
+    color: #fef3c7; /* Ultra-light warm champagne (almost white) */
+    /* text-shadow removed to prevent the overflow:hidden clipping box artifact */
   }
 }
 
