@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    Legacy Microtronix — Main JavaScript
    R&A Supply Solutions Pvt Ltd
    Clean ES6+ · No dependencies
@@ -355,158 +355,23 @@
     const targetVolume = 0.15; // Very subtle 15% max volume
     let fadeInterval;
     
-    soundToggle.addEventListener('click', () => {
-      if (bgAudio.paused) {
-        bgAudio.play().then(() => {
-          soundToggle.classList.add('playing');
-          soundToggle.innerHTML = '<i data-lucide="volume-2"></i>';
-          if (typeof lucide !== 'undefined') lucide.createIcons();
-          
-          // Smooth 5-second fade-in
-          clearInterval(fadeInterval);
-          fadeInterval = setInterval(() => {
-            if (bgAudio.volume < targetVolume) {
-              bgAudio.volume = Math.min(targetVolume, bgAudio.volume + 0.01);
-            } else {
-              clearInterval(fadeInterval);
-            }
-          }, 330); // 330ms * 15 steps = ~5 seconds
-          
-        }).catch(err => {
-          console.error("Audio playback failed:", err);
-        });
-      } else {
-        // Fade out before pausing
-        clearInterval(fadeInterval);
-        fadeInterval = setInterval(() => {
-          if (bgAudio.volume > 0) {
-            bgAudio.volume = Math.max(0, bgAudio.volume - 0.01);
-          } else {
-            clearInterval(fadeInterval);
-            bgAudio.pause();
-            soundToggle.classList.remove('playing');
-            soundToggle.innerHTML = '<i data-lucide="volume-x"></i>';
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-          }
-        }, 100); // Quick fade out
-      }
-    });
-  }
-
-  // ───────────────────────────────────────────────
-  // 11. Auto-fill Contact Form from URL Parameters
-  // ───────────────────────────────────────────────
-  const urlParams = new URLSearchParams(window.location.search);
-  const partParam = urlParams.get('part');
-  if (partParam) {
-    const partInput = document.getElementById('partNumber');
-    if (partInput) {
-      partInput.value = partParam;
-      // Optional: Add a subtle highlight effect to show it was auto-filled
-      partInput.style.borderColor = 'var(--accent)';
-      partInput.style.boxShadow = '0 0 0 1px var(--accent)';
-      setTimeout(() => {
-        partInput.style.transition = 'all 0.5s ease';
-        partInput.style.borderColor = '';
-        partInput.style.boxShadow = '';
-      }, 1500);
-    }
-  }
-
-  // TODO: Replace YOUR_PROPERTY_ID with actual Tawk.to property ID before uncommenting
-  /*
-  // ───────────────────────────────────────────────
-  // 10. Tawk.to Live Chat Widget Placeholder
-  // ───────────────────────────────────────────────
-  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-  (function(){
-  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-  s1.async=true;
-  s1.src='https://embed.tawk.to/YOUR_PROPERTY_ID/default';
-  s1.charset='UTF-8';
-  s1.setAttribute('crossorigin','*');
-  if(s0 && s0.parentNode) s0.parentNode.insertBefore(s1,s0);
-  })();
-  */
-  // ───────────────────────────────────────────────
-  // 12. Quote Modal Logic
-  // ───────────────────────────────────────────────
-  window.openQuoteModal = function(partNumber, price) {
-    const modal = document.getElementById('quoteModal');
-    const partInput = document.getElementById('modalPart');
-    const priceInput = document.getElementById('modalPrice');
-    if (modal) {
-      if (partInput && partNumber) {
-        partInput.value = partNumber;
-      }
-      if (priceInput) {
-        priceInput.value = price || "N/A";
-      }
-      modal.classList.add('active');
-    }
-  };
-
-  window.closeQuoteModal = function() {
-    const modal = document.getElementById('quoteModal');
-    if (modal) {
-      modal.classList.remove('active');
-    }
-  };
-
-  // Close modal when clicking outside of it
-  const quoteModal = document.getElementById('quoteModal');
-  if (quoteModal) {
-    quoteModal.addEventListener('click', (e) => {
-      if (e.target === quoteModal) {
-        closeQuoteModal();
-      }
-    });
-  }
-
-  // ───────────────────────────────────────────────
-  // 13. Formspree AJAX Submission
-  // ───────────────────────────────────────────────
-  const setupFormspree = (formId, statusId) => {
-    const form = document.getElementById(formId);
-    const status = document.getElementById(statusId);
-    
-    if (form && status) {
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = new FormData(form);
-        const action = form.getAttribute('action');
-        
-        status.innerHTML = '<span style="color: var(--text-secondary);">Submitting...</span>';
-        const submitBtn = form.querySelector('button[type="submit"]');
-        if (submitBtn) submitBtn.disabled = true;
-        
-        try {
-          const response = await fetch(action, {
-            method: 'POST',
-            body: data,
-            headers: {
-              'Accept': 'application/json'
+          soundToggle.addEventListener('click', () => {
+        if (bgAudio.paused) {
+          bgAudio.play().then(() => {
+            soundToggle.classList.add('playing');
+            soundToggle.innerHTML = '<i data-lucide="volume-2"></i>';
+            if (typeof window.lucide !== 'undefined') window.lucide.createIcons();
+          }).catch(err => {
+            console.error("Audio playback failed:", err);
+            if (typeof window.showToast === 'function') {
+              window.showToast("Playback blocked by device. Ensure volume is up and mute switch is off.");
             }
           });
-          if (response.ok) {
-            status.innerHTML = '<span style="color: #4ade80;">Success! We will contact you shortly.</span>';
-            form.reset();
-            setTimeout(() => {
-              status.innerHTML = '';
-              if (formId === 'quoteForm') closeQuoteModal();
-            }, 3000);
-          } else {
-            const result = await response.json();
-            if (result.hasOwnProperty('errors')) {
-              status.innerHTML = '<span style="color: var(--danger);">' + result.errors.map(err => err.message).join(', ') + '</span>';
-            } else {
-              status.innerHTML = '<span style="color: var(--danger);">Oops! There was a problem submitting your form.</span>';
-            }
-          }
-        } catch (error) {
-          status.innerHTML = '<span style="color: var(--danger);">Oops! There was a problem submitting your form.</span>';
-        } finally {
-          if (submitBtn) submitBtn.disabled = false;
+        } else {
+          bgAudio.pause();
+          soundToggle.classList.remove('playing');
+          soundToggle.innerHTML = '<i data-lucide="volume-x"></i>';
+          if (typeof window.lucide !== 'undefined') window.lucide.createIcons();
         }
       });
     }
