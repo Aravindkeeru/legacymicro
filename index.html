@@ -11,7 +11,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://legacy-micro.com">
   <title>Legacy Micro — Source Any Electronic Component. Instantly.</title>
-  <link rel="stylesheet" href="css/style.css?v=86">
+  <link rel="stylesheet" href="css/style.css?v=87">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,42 +71,38 @@
               <path d="M 0 93 L 115 93 L 135 78 L 255 78 L 270 93 L 360 93" />
               <path d="M 0 98 L 110 98 L 135 83 L 250 83 L 265 98 L 360 98" />
           </g>
-          <g class="pcb-base-thin">
-              <path d="M 30 -5 L 50 15 L 120 15 L 130 5 L 200 5 L 220 25 L 360 25" />
-              <path d="M 40 -5 L 60 15 L 115 15 L 125 5 L 205 5 L 225 25 L 360 25" />
-          </g>
+          <!-- Input Bus (Feeds into IC chip from the left) -->
+          <path class="trace-line trace-gold draw-in" style="animation-delay: 0.1s" d="M -20 30 L 20 30 L 30 40 L 50 40" />
+          <path class="data-packet packet-gold flow-1" style="animation-delay: 0.1s" d="M -20 30 L 20 30 L 30 40 L 50 40" />
+          
+          <path class="trace-line trace-blue draw-in" style="animation-delay: 0.3s" d="M -20 60 L 20 60 L 30 50 L 50 50" />
+          <path class="data-packet packet-blue flow-2" style="animation-delay: 0.3s" d="M -20 60 L 20 60 L 30 50 L 50 50" />
 
-          <!-- Animated structural traces -->
-          <!-- Gold Trace (Legacy Side) -->
-          <path class="trace-line trace-gold draw-in" style="animation-delay: 0.5s" d="M -10 30 L 20 30 L 40 10 L 110 10 L 130 30 L 200 30" />
-          <!-- Completely removed data-packet here so no dot travels diagonally behind G -->
-          <g class="pcb-via v-1">
-              <circle cx="200" cy="30" r="3.5" class="via-gold" />
-              <circle cx="200" cy="30" r="1.5" class="via-dark" />
-          </g>
+          <!-- High-Speed Output Bus (6 lanes splitting around the logo text) -->
+          <!-- Top Bus (3 Lanes, safely above text Y=30) -->
+          <path class="trace-line trace-gold draw-in" style="animation-delay: 0.2s" d="M 55 15 L 65 15 L 75 5 L 350 5" />
+          <path class="data-packet packet-gold flow-1" style="animation-delay: 0.2s" d="M 55 15 L 65 15 L 75 5 L 350 5" />
+          
+          <path class="trace-line trace-blue draw-in" style="animation-delay: 0.4s" d="M 55 25 L 65 25 L 78 12 L 350 12" />
+          <path class="data-packet packet-blue flow-2" style="animation-delay: 0.4s" d="M 55 25 L 65 25 L 78 12 L 350 12" />
+          
+          <path class="trace-line trace-gold draw-in" style="animation-delay: 0.6s" d="M 55 35 L 65 35 L 81 19 L 350 19" />
+          <path class="data-packet packet-gold flow-1" style="animation-delay: 1.6s" d="M 55 35 L 65 35 L 81 19 L 350 19" />
 
-          <!-- LM IC Chip Connections (Bus of 4 Traces emerging from chip) -->
-          <path class="trace-line trace-gold draw-in" style="animation-delay: 1.2s" d="M 55 20 L 70 20 L 80 5 L 120 5" />
-          <path class="trace-line trace-gold draw-in" style="animation-delay: 1.4s" d="M 55 35 L 75 35 L 85 15 L 150 15" />
-          <path class="trace-line trace-gold draw-in" style="animation-delay: 1.6s" d="M 55 50 L 68 50 L 85 80 L 180 80" />
-          <path class="data-packet packet-gold flow-1" d="M 55 50 L 68 50 L 85 80 L 180 80" />
-          <path class="trace-line trace-gold draw-in" style="animation-delay: 1.8s" d="M 55 65 L 65 65 L 75 95 L 150 95" />
-
-          <!-- Blue Trace (Micro Side) -->
-          <path class="trace-line trace-blue draw-in" style="animation-delay: 0.8s" d="M 160 10 L 180 10 L 200 30 L 250 30 L 270 10 L 350 10" />
-          <path class="data-packet packet-blue flow-2" d="M 160 10 L 180 10 L 200 30 L 250 30 L 270 10 L 350 10" />
-
-          <!-- Mixed Central Trace -->
-          <path class="trace-line trace-gold draw-in" style="animation-delay: 1.1s" d="M 115 15 L 140 40 L 180 40 L 200 60 L 250 60" />
+          <!-- Bottom Bus (3 Lanes, safely below text Y=70) -->
+          <path class="trace-line trace-blue draw-in" style="animation-delay: 0.3s" d="M 55 45 L 65 45 L 101 81 L 350 81" />
+          <path class="data-packet packet-blue flow-2" style="animation-delay: 1.3s" d="M 55 45 L 65 45 L 101 81 L 350 81" />
+          
+          <path class="trace-line trace-gold draw-in" style="animation-delay: 0.5s" d="M 55 55 L 65 55 L 98 88 L 350 88" />
+          <path class="data-packet packet-gold flow-1" style="animation-delay: 0.5s" d="M 55 55 L 65 55 L 98 88 L 350 88" />
+          
+          <path class="trace-line trace-blue draw-in" style="animation-delay: 0.7s" d="M 55 65 L 65 65 L 95 95 L 350 95" />
+          <path class="data-packet packet-blue flow-2" style="animation-delay: 1.7s" d="M 55 65 L 65 65 L 95 95 L 350 95" />
       </svg>
       
       <a href="index.html" class="nav-logo" style="display: flex; align-items: center; text-decoration: none; white-space: nowrap; position: relative; z-index: 10;">
         <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 6px; flex-shrink: 0;">
         <div class="logo-text-wrapper" style="position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; line-height: 1; width: 230px;">
-          <!-- Absolutely positioned HTML vias locked to text percentages so they NEVER miss their letters! -->
-          <div style="position: absolute; top: -10px; left: 32%; width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid #fde68a; background: #09090b; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 3px rgba(253, 230, 138, 0.5); z-index: 10;"><div style="width: 3px; height: 3px; border-radius: 50%; background: #3b82f6; box-shadow: 0 0 3px rgba(59, 130, 246, 0.8);"></div></div>
-          <div style="position: absolute; top: -20px; left: 82%; width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid #3b82f6; background: #09090b; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 3px rgba(59, 130, 246, 0.5); z-index: 10;"><div style="width: 3px; height: 3px; border-radius: 50%; background: #fde68a; box-shadow: 0 0 3px rgba(253, 230, 138, 0.8);"></div></div>
-
           <div class="logo-top-line" style="font-weight: 800; letter-spacing: 0.5px; font-size: 1.15rem; position: relative; height: 1.2em; width: 100%; display: flex; justify-content: center; align-items: center;">
             
             <!-- Primary State -->
