@@ -2470,7 +2470,13 @@ p {
 }
 
                                 /* ---------- Final Polished Logo Masterpiece ---------- */
-.nav-logo { transition: transform 0.3s ease; position: relative; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+.nav-logo {
+  transition: transform 0.3s ease;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
 
 /* Primary State Container */
 .logo-primary {
@@ -2520,42 +2526,36 @@ p {
 }
 @keyframes textWipeIn {
   0% { opacity: 0; clip-path: inset(0 50% 0 50%); -webkit-clip-path: inset(0 50% 0 50%); letter-spacing: -3px; transform: scale(0.98); }
-  10% { opacity: 1; }
+  5% { opacity: 1; }
   100% { opacity: 1; clip-path: inset(0 -10px 0 -10px); -webkit-clip-path: inset(0 -10px 0 -10px); letter-spacing: -0.5px; transform: scale(1); }
-}
-/* Typographic innovation: Merging Y and M physically */
-/* Initial State (Mu) - Glowing Fade */
-.logo-init-mu {
-  color: var(--accent);
-  font-family: 'Times New Roman', Times, serif;
-  font-style: italic;
-  font-size: 2rem;
-  opacity: 1;
-  text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.4);
-  animation: initialMuFade 1.2s cubic-bezier(0.25, 1, 0.5, 1) 0.5s forwards;
-  z-index: 3;
-  pointer-events: none;
-}
-@keyframes initialMuFade {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(1.5); opacity: 0; visibility: hidden; }
 }
 
-/* Wrapper handles aesthetic clip-path reveal and dramatic letter-spacing slide */
-.logo-text-animator {
+/* Rock-solid iOS Safari fix: Dual layer text, NO background-clip */
+.logo-layer-base {
+  color: var(--text-primary);
   display: inline-flex;
   align-items: center;
+  padding-right: 2px;
+  padding-left: 2px;
   position: relative;
-  opacity: 0;
-  clip-path: inset(0 50% 0 50%);
-  -webkit-clip-path: inset(0 50% 0 50%);
-  animation: textWipeIn 3.5s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
 }
-@keyframes textWipeIn {
-  0% { opacity: 0; clip-path: inset(0 50% 0 50%); -webkit-clip-path: inset(0 50% 0 50%); letter-spacing: -3px; transform: scale(0.98); }
-  10% { opacity: 1; }
-  100% { opacity: 1; clip-path: inset(0 -10px 0 -10px); -webkit-clip-path: inset(0 -10px 0 -10px); letter-spacing: -0.5px; transform: scale(1); }
+.logo-layer-accent {
+  color: var(--accent);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  padding-right: 2px;
+  padding-left: 2px;
+  /* Push clip-path to 55% to reduce blue proportion on the Y */
+  clip-path: inset(0 0 0 54%);
+  -webkit-clip-path: inset(0 0 0 54%);
+  pointer-events: none;
 }
+
 /* Typographic innovation: Skewing MICRO to create a massive single slanting slash with Y */
 .logo-micro {
   display: inline-block;
@@ -2571,33 +2571,10 @@ p {
   font-size: 0.35em;
   font-weight: 500;
   margin-left: 2px;
-  color: var(--accent);
-  text-shadow: 0 0 6px rgba(59, 130, 246, 0.8), 0 0 12px rgba(59, 130, 246, 0.4);
-  transform: translateY(-1em);
+  color: #ef4444; /* High definition red */
+  text-shadow: 0 0 6px rgba(239, 68, 68, 0.8), 0 0 12px rgba(239, 68, 68, 0.4);
+  transform: translateY(-1em) translateZ(0);
   display: inline-block;
-}
-
-.logo-layer-base {
-  color: var(--text-primary);
-  display: inline-flex;
-  align-items: center;
-  padding-right: 2px;
-  padding-left: 2px;
-  position: relative;
-}.logo-layer-accent {
-  color: var(--accent);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  display: inline-flex;
-  align-items: center;
-  padding-right: 2px;
-  padding-left: 2px;
-  clip-path: inset(0 0 0 50.5%);
-  -webkit-clip-path: inset(0 0 0 50.5%);
-  pointer-events: none;
 }
 
 /* Subtitle */
@@ -2606,46 +2583,4 @@ p {
   display: block;
   text-align: center;
   width: 100%;
-}/* Center YM typographic fade in */
-.logo-ym-center {
-  position: relative;
-  z-index: 2;
-  opacity: 0;
-  transform: scale(0.8);
-  animation: fadeYMIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.8s forwards;
-  display: flex;
-}
-@keyframes fadeYMIn {
-  0% { opacity: 0; transform: scale(0.8); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* LEGAC slides out to the left */
-.logo-legac {
-  position: relative;
-  z-index: 1;
-  color: var(--text-primary);
-  opacity: 0;
-  transform: translateX(45px);
-  animation: slideLegac 1s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
-}
-@keyframes slideLegac {
-  0% { opacity: 0; transform: translateX(45px); clip-path: inset(0 0 0 100%); }
-  10% { opacity: 1; }
-  100% { opacity: 1; transform: translateX(0); clip-path: inset(0 0 0 0); }
-}
-
-/* ICRO slides out to the right */
-.logo-icro {
-  position: relative;
-  z-index: 1;
-  color: var(--accent);
-  opacity: 0;
-  transform: translateX(-45px);
-  animation: slideIcro 1s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
-}
-@keyframes slideIcro {
-  0% { opacity: 0; transform: translateX(-45px); clip-path: inset(0 100% 0 0); }
-  10% { opacity: 1; }
-  100% { opacity: 1; transform: translateX(0); clip-path: inset(0 0 0 0); }
 }
