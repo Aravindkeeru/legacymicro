@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@800&display=swap" rel="stylesheet">
+    <style>
+        body { background: #0a0f16; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; font-size: 5rem; margin: 0; }
+        
+        .logo-core-wrapper {
+            display: inline-flex;
+            align-items: baseline;
+        }
+
+        .logo-legacy {
+            font-family: 'Gilroy', 'TT Norms Pro', 'Nexa', 'Mont', 'Outfit', sans-serif;
+            font-weight: 800;
+            color: white;
+            display: inline-block;
+            letter-spacing: -2px; /* Tight geometric tracking */
+        }
+
+        .logo-micro {
+            font-family: 'Gilroy', 'TT Norms Pro', 'Nexa', 'Mont', 'Outfit', sans-serif;
+            font-weight: 800;
+            color: #3b82f6;
+            display: inline-block;
+            /* ExtraBold Italic via skew to perfectly control the merge angle */
+            transform: scaleX(1.05) skewX(-14deg) translateZ(0); 
+            transform-origin: bottom left;
+            margin-left: -0.28em; /* Adjusted for gap reduction */
+            letter-spacing: 0px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-core-wrapper">
+        <span class="logo-legacy">LEGACY</span><!--
+        --><span class="logo-micro">MICRO</span>
+    </div>
+</body>
+</html>
