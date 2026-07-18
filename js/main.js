@@ -1,7 +1,7 @@
-/* ==========================================================================
-   Legacy Microtronix — Main JavaScript
+ï»¿/* ==========================================================================
+   Legacy Microtronix ï¿½ Main JavaScript
    R&A Supply Solutions Pvt Ltd
-   Clean ES6+ · No dependencies
+   Clean ES6+ ï¿½ No dependencies
    ========================================================================== */
 
 (() => {
@@ -351,7 +351,7 @@
   
   if (bgAudio && soundToggle) {
     // Start at 0 volume for fade-in
-    bgAudio.volume = 0.15;
+    bgAudio.volume = 1.0;
     const targetVolume = 1.0; // Very subtle 15% max volume
     let fadeInterval;
     
