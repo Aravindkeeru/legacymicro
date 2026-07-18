@@ -2610,8 +2610,8 @@ p {
 @keyframes turnGold {
   0% { color: var(--text-primary); text-shadow: none; }
   100% { 
-    color: #fcd34d; /* Premium lighter metallic gold */
-    text-shadow: 0 0 15px rgba(252, 211, 77, 0.4); 
+    color: #fde68a; /* Ultra-pale premium champagne gold */
+    text-shadow: 0 0 15px rgba(253, 230, 138, 0.4); 
   }
 }
 
