@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    Legacy Microtronix — Design System v2
    R&A Supply Solutions Pvt Ltd
    Professional dark theme — inspired by Linear, Vercel, Stripe
@@ -1926,9 +1926,8 @@ p {
 
 /* ---------- Claude Trust Signals & Capabilities ---------- */
 .trust-section {
-  padding: var(--space-4xl) 0;
-  background: var(--bg-primary);
-  border-top: 1px solid var(--border);
+    padding: var(--space-4xl) 0;
+    border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
 
@@ -2024,34 +2023,14 @@ p {
 
 /* ---------- Infinite Scrolling Marquee ---------- */
 .marquee-container {
-  width: 100%;
-  overflow: hidden;
-  background: var(--bg-primary);
-  padding: var(--space-xl) 0;
-  position: relative;
-  display: flex;
-}
-
-.marquee-container::before,
-.marquee-container::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.marquee-container::before {
-  left: 0;
-  background: linear-gradient(to right, var(--bg-primary), transparent);
-}
-
-.marquee-container::after {
-  right: 0;
-  background: linear-gradient(to left, var(--bg-primary), transparent);
-}
+    width: 100%;
+    overflow: hidden;
+    padding: var(--space-xl) 0;
+    position: relative;
+    display: flex;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 100px, black calc(100% - 100px), transparent);
+    mask-image: linear-gradient(to right, transparent, black 100px, black calc(100% - 100px), transparent);
+  }
 
 .marquee-track {
   display: flex;
@@ -2263,9 +2242,8 @@ p {
 
 /* ---------- Our Approach Section ---------- */
 .approach-section {
-  padding: var(--space-4xl) 0;
-  background: var(--bg-primary);
-}
+    padding: var(--space-4xl) 0;
+  }
 
 .approach-grid {
   display: grid;
