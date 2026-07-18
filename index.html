@@ -11,7 +11,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://legacy-micro.com">
   <title>Legacy Micro — Source Any Electronic Component. Instantly.</title>
-  <link rel="stylesheet" href="css/style.css?v=81">
+  <link rel="stylesheet" href="css/style.css?v=82">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -91,12 +91,14 @@
           <path class="data-packet packet-gold flow-1" d="M 55 45 L 68 45 L 85 80 L 180 80" />
 
           <!-- Blue Trace (Micro Side) -->
-          <path class="trace-line trace-blue draw-in" style="animation-delay: 0.8s" d="M 160 10 L 180 10 L 200 30 L 260 30 L 280 10 L 350 10" />
-          <path class="data-packet packet-blue flow-2" d="M 160 10 L 180 10 L 200 30 L 260 30 L 280 10 L 350 10" />
+          <!-- Moved blue trace and via to align beautifully above the R (X=250) in MICRO -->
+          <path class="trace-line trace-blue draw-in" style="animation-delay: 0.8s" d="M 160 10 L 180 10 L 200 30 L 230 30 L 250 10 L 350 10" />
+          <path class="data-packet packet-blue flow-2" d="M 160 10 L 180 10 L 200 30 L 230 30 L 250 10 L 350 10" />
           <g class="pcb-via v-2">
               <circle cx="200" cy="30" r="2.5" class="via-blue" />
-              <circle cx="280" cy="10" r="3.5" stroke="#3b82f6" stroke-width="1.5" fill="#09090b" filter="drop-shadow(0 0 3px rgba(59, 130, 246, 0.5))" />
-              <circle cx="280" cy="10" r="1.5" fill="#fde68a" filter="drop-shadow(0 0 3px rgba(253, 230, 138, 0.8))" />
+              <!-- Blue dot with golden inside perfectly above R -->
+              <circle cx="250" cy="10" r="3.5" stroke="#3b82f6" stroke-width="1.5" fill="#09090b" filter="drop-shadow(0 0 3px rgba(59, 130, 246, 0.5))" />
+              <circle cx="250" cy="10" r="1.5" fill="#fde68a" filter="drop-shadow(0 0 3px rgba(253, 230, 138, 0.8))" />
           </g>
 
           <!-- Mixed Central Trace -->
