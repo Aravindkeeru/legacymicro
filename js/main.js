@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    Legacy Microtronix — Main JavaScript
    R&A Supply Solutions Pvt Ltd
    Clean ES6+ · No dependencies
@@ -528,7 +528,7 @@ window.showToast = function(message) {
 
   const toast = document.createElement('div');
   toast.className = 'toast';
-  toast.innerHTML = <i data-lucide="info"></i> <span> + message + </span>;
+  toast.innerHTML = '<i data-lucide="info"></i> <span>' + message + '</span>';
   
   container.appendChild(toast);
   if (window.lucide) window.lucide.createIcons();
