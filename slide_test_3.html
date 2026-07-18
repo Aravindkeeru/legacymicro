@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { background: #0a0f16; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; font-size: 5rem; font-weight: 800; }
+        
+        .logo-ym {
+          display: inline-flex;
+          align-items: center;
+          position: relative;
+          z-index: 5;
+          opacity: 0;
+          animation: ymFadeIn 1s ease 0.5s forwards;
+        }
+        @keyframes ymFadeIn {
+          0% { opacity: 0; transform: scale(0.9); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+
+        .logo-y { color: white; }
+        .logo-m {
+          color: #3b82f6;
+          display: inline-block;
+          transform: skewX(-14deg) translateZ(0);
+          margin-left: -0.22em;
+          transform-origin: bottom left;
+          position: relative;
+          z-index: 6;
+        }
+
+        .logo-legac {
+          color: white;
+          display: inline-block;
+          opacity: 0;
+          transform: translateX(40px);
+          clip-path: inset(0 0 0 100%);
+          -webkit-clip-path: inset(0 0 0 100%);
+          animation: legacSlide 2s cubic-bezier(0.22, 1, 0.36, 1) 1.2s forwards;
+        }
+        @keyframes legacSlide {
+          0% { opacity: 0; transform: translateX(40px); clip-path: inset(0 0 0 100%); -webkit-clip-path: inset(0 0 0 100%); }
+          5% { opacity: 1; }
+          100% { opacity: 1; transform: translateX(0); clip-path: inset(0 0 0 0); -webkit-clip-path: inset(0 0 0 0); }
+        }
+
+        .logo-icro {
+          color: #3b82f6;
+          display: inline-block;
+          opacity: 0;
+          transform: translateX(-40px);
+          clip-path: inset(0 100% 0 0);
+          -webkit-clip-path: inset(0 100% 0 0);
+          animation: icroSlide 2s cubic-bezier(0.22, 1, 0.36, 1) 1.2s forwards;
+        }
+        @keyframes icroSlide {
+          0% { opacity: 0; transform: translateX(-40px); clip-path: inset(0 100% 0 0); -webkit-clip-path: inset(0 100% 0 0); }
+          5% { opacity: 1; }
+          100% { opacity: 1; transform: translateX(0); clip-path: inset(0 0 0 0); -webkit-clip-path: inset(0 0 0 0); }
+        }
+    </style>
+</head>
+<body>
+    <div style="display: inline-flex; align-items: center; justify-content: center; position: relative;">
+        <span class="logo-legac">LEGAC</span>
+        <span class="logo-ym">
+            <span class="logo-y">Y</span><!--
+            --><span class="logo-m">M</span>
+        </span>
+        <span class="logo-icro">ICRO</span>
+    </div>
+</body>
+</html>

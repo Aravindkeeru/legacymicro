@@ -2514,56 +2514,73 @@ p {
   100% { transform: scale(1.5); opacity: 0; visibility: hidden; }
 }
 
-/* Wrapper handles aesthetic clip-path reveal and dramatic letter-spacing slide */
-.logo-text-animator {
+/* Core Wrapper for 3-part animation */
+.logo-core-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* YM Center Fades In First */
+.logo-ym {
   display: inline-flex;
   align-items: center;
   position: relative;
+  z-index: 5;
   opacity: 0;
-  clip-path: inset(0 50% 0 50%);
-  -webkit-clip-path: inset(0 50% 0 50%);
-  animation: textWipeIn 3.5s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
+  animation: ymFadeIn 1s ease 1.5s forwards;
 }
-@keyframes textWipeIn {
-  0% { opacity: 0; clip-path: inset(0 50% 0 50%); -webkit-clip-path: inset(0 50% 0 50%); letter-spacing: -3px; transform: scale(0.98); }
-  5% { opacity: 1; }
-  100% { opacity: 1; clip-path: inset(0 -10px 0 -10px); -webkit-clip-path: inset(0 -10px 0 -10px); letter-spacing: -0.5px; transform: scale(1); }
+@keyframes ymFadeIn {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
-/* Rock-solid iOS Safari fix: Dual layer text, NO background-clip */
-.logo-layer-base {
+.logo-y {
   color: var(--text-primary);
-  display: inline-flex;
-  align-items: center;
-  padding-right: 2px;
-  padding-left: 2px;
-  position: relative;
-}
-.logo-layer-accent {
-  color: var(--accent);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  display: inline-flex;
-  align-items: center;
-  padding-right: 2px;
-  padding-left: 2px;
-  /* Push clip-path to 55% to reduce blue proportion on the Y */
-  clip-path: inset(0 0 0 54%);
-  -webkit-clip-path: inset(0 0 0 54%);
-  pointer-events: none;
 }
 
-/* Typographic innovation: Skewing MICRO to create a massive single slanting slash with Y */
-.logo-micro {
+.logo-m {
+  color: var(--accent);
   display: inline-block;
   transform: skewX(-14deg) translateZ(0);
   backface-visibility: hidden;
-  margin-left: -0.22em; /* Heavily overlaps the skewed M leg perfectly into the Y arm */
-  letter-spacing: inherit;
+  margin-left: -0.22em; /* Physically merges right arm of Y into skewed left leg of M */
   transform-origin: bottom left;
+  position: relative;
+  z-index: 6; /* M sits structurally on top of Y to form the junction */
+}
+
+/* LEGAC slides out to the left */
+.logo-legac {
+  color: var(--text-primary);
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(40px) translateZ(0);
+  clip-path: inset(0 0 0 100%);
+  -webkit-clip-path: inset(0 0 0 100%);
+  animation: legacSlide 3s cubic-bezier(0.22, 1, 0.36, 1) 1.8s forwards;
+}
+@keyframes legacSlide {
+  0% { opacity: 0; transform: translateX(40px) translateZ(0); clip-path: inset(0 0 0 100%); -webkit-clip-path: inset(0 0 0 100%); }
+  5% { opacity: 1; }
+  100% { opacity: 1; transform: translateX(0) translateZ(0); clip-path: inset(0 0 0 0); -webkit-clip-path: inset(0 0 0 0); }
+}
+
+/* ICRO slides out to the right */
+.logo-icro {
+  color: var(--accent);
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-40px) translateZ(0);
+  clip-path: inset(0 100% 0 0);
+  -webkit-clip-path: inset(0 100% 0 0);
+  animation: icroSlide 3s cubic-bezier(0.22, 1, 0.36, 1) 1.8s forwards;
+}
+@keyframes icroSlide {
+  0% { opacity: 0; transform: translateX(-40px) translateZ(0); clip-path: inset(0 100% 0 0); -webkit-clip-path: inset(0 100% 0 0); }
+  5% { opacity: 1; }
+  100% { opacity: 1; transform: translateX(0) translateZ(0); clip-path: inset(0 0 0 0); -webkit-clip-path: inset(0 0 0 0); }
 }
 
 /* Glowing trademark */
