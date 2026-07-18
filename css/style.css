@@ -2643,55 +2643,71 @@ p {
 }
 
 /* ==========================================================================
-   PCB Animated Background for Navbar
+   Premium Aesthetic PCB Animated Background
    ========================================================================== */
 .nav-pcb-bg {
   position: absolute;
   top: 0;
   left: -20px; /* Start slightly offscreen left */
-  width: 320px; /* Stop exactly where the logo ends */
+  width: 360px; /* Stop exactly where the logo ends */
   height: 100%;
   pointer-events: none;
-  opacity: 0;
   z-index: 1;
-  animation: pulsePcbBg 8s ease-in-out infinite alternate 5s;
 }
 
-.pcb-trace {
-  stroke: rgba(255, 255, 255, 0.15);
-  stroke-dasharray: 800;
-  stroke-dashoffset: 800;
-  animation: drawTrace 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
+/* Static structure */
+.pcb-base { stroke: rgba(255, 255, 255, 0.04); stroke-width: 1.5; fill: none; stroke-linejoin: bevel; }
+.pcb-base-thin { stroke: rgba(255, 255, 255, 0.02); stroke-width: 0.75; fill: none; stroke-linejoin: bevel; }
 
-.pcb-node {
+/* Animated Traces */
+.trace-line {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.2);
+  stroke-linejoin: bevel;
+  stroke-linecap: round;
+}
+
+.trace-gold { stroke: rgba(253, 230, 138, 0.35); stroke-width: 1.5; }
+.trace-blue { stroke: rgba(59, 130, 246, 0.35); stroke-width: 1.5; }
+
+/* Data packet flow effect */
+.data-packet {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: bevel;
+  stroke-dasharray: 10 300;
+}
+.packet-gold { stroke: #fde68a; filter: drop-shadow(0 0 4px rgba(253, 230, 138, 0.8)); }
+.packet-blue { stroke: #60a5fa; filter: drop-shadow(0 0 4px rgba(96, 165, 250, 0.8)); }
+
+.draw-in {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 500;
+  animation: drawTrace 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.flow-1 { animation: flowData 4s linear infinite 1s; }
+.flow-2 { animation: flowData 5s linear infinite 2s; }
+.flow-3 { animation: flowData 3.5s linear infinite 0.5s; }
+
+@keyframes drawTrace { to { stroke-dashoffset: 0; } }
+@keyframes flowData {
+  0% { stroke-dashoffset: 310; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { stroke-dashoffset: -10; opacity: 0; }
+}
+
+.pcb-via {
   opacity: 0;
-  animation: fadeInPcbNode 0.5s ease forwards;
+  animation: fadeInVia 0.5s ease forwards;
 }
+.via-gold { fill: #fde68a; filter: drop-shadow(0 0 3px rgba(253, 230, 138, 0.5)); }
+.via-blue { fill: #3b82f6; filter: drop-shadow(0 0 3px rgba(59, 130, 246, 0.5)); }
+.via-dark { fill: #09090b; stroke-width: 1; }
 
-/* Drawing delays to simulate data flow */
-.t-1 { animation-delay: 2.2s; } .n-1 { animation-delay: 4.5s; }
-.t-2 { animation-delay: 2.8s; } .n-2 { animation-delay: 5.1s; }
-.t-3 { animation-delay: 3.4s; } .n-3 { animation-delay: 5.7s; }
-.t-4 { animation-delay: 4.0s; } .n-4 { animation-delay: 6.3s; }
-.t-5 { animation-delay: 4.6s; } .n-5 { animation-delay: 6.9s; }
+.v-1 { animation-delay: 2s; }
+.v-2 { animation-delay: 2.5s; }
+.v-3 { animation-delay: 2.2s; }
 
-@keyframes drawTrace {
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes fadeInPcbNode {
-  to { 
-    opacity: 1; 
-    fill: #fde68a; 
-    stroke: #fde68a; 
-    filter: drop-shadow(0 0 4px rgba(253, 230, 138, 0.6)); 
-  }
-}
-
-@keyframes pulsePcbBg {
-  0% { opacity: 0.3; }
-  100% { opacity: 0.7; }
-}
+@keyframes fadeInVia { to { opacity: 1; } }
