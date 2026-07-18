@@ -2469,210 +2469,7 @@ p {
   }
 }
 
-                                .nav-logo { transition: transform 0.3s ease; position: relative; }
-    
-    /* Initial mu fades out */
-    .logo-init-mu {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--accent);
-      font-family: 'Times New Roman', Times, serif;
-      font-style: italic;
-      font-size: 2rem;
-      pointer-events: none;
-      animation: initialMuFade 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.5s forwards;
-      z-index: 5;
-    }
-    @keyframes initialMuFade {
-      0% { opacity: 0; transform: scale(0.5); }
-      10% { opacity: 1; transform: scale(1.1); }
-      30% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(0.8); visibility: hidden; }
-    }
-
-    /* Primary wrappers */
-    .logo-primary {
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      z-index: 2;
-    }
-    .logo-hover {
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    /* Hover interactions on the wrapper, NOT !important */
-    .nav-logo:hover .logo-primary {
-      opacity: 0;
-      transform: translateY(-10px) scale(0.95);
-    }
-    .nav-logo:hover .logo-hover {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Pure Typographic Logo Reveal */
-    
-    @keyframes textWipeIn {
-      0% { opacity: 0; clip-path: inset(0 50% 0 50%); letter-spacing: -2px; transform: scale(0.95); }
-      10% { opacity: 1; }
-      100% { opacity: 1; clip-path: inset(0 0 0 0); letter-spacing: -0.5px; transform: scale(1); }
-    }
-
-    /* Trusted texts */
-    .logo-tr, .logo-sted { color: #ffffff; }
-    .logo-trusted-mu {
-      color: var(--accent);
-      font-family: 'Times New Roman', Times, serif;
-      font-style: italic;
-      font-size: 1.15em;
-      margin: 0 0.05em;
-    }
-
-    /* Subtitle fade and slide */
-    .logo-subtitle {
-      opacity: 0;
-      transform: translateY(5px);
-      animation: fadeSubtitle 1s cubic-bezier(0.16, 1, 0.3, 1) 1.8s forwards;
-      transition: transform 0.4s ease, color 0.4s ease;
-    }
-    @keyframes fadeSubtitle {
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    .nav-logo:hover .logo-subtitle {
-      transform: translateX(12px);
-      color: #aaa;
-    }
-            /* Flawless Inline SVG CSS */
-    .manufacturer-logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 40px;
-    }
-    .manufacturer-logo svg {
-      color: rgba(255, 255, 255, 0.4);
-      filter: grayscale(100%);
-      transition: all 0.4s ease;
-    }
-    .manufacturer-logo:hover svg {
-      color: rgba(255, 255, 255, 1);
-      filter: grayscale(0%);
-    }
-    
-
-/* ========== Custom Toast Notifications ========== */
-#toast-container {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  pointer-events: none;
-}
-
-.toast {
-  background: var(--bg-card);
-  color: var(--text-primary);
-  padding: 16px 20px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  transform: translateX(120%);
-  opacity: 0;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-  pointer-events: auto;
-}
-
-.toast.show {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.toast i {
-  color: var(--accent);
-}
-
-/* ========== Premium Minimalism Overhaul ========== */
-
-/* Reveal Animations */
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-.reveal-delay-1 { transition-delay: 100ms; }
-.reveal-delay-2 { transition-delay: 200ms; }
-.reveal-delay-3 { transition-delay: 300ms; }
-.reveal-delay-4 { transition-delay: 400ms; }
-
-/* Enhanced Typography & Negative Space */
-body {
-  line-height: 1.7;
-  letter-spacing: -0.01em;
-}
-
-h1, h2, h3 {
-  letter-spacing: -0.04em;
-}
-
-/* Subtle Glow on Interactive Elements */
-.card {
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease !important;
-}
-.card:hover {
-  transform: translateY(-4px) scale(1.01) !important;
-  border-color: var(--border-hover) !important;
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.05) !important;
-}
-
-.btn-primary {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease !important;
-}
-.btn-primary:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 4px 14px rgba(0, 0, 0, 0.25) !important;
-  background: var(--accent-hover) !important;
-}
-
-/* Clean up borders globally */
-.category-card {
-  border: 1px solid var(--border-subtle);
-}
-
-/* Shimmer Effect on Hero Title */
-.hero-title span {
-  position: relative;
-  display: inline-block;
-  background: linear-gradient(90deg, #ffffff 0%, var(--accent) 50%, #ffffff 100%);
-  background-size: 200% auto;
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: shimmer 4s linear infinite;
-}
-
-@keyframes shimmer {
-  to { background-position: 200% center; }
-}
-
-
-
-/* ---------- Typographic Logo Masterpiece ---------- */
+                                /* ---------- Final Polished Logo Masterpiece ---------- */
 .nav-logo { transition: transform 0.3s ease; position: relative; }
 
 /* Primary State Container */
@@ -2691,34 +2488,24 @@ h1, h2, h3 {
   transform: translateY(0) !important;
 }
 .nav-logo:hover .logo-subtitle {
-  transform: translateX(12px) !important;
   color: #aaa !important;
 }
 
-/* Initial State (Mu) */
+/* Initial State (Mu) with Slide Transition */
 .logo-init-mu {
   color: var(--accent);
   font-family: 'Times New Roman', Times, serif;
   font-style: italic;
   font-size: 2rem;
   opacity: 1;
-  animation: initialMuFade 2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: initialMuSlide 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
   z-index: 3;
   pointer-events: none;
 }
-@keyframes initialMuFade {
-  0% { transform: scale(0.5); opacity: 0; }
-  20% { transform: scale(1.2); opacity: 1; }
-  60% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(2.5); opacity: 0; visibility: hidden; }
+@keyframes initialMuSlide {
+  0% { transform: translateX(0); opacity: 1; clip-path: inset(0 0 0 0); }
+  100% { transform: translateX(-30px); opacity: 0; clip-path: inset(0 100% 0 0); visibility: hidden; }
 }
-
-/* 
-  CRITICAL iOS SAFARI FIX:
-  iOS Safari completely breaks when clip-path, transform, and background-clip: text 
-  are applied to the exact same element (renders as a solid box).
-  The fix is to separate concerns: the wrapper handles animations, the inner span handles text gradient.
-*/
 
 /* Wrapper handles animation and clip-path */
 .logo-text-animator {
@@ -2726,7 +2513,7 @@ h1, h2, h3 {
   align-items: center;
   opacity: 0;
   clip-path: inset(0 50% 0 50%);
-  animation: textWipeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
+  animation: textWipeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
 }
 @keyframes textWipeIn {
   0% { opacity: 0; clip-path: inset(0 50% 0 50%); letter-spacing: -2px; transform: scale(0.95); }
@@ -2736,14 +2523,17 @@ h1, h2, h3 {
 
 /* Inner text handles background gradient */
 .logo-main-text {
-  background: linear-gradient(to right, var(--text-primary) 51.5%, var(--accent) 51.5%);
+  background: linear-gradient(to right, var(--text-primary) 50%, var(--accent) 50%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
-  padding-right: 2px; /* Prevent italics or descenders from clipping */
+  padding-right: 2px;
 }
 
 /* Subtitle */
 .logo-subtitle {
-  transition: transform 0.4s ease, color 0.4s ease;
+  transition: color 0.4s ease;
+  display: block;
+  text-align: center;
+  width: 100%;
 }
