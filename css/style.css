@@ -2603,8 +2603,8 @@ p {
   font-size: 0.35em;
   font-weight: 500;
   margin-left: 2px;
-  color: #ef4444; /* High definition red */
-  text-shadow: 0 0 6px rgba(239, 68, 68, 0.8), 0 0 12px rgba(239, 68, 68, 0.4);
+  color: #ef4444 !important; /* High definition red */
+  text-shadow: 0 0 6px rgba(239, 68, 68, 0.8), 0 0 12px rgba(239, 68, 68, 0.4) !important;
   transform: translateY(-1em) translateZ(0);
   display: inline-block;
   opacity: 0;
