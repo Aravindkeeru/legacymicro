@@ -2491,38 +2491,24 @@ p {
   color: #aaa !important;
 }
 
-/* Initial State (Mu) with Slide Transition */
+/* Initial State (Mu) - Glowing Fade */
 .logo-init-mu {
   color: var(--accent);
   font-family: 'Times New Roman', Times, serif;
   font-style: italic;
   font-size: 2rem;
   opacity: 1;
-  animation: initialMuSlide 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.4);
+  animation: initialMuFade 1.2s cubic-bezier(0.25, 1, 0.5, 1) 0.5s forwards;
   z-index: 3;
   pointer-events: none;
 }
-@keyframes initialMuSlide {
-  0% { transform: translateX(0); opacity: 1; clip-path: inset(0 0 0 0); }
-  100% { transform: translateX(-30px); opacity: 0; clip-path: inset(0 100% 0 0); visibility: hidden; }
+@keyframes initialMuFade {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; visibility: hidden; }
 }
 
-/* Wrapper handles animation and clip-path */
-.logo-text-animator {
-  display: inline-flex;
-  align-items: center;
-  opacity: 0;
-  clip-path: inset(0 50% 0 50%);
-  -webkit-clip-path: inset(0 50% 0 50%);
-  animation: textWipeIn 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
-}
-@keyframes textWipeIn {
-  0% { opacity: 0; clip-path: inset(0 50% 0 50%); -webkit-clip-path: inset(0 50% 0 50%); letter-spacing: -2px; transform: scale(0.95); }
-  10% { opacity: 1; }
-  100% { opacity: 1; clip-path: inset(0 -10px 0 -10px); -webkit-clip-path: inset(0 -10px 0 -10px); letter-spacing: -0.5px; transform: scale(1); }
-}
-
-/* Rock-solid iOS Safari fix: Dual layer text, NO background-clip */
+/* Wrapper handles aesthetic clip-path reveal and dramatic letter-spacing slide */
 .logo-text-animator {
   display: inline-flex;
   align-items: center;
@@ -2530,10 +2516,46 @@ p {
   opacity: 0;
   clip-path: inset(0 50% 0 50%);
   -webkit-clip-path: inset(0 50% 0 50%);
-  animation: textWipeIn 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+  animation: textWipeIn 3.5s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
+}
+@keyframes textWipeIn {
+  0% { opacity: 0; clip-path: inset(0 50% 0 50%); -webkit-clip-path: inset(0 50% 0 50%); letter-spacing: -3px; transform: scale(0.98); }
+  10% { opacity: 1; }
+  100% { opacity: 1; clip-path: inset(0 -10px 0 -10px); -webkit-clip-path: inset(0 -10px 0 -10px); letter-spacing: -0.5px; transform: scale(1); }
+}
+/* Typographic innovation: Merging Y and M physically */
+/* Initial State (Mu) - Glowing Fade */
+.logo-init-mu {
+  color: var(--accent);
+  font-family: 'Times New Roman', Times, serif;
+  font-style: italic;
+  font-size: 2rem;
+  opacity: 1;
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.4);
+  animation: initialMuFade 1.2s cubic-bezier(0.25, 1, 0.5, 1) 0.5s forwards;
+  z-index: 3;
+  pointer-events: none;
+}
+@keyframes initialMuFade {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; visibility: hidden; }
 }
 
-/* Typographic innovation: Merging Y and M physically */
+/* Wrapper handles aesthetic clip-path reveal and dramatic letter-spacing slide */
+.logo-text-animator {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  opacity: 0;
+  clip-path: inset(0 50% 0 50%);
+  -webkit-clip-path: inset(0 50% 0 50%);
+  animation: textWipeIn 3.5s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
+}
+@keyframes textWipeIn {
+  0% { opacity: 0; clip-path: inset(0 50% 0 50%); -webkit-clip-path: inset(0 50% 0 50%); letter-spacing: -3px; transform: scale(0.98); }
+  10% { opacity: 1; }
+  100% { opacity: 1; clip-path: inset(0 -10px 0 -10px); -webkit-clip-path: inset(0 -10px 0 -10px); letter-spacing: -0.5px; transform: scale(1); }
+}
 /* Typographic innovation: Skewing MICRO to create a massive single slanting slash with Y */
 .logo-micro {
   display: inline-block;
