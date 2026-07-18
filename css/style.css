@@ -2514,7 +2514,7 @@ p {
   opacity: 0;
   clip-path: inset(0 50% 0 50%);
   -webkit-clip-path: inset(0 50% 0 50%);
-  animation: textWipeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+  animation: textWipeIn 2.2s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
 }
 @keyframes textWipeIn {
   0% { opacity: 0; clip-path: inset(0 50% 0 50%); -webkit-clip-path: inset(0 50% 0 50%); letter-spacing: -2px; transform: scale(0.95); }
