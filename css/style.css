@@ -2672,12 +2672,82 @@ h1, h2, h3 {
 
 
 
-/* Logo Hover Effect */
+/* ---------- Logo Masterpiece Animations ---------- */
+.nav-logo { transition: transform 0.3s ease; position: relative; }
+
+/* Primary State (Slides out) */
+.logo-primary {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 2;
+}
+
+/* Hover interactions */
 .nav-logo:hover .logo-primary {
   opacity: 0 !important;
-  transform: translateY(-10px) !important;
+  transform: translateY(-10px) scale(0.95) !important;
 }
 .nav-logo:hover .logo-hover {
   opacity: 1 !important;
   transform: translateY(0) !important;
+}
+.nav-logo:hover .logo-subtitle {
+  transform: translateX(12px) !important;
+  color: #aaa !important;
+}
+
+/* YM SVG fades in */
+.logo-ym-svg {
+  opacity: 0;
+  transform: scale(0.8);
+  animation: fadeYMIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 1.0s forwards;
+}
+@keyframes fadeYMIn {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Text slides out from center */
+.logo-legac {
+  color: var(--text-primary);
+  opacity: 0;
+  transform: translateX(30px);
+  animation: slideLegac 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+}
+@keyframes slideLegac {
+  0% { opacity: 0; transform: translateX(30px); clip-path: inset(0 0 0 100%); }
+  100% { opacity: 1; transform: translateX(0); clip-path: inset(0 0 0 0); }
+}
+
+.logo-icro {
+  color: var(--accent);
+  opacity: 0;
+  transform: translateX(-30px);
+  animation: slideIcro 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+}
+@keyframes slideIcro {
+  0% { opacity: 0; transform: translateX(-30px); clip-path: inset(0 100% 0 0); }
+  100% { opacity: 1; transform: translateX(0); clip-path: inset(0 0 0 0); }
+}
+
+/* Initial State (Mu) */
+.logo-init-mu {
+  color: var(--accent);
+  font-family: 'Times New Roman', Times, serif;
+  font-style: italic;
+  font-size: 2rem;
+  opacity: 1;
+  animation: initialMuFade 2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  z-index: 3;
+  pointer-events: none;
+}
+@keyframes initialMuFade {
+  0% { transform: scale(0.5); opacity: 0; }
+  20% { transform: scale(1.2); opacity: 1; }
+  60% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; visibility: hidden; }
+}
+
+/* Subtitle */
+.logo-subtitle {
+  transition: transform 0.4s ease, color 0.4s ease;
 }
