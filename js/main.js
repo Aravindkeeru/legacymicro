@@ -350,32 +350,37 @@
   const soundToggle = document.getElementById('soundToggle');
   
   if (bgAudio && soundToggle) {
-    // Start at 0 volume for fade-in
+    // Set to 100% volume so it's clearly audible on all devices
     bgAudio.volume = 1.0;
-    const targetVolume = 1.0; // Very subtle 15% max volume
-    let fadeInterval;
     
-          soundToggle.addEventListener('click', () => {
-        if (bgAudio.paused) {
-          bgAudio.play().then(() => {
-            soundToggle.classList.add('playing');
-            soundToggle.innerHTML = '<i data-lucide="volume-2"></i>';
-            if (typeof window.lucide !== 'undefined') window.lucide.createIcons();
-          }).catch(err => {
-            console.error("Audio playback failed:", err);
-            if (typeof window.showToast === 'function') {
-              window.showToast("Playback blocked by device. Ensure volume is up and mute switch is off.");
-            }
-          });
-        } else {
-          bgAudio.pause();
+    soundToggle.addEventListener('click', () => {
+      if (bgAudio.paused) {
+        // Instant visual feedback for slow connections
+        soundToggle.classList.add('playing');
+        soundToggle.innerHTML = '<i data-lucide="loader" style="animation: spin 1s linear infinite;"></i>';
+        if (typeof window.lucide !== 'undefined') window.lucide.createIcons();
+
+        bgAudio.play().then(() => {
+          soundToggle.innerHTML = '<i data-lucide="volume-2"></i>';
+          if (typeof window.lucide !== 'undefined') window.lucide.createIcons();
+        }).catch(err => {
+          console.error("Audio playback failed:", err);
           soundToggle.classList.remove('playing');
           soundToggle.innerHTML = '<i data-lucide="volume-x"></i>';
           if (typeof window.lucide !== 'undefined') window.lucide.createIcons();
-        }
-      });
-    }
-  };
+          
+          if (typeof window.showToast === 'function') {
+            window.showToast("Playback blocked or loading failed. Ensure volume is up.");
+          }
+        });
+      } else {
+        bgAudio.pause();
+        soundToggle.classList.remove('playing');
+        soundToggle.innerHTML = '<i data-lucide="volume-x"></i>';
+        if (typeof window.lucide !== 'undefined') window.lucide.createIcons();
+      }
+    });
+  }
 
   setupFormspree('quoteForm', 'quoteFormStatus');
   setupFormspree('contactForm', 'contactFormStatus');
