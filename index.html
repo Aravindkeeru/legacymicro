@@ -11,7 +11,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://legacy-micro.com">
   <title>Legacy Micro — Source Any Electronic Component. Instantly.</title>
-  <link rel="stylesheet" href="css/style.css?v=23">
+  <link rel="stylesheet" href="css/style.css?v=24">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
   <!-- ========== Cinematic Video Background ========== -->
   <div class="video-bg-container">
     <video aria-hidden="true" id="bg-video-player" autoplay loop muted="muted" playsinline webkit-playsinline class="video-bg" style="pointer-events: none;">
-      <source src="factory_broll.mp4?v=22" type="video/mp4">
+      <source src="factory_broll.mp4?v=24" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
   </div>
@@ -33,10 +33,11 @@
   <!-- ========== Navigation ========== -->
   <nav class="nav" id="navbar">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo" style="display: flex; align-items: center;">
-        <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 8px;">
-                                        
-          <span class="logo-subtitle" style="font-size: 0.38em; letter-spacing: 1.5px; color: #888; font-weight: 600; margin-top: 3px;">ELECTRONIC COMPONENTS</span>
+            <a href="index.html" class="nav-logo" style="display: flex; align-items: center; text-decoration: none;">
+        <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 12px;">
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start; line-height: 1;">
+          <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.25rem; color: var(--text-primary);">LEGACYMICRO</span>
+          <span style="font-size: 0.45rem; letter-spacing: 1.5px; color: var(--text-secondary); font-weight: 600; margin-top: 4px;">ELECTRONIC COMPONENTS</span>
         </div>
       </a>
       <div class="nav-links" id="navLinks">
@@ -778,12 +779,13 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a href="index.html" class="nav-logo" style="display: flex; align-items: center;">
-            <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 8px;">
-                                            
-          <span class="logo-subtitle" style="font-size: 0.38em; letter-spacing: 1.5px; color: #888; font-weight: 600; margin-top: 3px;">ELECTRONIC COMPONENTS</span>
+                <a href="index.html" class="nav-logo" style="display: flex; align-items: center; text-decoration: none;">
+        <img src="assets/lm-logo.svg" alt="Legacy Micro Logo" style="height: 38px; width: auto; margin-right: 12px;">
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start; line-height: 1;">
+          <span style="font-weight: 800; letter-spacing: -0.5px; font-size: 1.25rem; color: var(--text-primary);">LEGACYMICRO</span>
+          <span style="font-size: 0.45rem; letter-spacing: 1.5px; color: var(--text-secondary); font-weight: 600; margin-top: 4px;">ELECTRONIC COMPONENTS</span>
         </div>
-          </a>
+      </a>
           <p>India's smartest independent distributor for semiconductors, hard-to-find &amp; obsolete electronic components.</p>
           <p class="legal-name">Legacy Micro &bull; Est. 2026</p>
         </div>
@@ -838,7 +840,7 @@
     lucide.createIcons();
   </script>
   <script src="js/main.js"></script>
-  <script src="js/bg_combined.js?v=23"></script>
+  <script src="js/bg_combined.js?v=24"></script>
   <script src="js/search.js"></script>
 <!-- ========== Quote Modal ========== -->
 <div id="quoteModal" class="modal-overlay">
@@ -894,7 +896,9 @@
         video.play().catch(function() {
           console.log("Autoplay prevented by mobile OS");
         });
-      } </script>
+      }
+    });
+  </script>
 </body>
 </html>
 
