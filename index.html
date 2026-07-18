@@ -11,7 +11,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://legacy-micro.com">
   <title>Legacy Micro — Source Any Electronic Component. Instantly.</title>
-  <link rel="stylesheet" href="css/style.css?v=79">
+  <link rel="stylesheet" href="css/style.css?v=80">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -78,13 +78,17 @@
 
           <!-- Animated structural traces -->
           <!-- Gold Trace (Legacy Side) -->
-          <!-- Shifted the start from Y=30 to Y=10 so it never passes behind E -->
-          <path class="trace-line trace-gold draw-in" style="animation-delay: 0.5s" d="M -10 10 L 20 10 L 40 10 L 110 10 L 130 30 L 200 30" />
-          <path class="data-packet packet-gold flow-1" d="M -10 10 L 20 10 L 40 10 L 110 10 L 130 30 L 200 30" />
+          <!-- Restored to original aesthetic shape, but removed the data-packet (dot) so it doesn't cross behind E -->
+          <path class="trace-line trace-gold draw-in" style="animation-delay: 0.5s" d="M -10 30 L 20 30 L 40 10 L 110 10 L 130 30 L 200 30" />
           <g class="pcb-via v-1">
               <circle cx="200" cy="30" r="3.5" class="via-gold" />
               <circle cx="200" cy="30" r="1.5" class="via-dark" />
           </g>
+
+          <!-- LM IC Chip Connection (New) -->
+          <!-- Takes connection from the left IC chip and routes safely underneath the text -->
+          <path class="trace-line trace-gold draw-in" style="animation-delay: 1.5s" d="M 5 50 L 25 50 L 55 80 L 180 80" />
+          <path class="data-packet packet-gold flow-1" d="M 5 50 L 25 50 L 55 80 L 180 80" />
 
           <!-- Blue Trace (Micro Side) -->
           <!-- Moved blue trace and via to align beautifully above the R in MICRO -->
