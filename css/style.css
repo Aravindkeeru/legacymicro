@@ -2603,7 +2603,9 @@ p {
 .logo-reg {
   font-size: 0.35em;
   font-weight: 500;
-  margin-left: 2px;
+  margin-left: 8px; /* Increased to clear the skewed O */
+  position: relative;
+  z-index: 10; /* Ensures it renders above MICRO */
   color: #ef4444 !important; /* High definition red */
   text-shadow: 0 0 6px rgba(239, 68, 68, 0.8), 0 0 12px rgba(239, 68, 68, 0.4) !important;
   transform: translateY(-1em) translateZ(0);
