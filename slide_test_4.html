@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { background: #0a0f16; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; font-size: 5rem; font-weight: 800; }
+        
+        .logo-wrapper {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .logo-legacy-container {
+            display: inline-flex;
+            max-width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            /* Slide left out of the MICRO block while expanding */
+            animation: expandLegacy 2.5s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
+            justify-content: flex-end; /* Keeps the text attached to MICRO while expanding */
+        }
+
+        @keyframes expandLegacy {
+            0% { max-width: 0; opacity: 0; }
+            10% { opacity: 1; }
+            100% { max-width: 20em; opacity: 1; } /* 20em is arbitrary large enough value */
+        }
+
+        .logo-legacy {
+            color: white;
+            /* We want it to look like it's sliding out from behind MICRO */
+            /* Actually, if justify-content: flex-end, the text is glued to the right edge! */
+            /* This means LEGACY slides OUT to the left! */
+        }
+
+        .logo-micro-container {
+            display: inline-flex;
+            position: relative;
+        }
+
+        .logo-mu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #3b82f6;
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            animation: swapMu 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+        }
+        @keyframes swapMu {
+            0% { opacity: 1; transform: translate(-50%, -50%) translateY(0); }
+            100% { opacity: 0; transform: translate(-50%, -50%) translateY(-20px); visibility: hidden; }
+        }
+
+        .logo-micro {
+            color: #3b82f6;
+            transform: skewX(-14deg) translateZ(0);
+            margin-left: -0.22em; /* The merge overlap */
+            transform-origin: bottom left;
+            opacity: 0;
+            animation: swapMicro 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+        }
+        @keyframes swapMicro {
+            0% { opacity: 0; transform: skewX(-14deg) translateY(20px); }
+            100% { opacity: 1; transform: skewX(-14deg) translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-wrapper">
+        <div class="logo-legacy-container">
+            <span class="logo-legacy">LEGACY</span>
+        </div>
+        <div class="logo-micro-container">
+            <span class="logo-mu">&#956;</span>
+            <span class="logo-micro">MICRO</span>
+        </div>
+    </div>
+</body>
+</html>

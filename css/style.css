@@ -2497,24 +2497,7 @@ p {
   color: #aaa !important;
 }
 
-/* Initial State (Mu) - Glowing Fade */
-.logo-init-mu {
-  color: var(--accent);
-  font-family: 'Times New Roman', Times, serif;
-  font-style: italic;
-  font-size: 2rem;
-  opacity: 1;
-  text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.4);
-  animation: initialMuFade 1.2s cubic-bezier(0.25, 1, 0.5, 1) 0.5s forwards;
-  z-index: 3;
-  pointer-events: none;
-}
-@keyframes initialMuFade {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(1.5); opacity: 0; visibility: hidden; }
-}
-
-/* Core Wrapper for 3-part animation */
+/* Core Wrapper for 2-part animation */
 .logo-core-wrapper {
   display: inline-flex;
   align-items: center;
@@ -2522,65 +2505,71 @@ p {
   position: relative;
 }
 
-/* YM Center Fades In First */
-.logo-ym {
+/* LEGACY expands and slides to the left */
+.logo-legacy-container {
   display: inline-flex;
-  align-items: center;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  justify-content: flex-end; /* Anchors the text to MICRO while expanding */
+  animation: expandLegacy 3s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
   position: relative;
   z-index: 5;
-  opacity: 0;
-  animation: ymFadeIn 1s ease 1.5s forwards;
 }
-@keyframes ymFadeIn {
-  0% { opacity: 0; transform: scale(0.95); }
-  100% { opacity: 1; transform: scale(1); }
+@keyframes expandLegacy {
+  0% { max-width: 0; opacity: 0; }
+  5% { opacity: 1; }
+  100% { max-width: 150px; opacity: 1; } /* Large enough to fit LEGACY */
 }
 
-.logo-y {
+.logo-legacy {
   color: var(--text-primary);
+  display: inline-block;
+  padding-right: 0.1em; /* Slight padding to offset the M negative margin */
 }
 
-.logo-m {
+/* MICRO anchor container */
+.logo-micro-container {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Glowing Mu Intro */
+.logo-mu-intro {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--accent);
+  font-family: 'Times New Roman', Times, serif;
+  font-style: italic;
+  font-size: 2rem;
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.4);
+  animation: swapMu 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+}
+@keyframes swapMu {
+  0% { opacity: 1; transform: translate(-50%, -50%) translateY(0); }
+  100% { opacity: 0; transform: translate(-50%, -50%) translateY(-20px); visibility: hidden; }
+}
+
+/* The full word MICRO skewed */
+.logo-micro-text {
   color: var(--accent);
   display: inline-block;
   transform: skewX(-14deg) translateZ(0);
-  backface-visibility: hidden;
-  margin-left: -0.22em; /* Physically merges right arm of Y into skewed left leg of M */
+  margin-left: -0.32em; /* Negative margin pulls M back over the Y when LEGACY appears */
   transform-origin: bottom left;
+  backface-visibility: hidden;
   position: relative;
   z-index: 6; /* M sits structurally on top of Y to form the junction */
-}
-
-/* LEGAC slides out to the left */
-.logo-legac {
-  color: var(--text-primary);
-  display: inline-block;
   opacity: 0;
-  transform: translateX(40px) translateZ(0);
-  clip-path: inset(0 0 0 100%);
-  -webkit-clip-path: inset(0 0 0 100%);
-  animation: legacSlide 3s cubic-bezier(0.22, 1, 0.36, 1) 1.8s forwards;
+  animation: swapMicro 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
 }
-@keyframes legacSlide {
-  0% { opacity: 0; transform: translateX(40px) translateZ(0); clip-path: inset(0 0 0 100%); -webkit-clip-path: inset(0 0 0 100%); }
-  5% { opacity: 1; }
-  100% { opacity: 1; transform: translateX(0) translateZ(0); clip-path: inset(0 0 0 0); -webkit-clip-path: inset(0 0 0 0); }
-}
-
-/* ICRO slides out to the right */
-.logo-icro {
-  color: var(--accent);
-  display: inline-block;
-  opacity: 0;
-  transform: translateX(-40px) translateZ(0);
-  clip-path: inset(0 100% 0 0);
-  -webkit-clip-path: inset(0 100% 0 0);
-  animation: icroSlide 3s cubic-bezier(0.22, 1, 0.36, 1) 1.8s forwards;
-}
-@keyframes icroSlide {
-  0% { opacity: 0; transform: translateX(-40px) translateZ(0); clip-path: inset(0 100% 0 0); -webkit-clip-path: inset(0 100% 0 0); }
-  5% { opacity: 1; }
-  100% { opacity: 1; transform: translateX(0) translateZ(0); clip-path: inset(0 0 0 0); -webkit-clip-path: inset(0 0 0 0); }
+@keyframes swapMicro {
+  0% { opacity: 0; transform: skewX(-14deg) translateY(20px); }
+  100% { opacity: 1; transform: skewX(-14deg) translateY(0); }
 }
 
 /* Glowing trademark */
@@ -2592,6 +2581,8 @@ p {
   text-shadow: 0 0 6px rgba(239, 68, 68, 0.8), 0 0 12px rgba(239, 68, 68, 0.4);
   transform: translateY(-1em) translateZ(0);
   display: inline-block;
+  opacity: 0;
+  animation: ymFadeIn 1s ease 1.5s forwards; /* Fades in with LEGACY */
 }
 
 /* Subtitle */
