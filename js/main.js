@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    Legacy Microtronix — Main JavaScript
    R&A Supply Solutions Pvt Ltd
    Clean ES6+ · No dependencies
