@@ -2601,10 +2601,10 @@ p {
   color: var(--text-primary);
   display: inline-block;
   padding-right: 0.1em;
-  font-family: 'Gilroy', 'TT Norms Pro', 'Nexa', 'Mont', 'Outfit', 'Montserrat', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-weight: 800;
   font-style: normal;
-  letter-spacing: -1px; /* Tighter geometric tracking */
+  letter-spacing: -0.5px; /* Slightly relaxed tracking for better legibility */
   animation: turnGold 2s ease forwards 2.5s; /* Turns gold earlier */
 }
 @keyframes turnGold {
@@ -2640,6 +2640,31 @@ p {
   display: block;
   text-align: center;
   width: 100%;
+}
+
+.flip-words {
+  display: grid;
+  height: 100%;
+  width: 100%;
+}
+.flip-word {
+  grid-area: 1/1;
+  opacity: 0;
+  animation: flipWordAnim 16s infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+}
+.flip-word:nth-child(1) { animation-delay: 0s; }
+.flip-word:nth-child(2) { animation-delay: 4s; }
+.flip-word:nth-child(3) { animation-delay: 8s; }
+.flip-word:nth-child(4) { animation-delay: 12s; }
+
+@keyframes flipWordAnim {
+  0%, 2% { opacity: 0; transform: translateY(10px); }
+  5%, 22% { opacity: 1; transform: translateY(0); }
+  25%, 100% { opacity: 0; transform: translateY(-10px); }
 }
 
 /* ==========================================================================
