@@ -2515,14 +2515,7 @@ p {
     }
 
     /* Pure Typographic Logo Reveal */
-    .logo-main-text {
-      background: linear-gradient(to right, #ffffff 51%, var(--accent) 51%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      opacity: 0;
-      clip-path: inset(0 50% 0 50%);
-      animation: textWipeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
-    }
+    
     @keyframes textWipeIn {
       0% { opacity: 0; clip-path: inset(0 50% 0 50%); letter-spacing: -2px; transform: scale(0.95); }
       10% { opacity: 1; }
