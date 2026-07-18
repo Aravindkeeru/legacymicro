@@ -11,7 +11,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://legacy-micro.com">
   <title>Legacy Micro — Source Any Electronic Component. Instantly.</title>
-  <link rel="stylesheet" href="css/style.css?v=73">
+  <link rel="stylesheet" href="css/style.css?v=74">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -78,23 +78,23 @@
 
           <!-- Animated structural traces -->
           <!-- Gold Trace (Legacy Side) -->
-          <!-- Shifted slightly so it doesn't place a glowing dot right between L and E -->
-          <path class="trace-line trace-gold draw-in" style="animation-delay: 0.5s" d="M -10 30 L 20 30 L 40 50 L 110 50 L 130 30 L 200 30" />
-          <path class="data-packet packet-gold flow-1" d="M -10 30 L 20 30 L 40 50 L 110 50 L 130 30 L 200 30" />
+          <!-- Routed slightly higher to avoid text core and removed the dot behind E -->
+          <path class="trace-line trace-gold draw-in" style="animation-delay: 0.5s" d="M -10 30 L 20 30 L 40 10 L 110 10 L 130 30 L 200 30" />
+          <path class="data-packet packet-gold flow-1" d="M -10 30 L 20 30 L 40 10 L 110 10 L 130 30 L 200 30" />
           <g class="pcb-via v-1">
-              <circle cx="110" cy="50" r="2.5" class="via-gold" />
               <circle cx="200" cy="30" r="3.5" class="via-gold" />
               <circle cx="200" cy="30" r="1.5" class="via-dark" />
           </g>
 
           <!-- Blue Trace (Micro Side) -->
-          <!-- Moved entirely above the subtitle to stop it from disturbing the text -->
-          <path class="trace-line trace-blue draw-in" style="animation-delay: 0.8s" d="M 160 20 L 180 20 L 200 40 L 280 40 L 300 20 L 350 20" />
-          <path class="data-packet packet-blue flow-2" d="M 160 20 L 180 20 L 200 40 L 280 40 L 300 20 L 350 20" />
+          <!-- Moved blue trace and via to align beautifully above the R in MICRO -->
+          <path class="trace-line trace-blue draw-in" style="animation-delay: 0.8s" d="M 160 10 L 180 10 L 200 30 L 260 30 L 280 10 L 350 10" />
+          <path class="data-packet packet-blue flow-2" d="M 160 10 L 180 10 L 200 30 L 260 30 L 280 10 L 350 10" />
           <g class="pcb-via v-2">
-              <circle cx="200" cy="40" r="2.5" class="via-blue" />
-              <circle cx="300" cy="20" r="3.5" class="via-blue" />
-              <circle cx="300" cy="20" r="1.5" class="via-dark" />
+              <circle cx="200" cy="30" r="2.5" class="via-blue" />
+              <!-- Ring via above the R -->
+              <circle cx="280" cy="10" r="3.5" class="via-blue" />
+              <circle cx="280" cy="10" r="1.5" class="via-dark" />
           </g>
 
           <!-- Mixed Central Trace -->
