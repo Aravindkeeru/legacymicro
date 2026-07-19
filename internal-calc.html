@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -265,17 +265,33 @@
                 tr.querySelector('.in-cost').value = parseFloat(priceStr);
               }
               
-              // Very rough HS code guessing based on category if Mouser doesn't provide exact Tariffs field reliably
+                            // Very rough HS code guessing based on category if Mouser doesn't provide exact Tariffs field reliably
               let guessedHS = 'Unknown';
-              const cat = (part.Category || '').toLowerCase();
-              if (cat.includes('microcontroller') || cat.includes('processor')) guessedHS = '85423100';
-              else if (cat.includes('memory')) guessedHS = '85423200';
-              else if (cat.includes('capacitor')) guessedHS = '85322200';
-              else if (cat.includes('resistor')) guessedHS = '85332111';
-              else if (cat.includes('connector')) guessedHS = '85366910';
-              else if (cat.includes('integrated circuit')) guessedHS = '85423900';
               
-              if (guessedHS !== 'Unknown') {
+              // First try to see if Mouser provided it in ProductCompliance
+              if (part.ProductCompliance && part.ProductCompliance.length > 0) {
+                const compliance = part.ProductCompliance[0];
+                if (compliance.Tariffs && compliance.Tariffs.length > 0) {
+                  guessedHS = compliance.Tariffs[0].replace(/\D/g, '');
+                }
+              }
+
+              // Fallback to category guessing
+              if (guessedHS === 'Unknown' || guessedHS === '') {
+                const cat = (part.Category || '').toLowerCase();
+                const desc = (part.Description || '').toLowerCase();
+                if (cat.includes('microcontroller') || cat.includes('processor')) guessedHS = '85423100';
+                else if (cat.includes('memory')) guessedHS = '85423200';
+                else if (cat.includes('capacitor')) guessedHS = '85322200';
+                else if (cat.includes('resistor')) guessedHS = '85332111';
+                else if (cat.includes('connector')) guessedHS = '85366910';
+                else if (cat.includes('converter') || cat.includes('power supply') || desc.includes('dc-dc')) guessedHS = '850440';
+                else if (cat.includes('integrated circuit') || cat.includes('ic')) guessedHS = '85423900';
+                else if (cat.includes('diode')) guessedHS = '85411000';
+                else if (cat.includes('transistor')) guessedHS = '85412100';
+              }
+              
+              if (guessedHS !== 'Unknown' && guessedHS !== '') {
                 const hsInput = tr.querySelector('.in-hs');
                 hsInput.value = guessedHS;
                 lookupHS(hsInput);
@@ -298,4 +314,5 @@
   </script>
 </body>
 </html>
+
 
