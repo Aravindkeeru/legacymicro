@@ -2924,3 +2924,32 @@ p {
     display: flex;
   }
 }
+
+/* ========== Floating RFQ Button ========== */
+.floating-rfq {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  box-shadow: 0 4px 20px rgba(0, 240, 255, 0.3);
+  animation: pulse-glow 2s infinite;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 50px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.floating-rfq:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(0, 240, 255, 0.5);
+}
+@media (max-width: 768px) {
+  .floating-rfq {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}
