@@ -227,7 +227,11 @@
     const inputPart = document.getElementById('modalPart');
     const inputMessage = document.getElementById('modalMessage');
     
-    if (modal) modal.classList.add('active');
+    if (modal) {
+      modal.classList.add('active');
+      // Ensure close button renders correctly in case it was missed
+      if (window.lucide) window.lucide.createIcons();
+    }
     
     if (inputPart) {
       inputPart.value = partNumber;
@@ -239,6 +243,23 @@
       }
     }
   };
+
+  window.closeQuoteModal = function() {
+    const modal = document.getElementById('quoteModal');
+    if (modal) modal.classList.remove('active');
+  };
+
+  // Close modal when clicking outside of it
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('quoteModal');
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          window.closeQuoteModal();
+        }
+      });
+    }
+  });
 
   // Pre-load CSV in background on page init
   loadInventoryCSV();
