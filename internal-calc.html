@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -79,8 +79,9 @@
   </div>
 
   <script>
-    // HS Code mini-database for auto-population
+        // HS Code mini-database for auto-population
     const hsDB = {
+      // Exact matches
       '85423100': { bcd: 0, sws: 10, igst: 18, note: 'Processors & Controllers. Free trade eligible.' },
       '85423200': { bcd: 0, sws: 10, igst: 18, note: 'Memories. Free trade eligible.' },
       '85423900': { bcd: 0, sws: 10, igst: 18, note: 'Other ICs. Check for specific classifications.' },
@@ -90,14 +91,30 @@
       '85411000': { bcd: 0, sws: 10, igst: 18, note: 'Diodes.' },
       '85412100': { bcd: 0, sws: 10, igst: 18, note: 'Transistors.' },
       '85044090': { bcd: 15, sws: 10, igst: 18, note: 'Static converters/Power supplies. BIS Certification Mandatory!' },
-      '85076000': { bcd: 20, sws: 10, igst: 18, note: 'Lithium-ion batteries. BIS Certification Mandatory!' }
+      '85076000': { bcd: 20, sws: 10, igst: 18, note: 'Lithium-ion batteries. BIS Certification Mandatory!' },
+      
+      // Fallback 6-digit prefixes
+      '850440': { bcd: 15, sws: 10, igst: 18, note: 'Static Converters (e.g., DC-DC). Check BIS requirements.' },
+      '854231': { bcd: 0, sws: 10, igst: 18, note: 'Processors & Controllers.' },
+      '854232': { bcd: 0, sws: 10, igst: 18, note: 'Memories.' },
+      '854239': { bcd: 0, sws: 10, igst: 18, note: 'Integrated Circuits.' },
+      '853669': { bcd: 10, sws: 10, igst: 18, note: 'Connectors/Plugs. BCD applies!' },
+      
+      // Fallback 4-digit prefixes
+      '8542': { bcd: 0, sws: 10, igst: 18, note: 'Integrated Circuits general category.' },
+      '8541': { bcd: 0, sws: 10, igst: 18, note: 'Semiconductor Devices / Diodes.' },
+      '8532': { bcd: 0, sws: 10, igst: 18, note: 'Capacitors general category.' },
+      '8533': { bcd: 0, sws: 10, igst: 18, note: 'Resistors general category.' },
+      '8504': { bcd: 15, sws: 10, igst: 18, note: 'Transformers & Converters. Verify BCD & BIS.' },
+      '8536': { bcd: 10, sws: 10, igst: 18, note: 'Electrical switches/connectors. BCD applies!' },
+      '8544': { bcd: 15, sws: 10, igst: 18, note: 'Insulated wire/cable. BCD applies.' }
     };
 
     const tbody = document.querySelector('#calcTable tbody');
 
     function createRow() {
       const tr = document.createElement('tr');
-      tr.innerHTML = `
+      tr.innerHTML = \
         <td><input type="text" class="in-part" placeholder="e.g. STM32F407VGT6" onchange="calculateRow(this)"></td>
         <td><input type="number" class="in-cost" placeholder="0.00" step="0.01" oninput="calculateRow(this)"></td>
         <td><input type="text" class="in-hs" placeholder="e.g. 85423100" oninput="lookupHS(this)" onchange="calculateRow(this)"></td>
@@ -111,7 +128,7 @@
         <td><input type="text" class="out-landed" readonly value="₹0.00"></td>
         <td><input type="text" class="out-price" readonly value="₹0.00"></td>
         <td class="row-actions"><button onclick="this.closest('tr').remove();">X</button></td>
-      `;
+      \;
       return tr;
     }
 
@@ -121,8 +138,14 @@
 
     function lookupHS(input) {
       const tr = input.closest('tr');
-      const val = input.value.trim();
-      const match = hsDB[val];
+      const val = input.value.trim().replace(/\D/g, ''); // strip non-numeric
+
+      // Try exact, then 8-digit, 6-digit, 4-digit prefix
+      let match = hsDB[val] || 
+                  hsDB[val.substring(0, 8)] || 
+                  hsDB[val.substring(0, 6)] || 
+                  hsDB[val.substring(0, 4)];
+
       const badge = tr.querySelector('.note-badge');
       const noteTxt = tr.querySelector('.note-text');
 
@@ -275,3 +298,4 @@
   </script>
 </body>
 </html>
+
