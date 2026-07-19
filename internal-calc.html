@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internal Utility: Freight & Customs Calculator</title>
+  <link rel="stylesheet" href="css/style.css?v=99">
+  <style>
+    body { padding-top: 20px; background: var(--bg-secondary); }
+    .calc-container { max-width: 1400px; margin: 0 auto; background: var(--bg-primary); padding: var(--space-lg); border-radius: var(--radius-md); border: 1px solid var(--border); box-shadow: var(--shadow-md); }
+    .calc-header { border-bottom: 1px solid var(--border); padding-bottom: var(--space-md); margin-bottom: var(--space-md); }
+    .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg); }
+    .setting-group label { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; }
+    .setting-group input { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-tertiary); color: var(--text-primary); }
+    .items-table { width: 100%; border-collapse: collapse; margin-bottom: var(--space-md); font-size: 0.85rem; }
+    .items-table th, .items-table td { border: 1px solid var(--border); padding: 8px; text-align: left; }
+    .items-table th { background: var(--bg-tertiary); color: var(--text-secondary); font-weight: 600; }
+    .items-table input { width: 100%; padding: 4px; border: 1px solid var(--border); background: transparent; color: var(--text-primary); border-radius: var(--radius-sm); }
+    .items-table input[readonly] { background: var(--bg-tertiary); cursor: not-allowed; border: none; }
+    .row-actions button { padding: 4px 8px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    .row-actions button:hover { background: #dc2626; }
+    .btn-add { margin-bottom: var(--space-lg); }
+    .note-badge { display: inline-block; padding: 2px 6px; font-size: 0.7rem; border-radius: 4px; background: #f59e0b; color: #fff; margin-top: 4px; display: none;}
+    .api-status { font-size: 0.8rem; margin-top: 4px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="calc-container">
+    <div class="calc-header">
+      <h2><span style="color:var(--accent)">Legacy Micro</span> Internal Utility: Landing Cost Calculator</h2>
+      <p style="color:var(--text-secondary); font-size:0.9rem;">Calculate landed costs and selling prices for imported components. HS Code lookups are simulated from a local database for common electronics.</p>
+    </div>
+
+    <!-- Global Settings -->
+    <div class="settings-grid">
+      <div class="setting-group">
+        <label>Exchange Rate (USD to INR)</label>
+        <input type="number" id="setExRate" value="83.50" step="0.1">
+      </div>
+      <div class="setting-group">
+        <label>Freight/Insurance Overhead (%)</label>
+        <input type="number" id="setFreight" value="5" step="0.1">
+      </div>
+      <div class="setting-group">
+        <label>Default Margin (%)</label>
+        <input type="number" id="setMargin" value="20" step="1">
+      </div>
+      <div class="setting-group">
+        <label>Mouser API Key (Optional)</label>
+        <input type="password" id="setMouserApi" placeholder="Enter API Key to auto-fetch parts">
+        <div class="api-status" id="apiStatus">Not configured</div>
+      </div>
+    </div>
+
+    <!-- Items Table -->
+    <button class="btn btn-primary btn-sm btn-add" onclick="addRow()">+ Add Line Item</button>
+    
+    <div style="overflow-x: auto;">
+      <table class="items-table" id="calcTable">
+        <thead>
+          <tr>
+            <th width="15%">Part Number <button onclick="fetchMouserAll()" style="font-size:0.7rem; margin-left:4px; padding:2px 4px; cursor:pointer;" title="Attempts to fetch Cost and HS Code from Mouser API using CORS Proxy">Fetch Data</button></th>
+            <th width="8%">Unit Cost (USD)</th>
+            <th width="12%">HS Code</th>
+            <th width="8%">BCD (%)</th>
+            <th width="8%">SWS (%)</th>
+            <th width="8%">IGST (%)</th>
+            <th width="12%">Cert / Notes</th>
+            <th width="10%">Landed Cost (INR, ex. IGST)</th>
+            <th width="10%">Target Selling Price (INR)</th>
+            <th width="5%">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows will be injected here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // HS Code mini-database for auto-population
+    const hsDB = {
+      '85423100': { bcd: 0, sws: 10, igst: 18, note: 'Processors & Controllers. Free trade eligible.' },
+      '85423200': { bcd: 0, sws: 10, igst: 18, note: 'Memories. Free trade eligible.' },
+      '85423900': { bcd: 0, sws: 10, igst: 18, note: 'Other ICs. Check for specific classifications.' },
+      '85322200': { bcd: 0, sws: 10, igst: 18, note: 'Aluminum electrolytic capacitors.' },
+      '85366910': { bcd: 10, sws: 10, igst: 18, note: 'Plugs and sockets. BCD applies!' },
+      '85332111': { bcd: 0, sws: 10, igst: 18, note: 'Fixed resistors.' },
+      '85411000': { bcd: 0, sws: 10, igst: 18, note: 'Diodes.' },
+      '85412100': { bcd: 0, sws: 10, igst: 18, note: 'Transistors.' },
+      '85044090': { bcd: 15, sws: 10, igst: 18, note: 'Static converters/Power supplies. BIS Certification Mandatory!' },
+      '85076000': { bcd: 20, sws: 10, igst: 18, note: 'Lithium-ion batteries. BIS Certification Mandatory!' }
+    };
+
+    const tbody = document.querySelector('#calcTable tbody');
+
+    function createRow() {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="text" class="in-part" placeholder="e.g. STM32F407VGT6" onchange="calculateRow(this)"></td>
+        <td><input type="number" class="in-cost" placeholder="0.00" step="0.01" oninput="calculateRow(this)"></td>
+        <td><input type="text" class="in-hs" placeholder="e.g. 85423100" oninput="lookupHS(this)" onchange="calculateRow(this)"></td>
+        <td><input type="number" class="in-bcd" value="0" step="0.1" oninput="calculateRow(this)"></td>
+        <td><input type="number" class="in-sws" value="10" step="1" oninput="calculateRow(this)"></td>
+        <td><input type="number" class="in-igst" value="18" step="1" oninput="calculateRow(this)"></td>
+        <td>
+          <span class="note-badge"></span>
+          <div class="note-text" style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;"></div>
+        </td>
+        <td><input type="text" class="out-landed" readonly value="₹0.00"></td>
+        <td><input type="text" class="out-price" readonly value="₹0.00"></td>
+        <td class="row-actions"><button onclick="this.closest('tr').remove();">X</button></td>
+      `;
+      return tr;
+    }
+
+    function addRow() {
+      tbody.appendChild(createRow());
+    }
+
+    function lookupHS(input) {
+      const tr = input.closest('tr');
+      const val = input.value.trim();
+      const match = hsDB[val];
+      const badge = tr.querySelector('.note-badge');
+      const noteTxt = tr.querySelector('.note-text');
+
+      if (match) {
+        tr.querySelector('.in-bcd').value = match.bcd;
+        tr.querySelector('.in-sws').value = match.sws;
+        tr.querySelector('.in-igst').value = match.igst;
+        
+        noteTxt.textContent = match.note;
+        if (match.note.includes('BIS')) {
+          badge.style.display = 'inline-block';
+          badge.textContent = 'BIS REQ';
+          tr.style.backgroundColor = 'rgba(239, 68, 68, 0.05)';
+        } else {
+          badge.style.display = 'none';
+          tr.style.backgroundColor = '';
+        }
+      } else {
+        noteTxt.textContent = 'Unknown HS. Verify duties manually.';
+        badge.style.display = 'none';
+        tr.style.backgroundColor = '';
+      }
+      calculateRow(input);
+    }
+
+    function calculateRow(el) {
+      const tr = el.closest('tr');
+      const exRate = parseFloat(document.getElementById('setExRate').value) || 83.5;
+      const freightPct = parseFloat(document.getElementById('setFreight').value) || 0;
+      const marginPct = parseFloat(document.getElementById('setMargin').value) || 0;
+
+      const costUSD = parseFloat(tr.querySelector('.in-cost').value) || 0;
+      const bcd = parseFloat(tr.querySelector('.in-bcd').value) || 0;
+      const sws = parseFloat(tr.querySelector('.in-sws').value) || 0;
+      // const igst = parseFloat(tr.querySelector('.in-igst').value) || 0; // IGST usually creditable, excluded from base cost
+
+      if (costUSD > 0) {
+        // 1. Assessable Value (CIF)
+        const assessableUSD = costUSD * (1 + (freightPct / 100));
+        const assessableINR = assessableUSD * exRate;
+
+        // 2. Basic Customs Duty
+        const dutyAmt = assessableINR * (bcd / 100);
+        
+        // 3. Social Welfare Surcharge (SWS is applied on the BCD amount)
+        const swsAmt = dutyAmt * (sws / 100);
+
+        // Landed Cost (excluding IGST since it's creditable input tax)
+        const landedCost = assessableINR + dutyAmt + swsAmt;
+        
+        // Target Selling Price (markup on landed cost)
+        const sellingPrice = landedCost * (1 + (marginPct / 100));
+
+        tr.querySelector('.out-landed').value = `₹${landedCost.toFixed(2)}`;
+        tr.querySelector('.out-price').value = `₹${sellingPrice.toFixed(2)}`;
+      } else {
+        tr.querySelector('.out-landed').value = `₹0.00`;
+        tr.querySelector('.out-price').value = `₹0.00`;
+      }
+    }
+
+    // Attach listeners to global settings
+    document.querySelectorAll('.settings-grid input').forEach(inp => {
+      inp.addEventListener('input', () => {
+        document.querySelectorAll('#calcTable tbody tr').forEach(tr => calculateRow(tr.querySelector('.in-cost')));
+      });
+    });
+
+    // Mock API Fetch (Demonstrates how Mouser API integration works via CORS proxy)
+    async function fetchMouserAll() {
+      const apiKey = document.getElementById('setMouserApi').value.trim();
+      const status = document.getElementById('apiStatus');
+      if (!apiKey) {
+        status.textContent = 'Please enter a Mouser API Key first.';
+        status.style.color = '#ef4444';
+        return;
+      }
+
+      status.textContent = 'Fetching via CORS Proxy...';
+      status.style.color = 'var(--text-primary)';
+      
+      const rows = document.querySelectorAll('#calcTable tbody tr');
+      for (const tr of rows) {
+        const pnInput = tr.querySelector('.in-part');
+        const pn = pnInput.value.trim();
+        if (!pn) continue;
+        
+        pnInput.style.opacity = '0.5';
+        try {
+          // Using a CORS proxy because api.mouser.com blocks browser origins
+          const targetUrl = `https://api.mouser.com/api/v2/search/partnumber?apiKey=${apiKey}`;
+          const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+          
+          const response = await fetch(proxyUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              "SearchByPartRequest": {
+                "mouserPartNumber": pn,
+                "partSearchOptions": ""
+              }
+            })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data && data.SearchResults && data.SearchResults.Parts && data.SearchResults.Parts.length > 0) {
+              const part = data.SearchResults.Parts[0];
+              // Mouser API returns Tariffs/HS Codes in ProductCompliance if available, but for simplicity we try to map category
+              
+              // Extract cost (e.g., "$1.23")
+              if (part.PriceBreaks && part.PriceBreaks.length > 0) {
+                const priceStr = part.PriceBreaks[0].Price.replace(/[^0-9.]/g, '');
+                tr.querySelector('.in-cost').value = parseFloat(priceStr);
+              }
+              
+              // Very rough HS code guessing based on category if Mouser doesn't provide exact Tariffs field reliably
+              let guessedHS = 'Unknown';
+              const cat = (part.Category || '').toLowerCase();
+              if (cat.includes('microcontroller') || cat.includes('processor')) guessedHS = '85423100';
+              else if (cat.includes('memory')) guessedHS = '85423200';
+              else if (cat.includes('capacitor')) guessedHS = '85322200';
+              else if (cat.includes('resistor')) guessedHS = '85332111';
+              else if (cat.includes('connector')) guessedHS = '85366910';
+              else if (cat.includes('integrated circuit')) guessedHS = '85423900';
+              
+              if (guessedHS !== 'Unknown') {
+                const hsInput = tr.querySelector('.in-hs');
+                hsInput.value = guessedHS;
+                lookupHS(hsInput);
+              }
+            }
+          }
+        } catch (err) {
+          console.error(`Failed to fetch ${pn}`, err);
+        } finally {
+          pnInput.style.opacity = '1';
+          calculateRow(pnInput);
+        }
+      }
+      status.textContent = 'Fetch complete.';
+      status.style.color = '#10b981';
+    }
+
+    // Initialize with one row
+    addRow();
+  </script>
+</body>
+</html>

@@ -354,7 +354,7 @@
     const fadeInStep = 0.005; // 1.0 / 0.005 = 200 steps. 200 * 50ms = 10000ms (10 seconds)
     const fadeOutStep = 0.05; // 1.0 / 0.05 = 20 steps. 20 * 50ms = 1000ms (1 second)
     const fadeSpeed = 50;
-    const maxVolume = 0.8;
+    const maxVolume = 0.55;
     
     // iOS Safari ignores assignments to HTMLMediaElement.volume and ALWAYS returns 1.0 when read.
     // If we use bgAudio.volume to track fade progress, the fade-out loop runs infinitely on iOS 
