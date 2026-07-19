@@ -355,6 +355,11 @@
     const fadeOutStep = 0.05; // 1.0 / 0.05 = 20 steps. 20 * 50ms = 1000ms (1 second)
     const fadeSpeed = 50;
     const maxVolume = 1.0;
+    
+    // iOS Safari ignores assignments to HTMLMediaElement.volume and ALWAYS returns 1.0 when read.
+    // If we use bgAudio.volume to track fade progress, the fade-out loop runs infinitely on iOS 
+    // because it never reaches 0. We must track the current volume in our own variable.
+    let currentVolume = maxVolume; 
 
     const clearFade = () => { if (fadeInterval) clearInterval(fadeInterval); };
 
@@ -362,7 +367,8 @@
       clearFade();
       
       if (bgAudio.paused) {
-        bgAudio.volume = 0; // Start at 0 for fade in
+        currentVolume = 0;
+        bgAudio.volume = currentVolume; // Start at 0 for fade in
         soundToggle.classList.add('playing');
         soundToggle.innerHTML = '<i data-lucide="loader" style="animation: spin 1s linear infinite;"></i>';
         if (typeof window.lucide !== 'undefined') window.lucide.createIcons();
@@ -372,8 +378,9 @@
           if (typeof window.lucide !== 'undefined') window.lucide.createIcons();
           
           fadeInterval = setInterval(() => {
-            if (bgAudio.volume < maxVolume) {
-              bgAudio.volume = Math.min(maxVolume, bgAudio.volume + fadeInStep);
+            if (currentVolume < maxVolume) {
+              currentVolume = Math.min(maxVolume, currentVolume + fadeInStep);
+              bgAudio.volume = currentVolume;
             } else {
               clearFade();
             }
@@ -395,8 +402,9 @@
         if (typeof window.lucide !== 'undefined') window.lucide.createIcons();
         
         fadeInterval = setInterval(() => {
-          if (bgAudio.volume > 0) {
-            bgAudio.volume = Math.max(0, bgAudio.volume - fadeOutStep);
+          if (currentVolume > 0) {
+            currentVolume = Math.max(0, currentVolume - fadeOutStep);
+            bgAudio.volume = currentVolume;
           } else {
             clearFade();
             bgAudio.pause();
@@ -406,59 +414,5 @@
     });
   }
 
-  setupFormspree('quoteForm', 'quoteFormStatus');
-  setupFormspree('contactForm', 'contactFormStatus');
-
-})();
-
-// Custom Toast Notification System
-window.showToast = function(message) {
-  let container = document.getElementById('toast-container');
-  if (!container) {
-    container = document.createElement('div');
-    container.id = 'toast-container';
-    document.body.appendChild(container);
-  }
-
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.innerHTML = '<i data-lucide="info"></i> <span>' + message + '</span>';
-  
-  container.appendChild(toast);
-  if (window.lucide) window.lucide.createIcons();
-
-  // Trigger animation
-  requestAnimationFrame(() => {
-    toast.classList.add('show');
-  });
-
-  // Remove after 4 seconds
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => toast.remove(), 400); // Wait for transition
-  }, 4000);
-};
-
-// Ultra-premium Scroll Reveal Animations
-document.addEventListener('DOMContentLoaded', () => {
-  const revealElements = document.querySelectorAll('.reveal');
-  
-  const revealObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('active');
-        // Optional: stop observing once revealed
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    root: null,
-    threshold: 0.15,
-    rootMargin: "0px 0px -50px 0px"
-  });
-
-  revealElements.forEach(el => revealObserver.observe(el));
-});
-
-
-
+  // -----------------------------------------------
+  // 11. Formspree Form Handling
