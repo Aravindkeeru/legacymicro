@@ -63,8 +63,37 @@
           <span class="logo-subtitle" style="font-size: 0.4rem; letter-spacing: 1.6px; color: var(--text-secondary); font-weight: 600; margin-top: 4px; text-align: center; width: 100%;">ELECTRONIC COMPONENTS</span>
         </div>
       </a>
-      <div class="nav-links" id="navLinks">
+            <div class="nav-links" id="navLinks">
         <a href="index.html">Home</a>
+        <div class="nav-dropdown">
+          <a href="#" class="nav-dropdown-toggle">Products <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-left: 2px;"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+          <div class="mega-menu">
+            <div class="mega-menu-col">
+              <h4>Microcontrollers</h4>
+              <a href="#" onclick="openQuoteModal('STM32F407VGT6')">STM32F407VGT6</a>
+              <a href="#" onclick="openQuoteModal('ATMEGA328P-PU')">ATMEGA328P-PU</a>
+              <a href="#" onclick="openQuoteModal('PIC16F877A-I/P')">PIC16F877A-I/P</a>
+            </div>
+            <div class="mega-menu-col">
+              <h4>Power & Relays</h4>
+              <a href="#" onclick="openQuoteModal('IRF540NPBF')">IRF540NPBF</a>
+              <a href="#" onclick="openQuoteModal('G5Q-14-DC12')">G5Q-14-DC12</a>
+              <a href="#" onclick="openQuoteModal('LM317T')">LM317T</a>
+            </div>
+            <div class="mega-menu-col">
+              <h4>Connectors</h4>
+              <a href="#" onclick="openQuoteModal('DB9-FEMALE')">DB9-FEMALE</a>
+              <a href="#" onclick="openQuoteModal('RJ45-8P8C')">RJ45-8P8C</a>
+              <a href="#" onclick="openQuoteModal('USB-C-SMD')">USB-C-SMD</a>
+            </div>
+            <div class="mega-menu-col">
+              <h4>Passives & Analog</h4>
+              <a href="#" onclick="openQuoteModal('OPA2134PA')">OPA2134PA</a>
+              <a href="#" onclick="openQuoteModal('AD9361BBCZ')">AD9361BBCZ</a>
+              <a href="#" onclick="openQuoteModal('T491A105K035AT')">T491A105K035AT</a>
+            </div>
+          </div>
+        </div>
         <a href="about.html">About</a>
         <a href="services.html">Services</a>
         <a href="search.html" class="active">Part Search</a>
@@ -250,7 +279,7 @@
           <div class="footer-links">
             <a href="about.html">About Us</a>
             <a href="services.html">Services</a>
-            <a href="search.html">Part Search</a>
+            <a href="search.html" class="active">Part Search</a>
             <a href="contact.html">Contact</a>
             <a href="privacy.html">Privacy Policy</a>
           </div>
@@ -332,6 +361,7 @@
 </div>
 </body>
 </html>
+
 
 
 
