@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -114,7 +114,7 @@
 
     function createRow() {
       const tr = document.createElement('tr');
-      tr.innerHTML = \
+      tr.innerHTML = `
         <td><input type="text" class="in-part" placeholder="e.g. STM32F407VGT6" onchange="calculateRow(this)"></td>
         <td><input type="number" class="in-cost" placeholder="0.00" step="0.01" oninput="calculateRow(this)"></td>
         <td><input type="text" class="in-hs" placeholder="e.g. 85423100" oninput="lookupHS(this)" onchange="calculateRow(this)"></td>
@@ -128,7 +128,7 @@
         <td><input type="text" class="out-landed" readonly value="₹0.00"></td>
         <td><input type="text" class="out-price" readonly value="₹0.00"></td>
         <td class="row-actions"><button onclick="this.closest('tr').remove();">X</button></td>
-      \;
+      `;
       return tr;
     }
 
