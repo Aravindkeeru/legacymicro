@@ -407,11 +407,21 @@
     </div>
   </footer>
 
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="js/main.js"></script>
-  <script>lucide.createIcons();</script>
-  <script src="js/bg_combined.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+  <script src="js/main.js?v=100"></script>
+  <script src="js/bg_combined.js?v=84"></script>
   <script src="js/search.js?v=2"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var video = document.getElementById("bg-video-player");
+      if(video) {
+        video.playbackRate = 0.6; 
+      }
+    });
+  </script>
 <!-- ========== Quote Modal ========== -->
 <div id="quoteModal" class="modal-overlay">
   <div class="modal-content">
@@ -457,6 +467,7 @@
 </div>
 </body>
 </html>
+
 
 
 

@@ -470,3 +470,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+function openQuoteModal(partNumber = '') {
+    const modal = document.getElementById('quoteModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        // Give the browser a moment to render the flexbox before applying opacity if it's animated, 
+        // though our current CSS probably just uses display.
+        const partInput = document.getElementById('modalPart');
+        if (partInput && partNumber) {
+            partInput.value = partNumber;
+        }
+    }
+}
+
+function closeQuoteModal() {
+    const modal = document.getElementById('quoteModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+window.openQuoteModal = openQuoteModal;
+window.closeQuoteModal = closeQuoteModal;
+
+// Close modal when clicking outside of it
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('quoteModal');
+    if (event.target === modal) {
+        closeQuoteModal();
+    }
+});
