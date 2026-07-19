@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -280,13 +280,14 @@
               if (guessedHS === 'Unknown' || guessedHS === '') {
                 const cat = (part.Category || '').toLowerCase();
                 const desc = (part.Description || '').toLowerCase();
+                const mfr = (part.Manufacturer || '').toLowerCase();
                 if (cat.includes('microcontroller') || cat.includes('processor')) guessedHS = '85423100';
                 else if (cat.includes('memory')) guessedHS = '85423200';
                 else if (cat.includes('capacitor')) guessedHS = '85322200';
                 else if (cat.includes('resistor')) guessedHS = '85332111';
-                else if (cat.includes('connector')) guessedHS = '85366910';
-                else if (cat.includes('converter') || cat.includes('power supply') || desc.includes('dc-dc')) guessedHS = '850440';
-                else if (cat.includes('integrated circuit') || cat.includes('ic')) guessedHS = '85423900';
+                else if (cat.includes('connector') || cat.includes('plug') || cat.includes('terminal')) guessedHS = '85366910';
+                else if (cat.includes('converter') || cat.includes('power supply') || cat.includes('power module') || desc.includes('dc-dc') || desc.includes('dcdc') || mfr.includes('vicor')) guessedHS = '850440';
+                else if (cat.includes('integrated circuit') || cat.includes('ic') || cat.includes('semiconductor')) guessedHS = '85423900';
                 else if (cat.includes('diode')) guessedHS = '85411000';
                 else if (cat.includes('transistor')) guessedHS = '85412100';
               }
@@ -295,6 +296,8 @@
                 const hsInput = tr.querySelector('.in-hs');
                 hsInput.value = guessedHS;
                 lookupHS(hsInput);
+              } else {
+                tr.querySelector('.note-text').textContent = 'Unknown Category: ' + (part.Category || 'None');
               }
             }
           }
@@ -314,5 +317,6 @@
   </script>
 </body>
 </html>
+
 
 
