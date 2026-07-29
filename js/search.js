@@ -7,8 +7,11 @@
 
     // Configuration: List of Excel/CSV files to load
   const INVENTORY_FILES = [
-    'inventory_usa.xlsx',
-    'inventory_europe.xlsx'
+    'EMS Fabienne.xls',
+    'New XS_EU OEM_low prices.xlsx',
+    'RA Componenets latest.xlsx',
+    'STOCK_AGS200226.xlsx',
+    'XS_03.26.26.xlsx'
   ];
 
   let inventoryData = [];
