@@ -131,7 +131,6 @@
             <div>
               <div style="color: var(--accent); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">${mfg}</div>
               <h4 style="font-family: var(--font-mono); font-size: 1.25rem; margin: 0; color: white;">${pn}</h4>
-              <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;"><i data-lucide="file-spreadsheet" style="width: 12px; height: 12px; vertical-align: -2px;"></i> Source: ${source}</div>
             </div>
             <div class="hero-badge" style="margin: 0; background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.3); color: #4ade80;">
               <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> In Stock
@@ -142,10 +141,9 @@
             ${desc}
           </p>
           
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); margin-bottom: var(--space-lg); font-size: 0.9rem;">
+          <div style="display: flex; flex-direction: column; gap: var(--space-sm); margin-bottom: var(--space-lg); font-size: 0.9rem;">
             <div><strong style="color: white;">D/C:</strong> <span style="color: var(--text-secondary);">${dc}</span></div>
             <div><strong style="color: white;">Qty:</strong> <span style="color: var(--text-secondary);">${qty}</span></div>
-            <div style="grid-column: 1 / -1;"><strong style="color: white;">Condition:</strong> <span style="color: var(--text-secondary);">${cond}</span></div>
           </div>
           
           <button class="btn btn-primary" style="width: 100%;" onclick="openQuoteModal('${escapeAttr(pn)}', '${escapeAttr(mfg)}')">
