@@ -113,8 +113,8 @@
   }
 
   function renderLocalResults(query, matches) {
-    let html = `<h3 style="margin-bottom: var(--space-lg);">Found ${matches.length} Available Component${matches.length > 1 ? 's' : ''}</h3>`;
-    html += `<div class="grid-2" style="gap: var(--space-md);">`;
+    let html = `<h3 style="margin-bottom: var(--space-lg);">Available Inventory</h3>`;
+    html += `<div style="display: flex; flex-direction: column; gap: var(--space-md);">`;
     
     matches.forEach(item => {
       const pn = escapeHTML(item['Part Number'] || item['PN'] || item['MPN'] || item['CF.CPU DC#'] || '');
@@ -126,29 +126,41 @@
       const source = escapeHTML(item['SourceFile'] || 'Unknown Source');
 
       html += `
-        <div class="card result-card" style="animation: fadeInUp 0.5s ease forwards; border-left: 4px solid var(--accent); padding: var(--space-lg);">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-md);">
-            <div>
-              <div style="color: var(--accent); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">${mfg}</div>
-              <h4 style="font-family: var(--font-mono); font-size: 1.25rem; margin: 0; color: white;">${pn}</h4>
-            </div>
-            <div class="hero-badge" style="margin: 0; background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.3); color: #4ade80;">
-              <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> In Stock
+        <div class="card result-card" style="display: flex; flex-wrap: wrap; gap: var(--space-lg); align-items: center; padding: var(--space-xl); animation: fadeInUp 0.5s ease forwards; border-left: 4px solid var(--accent);">
+          
+          <div style="flex: 0 0 120px; text-align: center; background: rgba(255,255,255,0.03); padding: var(--space-md); border-radius: 8px; display: flex; justify-content: center; align-items: center;">
+            <i data-lucide="cpu" style="width: 64px; height: 64px; color: var(--accent); opacity: 0.8;"></i>
+          </div>
+
+          <div style="flex: 1 1 300px;">
+            <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 4px;">${mfg}</div>
+            <h4 style="font-family: var(--font-mono); font-size: 1.5rem; margin: 0 0 var(--space-md) 0; color: white;">${pn}</h4>
+            
+            <div style="display: grid; grid-template-columns: 120px 1fr; gap: 8px; font-size: 0.9rem;">
+              <div style="color: var(--text-secondary);">MFR #:</div>
+              <div style="color: white; font-family: var(--font-mono);">${pn}</div>
+              
+              <div style="color: var(--text-secondary);">MFR:</div>
+              <div style="color: white;">${mfg}</div>
+              
+              <div style="color: var(--text-secondary);">Description:</div>
+              <div style="color: white;">${desc}</div>
+              
+              <div style="color: var(--text-secondary);">Date Code:</div>
+              <div style="color: white;">${dc}</div>
             </div>
           </div>
-          
-          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: var(--space-md); border-bottom: 1px solid var(--border); padding-bottom: var(--space-md);">
-            ${desc}
-          </p>
-          
-          <div style="display: flex; flex-direction: column; gap: var(--space-sm); margin-bottom: var(--space-lg); font-size: 0.9rem;">
-            <div><strong style="color: white;">D/C:</strong> <span style="color: var(--text-secondary);">${dc}</span></div>
-            <div><strong style="color: white;">Qty:</strong> <span style="color: var(--text-secondary);">${qty}</span></div>
+
+          <div style="flex: 1 1 200px; padding-left: var(--space-md); border-left: 1px solid var(--border);">
+            <div style="color: #4ade80; font-weight: bold; font-size: 1.25rem; margin-bottom: 8px;">
+              <i data-lucide="check-circle" style="width: 18px; height: 18px; vertical-align: -2px;"></i> ${qty} In Stock
+            </div>
+            <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: var(--space-lg);">Available for immediate quote</div>
+            <button class="btn btn-primary" style="width: 100%; font-weight: bold;" onclick="openQuoteModal('${escapeAttr(pn)}', '${escapeAttr(mfg)}')">
+              Request Quote
+            </button>
           </div>
           
-          <button class="btn btn-primary" style="width: 100%;" onclick="openQuoteModal('${escapeAttr(pn)}', '${escapeAttr(mfg)}')">
-            Request Price & Availability
-          </button>
         </div>
       `;
     });
