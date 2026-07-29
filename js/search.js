@@ -164,7 +164,7 @@
             <h4 style="font-family: var(--font-mono); font-size: 1.5rem; margin: 0 0 var(--space-md) 0; color: white;">${pn}</h4>
             
             <div style="display: grid; grid-template-columns: 120px 1fr; gap: 8px; font-size: 0.9rem;">
-              <div style="color: var(--text-secondary);">MFR #:</div>
+              <div style="color: var(--text-secondary);">Part Number:</div>
               <div style="color: white; font-family: var(--font-mono);">${pn}</div>
               
               <div style="color: var(--text-secondary);">MFR:</div>
