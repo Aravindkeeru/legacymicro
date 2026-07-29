@@ -113,7 +113,7 @@
   }
 
   function renderLocalResults(query, matches) {
-    let html = `<h3 style="margin-bottom: var(--space-lg);">Found ${matches.length} Excess Inventory Result${matches.length > 1 ? 's' : ''}</h3>`;
+    let html = `<h3 style="margin-bottom: var(--space-lg);">Found ${matches.length} Available Component${matches.length > 1 ? 's' : ''}</h3>`;
     html += `<div class="grid-2" style="gap: var(--space-md);">`;
     
     matches.forEach(item => {
