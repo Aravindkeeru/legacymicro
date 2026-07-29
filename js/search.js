@@ -34,6 +34,32 @@
     return String(str).replace(/"/g, '&quot;');
   };
 
+  // Extract the latest Date Code (YY+) from a messy string
+  function extractLatestDC(dcStr) {
+    if (!dcStr) return '';
+    const str = String(dcStr).trim();
+    // Match 4-digit date codes between 1000 and 2999 (e.g. 1944, 2033, 2305)
+    const regex = /\b(1[0-9]|2[0-9])([0-5][0-9])\b/g;
+    let matches;
+    let maxYear = -1;
+    
+    while ((matches = regex.exec(str)) !== null) {
+      const yy = parseInt(matches[1], 10); // extracts the 19, 20, 23 part
+      if (yy > maxYear) {
+        maxYear = yy;
+      }
+    }
+    
+    if (maxYear !== -1) {
+      return maxYear + '+';
+    }
+    
+    // Fallback if no 4-digit date code found but string is short
+    if (str.length < 15) return str;
+    
+    return 'Mixed';
+  }
+
   // 1. Fetch and Parse Multiple Excel/CSV Files using SheetJS
   async function loadExcelInventory() {
     if (isInventoryLoaded) return;
@@ -120,7 +146,8 @@
       const pn = escapeHTML(item['Part Number'] || item['PN'] || item['MPN'] || item['CF.CPU DC#'] || '');
       const mfg = escapeHTML(item['Manufacturer'] || item['Mfg'] || item['Brand'] || '');
       const desc = escapeHTML(item['Description'] || item['Desc'] || '');
-      const dc = escapeHTML(item['Date Code'] || item['D/C'] || item['DC'] || '');
+      const rawDc = item['Date Code'] || item['D/C'] || item['DC'] || '';
+      const dc = escapeHTML(extractLatestDC(rawDc));
       const qty = escapeHTML(item['Quantity'] || item['Qty'] || item['Stock On Hand'] || '');
       const cond = escapeHTML(item['Condition'] || item['Cond'] || '');
       const source = escapeHTML(item['SourceFile'] || 'Unknown Source');
