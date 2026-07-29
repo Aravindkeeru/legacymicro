@@ -322,7 +322,15 @@
     }
   });
 
-  // Pre-load CSV in background on page init
-  loadExcelInventory();
+  // Pre-load CSV in background on page init, and check URL params
+  const urlParams = new URLSearchParams(window.location.search);
+  const queryParam = urlParams.get('q');
+  
+  if (queryParam) {
+    if (searchInput) searchInput.value = queryParam;
+    executeSearch(queryParam);
+  } else {
+    loadExcelInventory();
+  }
 
 })();
