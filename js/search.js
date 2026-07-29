@@ -5,7 +5,7 @@
   const emptyState = document.getElementById('searchEmpty');
   const popularTags = document.querySelectorAll('#popularTags .search-tag');
 
-    // Configuration: List of Excel/CSV files to load
+  // Configuration: List of Excel/CSV files to load
   const INVENTORY_FILES = [
     'EMS Fabienne.xls',
     'New XS_EU OEM_low prices.xlsx',
@@ -34,7 +34,7 @@
     return String(str).replace(/"/g, '&quot;');
   };
 
-    // 1. Fetch and Parse Multiple Excel/CSV Files using SheetJS
+  // 1. Fetch and Parse Multiple Excel/CSV Files using SheetJS
   async function loadExcelInventory() {
     if (isInventoryLoaded) return;
     
@@ -113,25 +113,25 @@
   }
 
   function renderLocalResults(query, matches) {
-    let html = <h3 style="margin-bottom: var(--space-lg);">Found  + matches.length +  Excess Inventory Result + (matches.length > 1 ? 's' : '') + </h3>;
-    html += <div class="grid-2" style="gap: var(--space-md);">;
+    let html = `<h3 style="margin-bottom: var(--space-lg);">Found ${matches.length} Excess Inventory Result${matches.length > 1 ? 's' : ''}</h3>`;
+    html += `<div class="grid-2" style="gap: var(--space-md);">`;
     
     matches.forEach(item => {
-      const pn = escapeHTML((item['Part Number'] || item['PN']) || item['PN'] || '');
-      const mfg = escapeHTML((item['Manufacturer'] || item['Mfg']) || item['Mfg'] || '');
+      const pn = escapeHTML(item['Part Number'] || item['PN'] || item['MPN'] || item['CF.CPU DC#'] || '');
+      const mfg = escapeHTML(item['Manufacturer'] || item['Mfg'] || item['Brand'] || '');
       const desc = escapeHTML(item['Description'] || item['Desc'] || '');
-      const dc = escapeHTML(item['Date Code'] || item['D/C'] || '');
-      const qty = escapeHTML(item['Quantity'] || item['Qty'] || '');
-      const cond = escapeHTML(item['Condition'] || '');
+      const dc = escapeHTML(item['Date Code'] || item['D/C'] || item['DC'] || '');
+      const qty = escapeHTML(item['Quantity'] || item['Qty'] || item['Stock On Hand'] || '');
+      const cond = escapeHTML(item['Condition'] || item['Cond'] || '');
       const source = escapeHTML(item['SourceFile'] || 'Unknown Source');
 
-      html += 
+      html += `
         <div class="card result-card" style="animation: fadeInUp 0.5s ease forwards; border-left: 4px solid var(--accent); padding: var(--space-lg);">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-md);">
             <div>
-              <div style="color: var(--accent); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;"> + mfg + </div>
-              <h4 style="font-family: var(--font-mono); font-size: 1.25rem; margin: 0; color: white;"> + pn + </h4>
-              <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;"><i data-lucide="file-spreadsheet" style="width: 12px; height: 12px; vertical-align: -2px;"></i> Source:  + source + </div>
+              <div style="color: var(--accent); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">${mfg}</div>
+              <h4 style="font-family: var(--font-mono); font-size: 1.25rem; margin: 0; color: white;">${pn}</h4>
+              <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;"><i data-lucide="file-spreadsheet" style="width: 12px; height: 12px; vertical-align: -2px;"></i> Source: ${source}</div>
             </div>
             <div class="hero-badge" style="margin: 0; background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.3); color: #4ade80;">
               <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> In Stock
@@ -139,23 +139,23 @@
           </div>
           
           <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: var(--space-md); border-bottom: 1px solid var(--border); padding-bottom: var(--space-md);">
-             + desc + 
+            ${desc}
           </p>
           
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); margin-bottom: var(--space-lg); font-size: 0.9rem;">
-            <div><strong style="color: white;">D/C:</strong> <span style="color: var(--text-secondary);"> + dc + </span></div>
-            <div><strong style="color: white;">Qty:</strong> <span style="color: var(--text-secondary);"> + qty + </span></div>
-            <div style="grid-column: 1 / -1;"><strong style="color: white;">Condition:</strong> <span style="color: var(--text-secondary);"> + cond + </span></div>
+            <div><strong style="color: white;">D/C:</strong> <span style="color: var(--text-secondary);">${dc}</span></div>
+            <div><strong style="color: white;">Qty:</strong> <span style="color: var(--text-secondary);">${qty}</span></div>
+            <div style="grid-column: 1 / -1;"><strong style="color: white;">Condition:</strong> <span style="color: var(--text-secondary);">${cond}</span></div>
           </div>
           
-          <button class="btn btn-primary" style="width: 100%;" onclick="openQuoteModal(' + escapeAttr(pn) + ', ' + escapeAttr(mfg) + ')">
+          <button class="btn btn-primary" style="width: 100%;" onclick="openQuoteModal('${escapeAttr(pn)}', '${escapeAttr(mfg)}')">
             Request Price & Availability
           </button>
         </div>
-      ;
+      `;
     });
     
-    html += </div>;
+    html += `</div>`;
     
     if (resultsDiv) {
       resultsDiv.innerHTML = html;
@@ -179,8 +179,8 @@
         // Filter CSV
         const queryLower = q.toLowerCase();
         const matches = inventoryData.filter(item => {
-          const pn = ((item['Part Number'] || item['PN']) || '').toLowerCase();
-          const mfg = ((item['Manufacturer'] || item['Mfg']) || '').toLowerCase();
+          const pn = (item['Part Number'] || item['PN'] || item['MPN'] || item['CF.CPU DC#'] || item['Description'] || item['Desc'] || '').toLowerCase();
+          const mfg = (item['Manufacturer'] || item['Mfg'] || item['Brand'] || '').toLowerCase();
           return pn.includes(queryLower) || mfg.includes(queryLower);
         });
 
@@ -289,4 +289,3 @@
   loadExcelInventory();
 
 })();
-
