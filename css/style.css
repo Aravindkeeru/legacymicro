@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    Legacy Microtronix — Design System v2
    R&A Supply Solutions Pvt Ltd
    Professional dark theme — inspired by Linear, Vercel, Stripe
@@ -2954,3 +2954,12 @@ p {
   }
 }
 
+/* Adjust Tidio chat to prevent collision with floating RFQ button */
+#tidio-chat-iframe {
+  margin-bottom: 75px !important;
+}
+@media (max-width: 768px) {
+  #tidio-chat-iframe {
+    margin-bottom: 65px !important;
+  }
+}
