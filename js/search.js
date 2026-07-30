@@ -61,55 +61,55 @@
 
   function renderLocalResults(query, matches, isFallback = false) {
     const badgeText = isFallback ? 'EXTERNAL MARKET REFERENCE' : 'LEGACY NETWORK RESULT';
-    let html = `<h3 style="margin-bottom: var(--space-lg);">Available Inventory <span style="font-size: 0.8rem; font-weight: 500; color: var(--accent); margin-left: 12px; padding: 4px 8px; background: rgba(59, 130, 246, 0.1); border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.2); vertical-align: middle;">${badgeText}</span></h3>`;
-    html += `<div style="display: flex; flex-direction: column; gap: var(--space-md);">`;
+    let html = `<div class="search-results-meta">
+      <h3 class="results-heading">Available Inventory</h3>
+      <span class="results-badge">${badgeText}</span>
+    </div>`;
+    html += `<div class="search-results-list">`;
     
     matches.forEach(item => {
       const pn = escapeHTML(item.mpn || '');
       const mfg = escapeHTML(item.manufacturer || '');
-      const desc = escapeHTML(item.description || '');
+      let desc = escapeHTML(item.description || '');
+      if (desc.length > 120) desc = desc.substring(0, 117) + '...';
       const dc = escapeHTML(item.date_code || '');
       const qty = escapeHTML(item.public_quantity || '');
       const cond = escapeHTML(item.condition || '');
       const multipleSources = item.multiple_sources;
 
+      let metricsHtml = '';
+      if (qty) {
+        metricsHtml += `<div class="src-metric"><span class="src-metric-label">QUANTITY</span><span class="src-metric-value">${qty}</span></div>`;
+      }
+      if (dc) {
+        metricsHtml += `<div class="src-metric"><span class="src-metric-label">DATE CODE</span><span class="src-metric-value">${dc}</span></div>`;
+      }
+      if (cond) {
+        metricsHtml += `<div class="src-metric"><span class="src-metric-label">CONDITION</span><span class="src-metric-value">${cond}</span></div>`;
+      }
+
       html += `
-        <div class="card result-card" style="display: flex; flex-wrap: wrap; gap: var(--space-lg); align-items: center; padding: var(--space-xl); animation: fadeInUp 0.5s ease forwards; border-left: 4px solid var(--accent);">
+        <div class="card src-card">
+          <div class="src-header">
+            <div class="src-title-group">
+              <h4 class="src-mpn">${pn}</h4>
+              ${mfg ? `<div class="src-mfg">${mfg}</div>` : ''}
+            </div>
+            <div class="src-status"><i data-lucide="check-circle" class="src-status-icon"></i> AVAILABLE</div>
+          </div>
           
-          <div style="flex: 0 0 120px; text-align: center; background: rgba(255,255,255,0.03); padding: var(--space-md); border-radius: 8px; display: flex; justify-content: center; align-items: center;">
-            <i data-lucide="cpu" style="width: 64px; height: 64px; color: var(--accent); opacity: 0.8;"></i>
-          </div>
+          ${desc ? `<div class="src-desc">${desc}</div>` : ''}
+          
+          ${metricsHtml ? `<div class="src-metrics">${metricsHtml}</div>` : ''}
 
-          <div style="flex: 1 1 300px;">
-            <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 4px;">${mfg}</div>
-            <h4 style="font-family: var(--font-mono); font-size: 1.5rem; margin: 0 0 var(--space-md) 0; color: white;">${pn}</h4>
-            
-            <div style="display: grid; grid-template-columns: 120px 1fr; gap: 8px; font-size: 0.9rem;">
-              <div style="color: var(--text-secondary);">Part Number:</div>
-              <div style="color: white; font-family: var(--font-mono);">${pn}</div>
-              
-              <div style="color: var(--text-secondary);">MFR:</div>
-              <div style="color: white;">${mfg}</div>
-              
-              <div style="color: var(--text-secondary);">Description:</div>
-              <div style="color: white;">${desc}</div>
-              
-              <div style="color: var(--text-secondary);">Date Code:</div>
-              <div style="color: white;">${dc}</div>
+          <div class="src-footer">
+            <div class="src-multiple-sources">
+              ${multipleSources ? 'Multiple sources available' : ''}
             </div>
-          </div>
-
-          <div style="flex: 1 1 200px; padding-left: var(--space-md); border-left: 1px solid var(--border);">
-            <div style="color: #4ade80; font-weight: bold; font-size: 1.25rem; margin-bottom: 8px;">
-              <i data-lucide="check-circle" style="width: 18px; height: 18px; vertical-align: -2px;"></i> ${qty} In Stock
-            </div>
-            ${multipleSources ? '<div style="color: var(--accent); font-size: 0.85rem; margin-bottom: 4px; font-weight: 500;">Multiple sources available</div>' : ''}
-            <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: var(--space-lg);">Available for immediate quote</div>
-            <button class="btn btn-primary" style="width: 100%; font-weight: bold;" onclick="openQuoteModal('${escapeAttr(pn)}', '${escapeAttr(mfg)}')">
+            <button class="btn btn-primary src-quote-btn" onclick="openQuoteModal('${escapeAttr(pn)}', '${escapeAttr(mfg)}')">
               Request Quote
             </button>
           </div>
-          
         </div>
       `;
     });
