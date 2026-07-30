@@ -3142,45 +3142,30 @@ p {
 
 /* ---------- Batch 3: Corporate Credibility & Capabilities ---------- */
 
-/* Manufacturers We Source */
-.manufacturer-grid {
+/* 1. Manufacturers We Source (Premium Typography Matrix) */
+.manufacturer-matrix {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-md);
+  gap: 2rem 4rem;
   margin-top: var(--space-xl);
-  margin-bottom: var(--space-lg);
 }
 
-.mfr-tile {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: var(--space-md);
-  text-align: center;
+.mfr-entry {
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   font-weight: 600;
   color: var(--text-secondary);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
   transition: all var(--duration) var(--ease);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60px;
 }
 
-.mfr-tile:hover {
-  border-color: rgba(255, 255, 255, 0.2);
+.mfr-entry:hover {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
+  border-bottom-color: var(--accent);
 }
 
-.mfr-disclaimer {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* Sourcing Capabilities */
+/* 2. Sourcing Capabilities (Structured Service Cards) */
 .capabilities-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -3189,16 +3174,35 @@ p {
 }
 
 .cap-card {
-  background: var(--bg-secondary);
+  background: rgba(0, 0, 0, 0.4);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   padding: var(--space-xl);
-  transition: all var(--duration) var(--ease);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.cap-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
 }
 
 .cap-card:hover {
-  border-color: rgba(59, 130, 246, 0.3);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 240, 255, 0.3);
+  background: rgba(0, 240, 255, 0.02);
+}
+
+.cap-card:hover::before {
+  transform: scaleX(1);
 }
 
 .cap-icon {
@@ -3207,89 +3211,153 @@ p {
 }
 
 .cap-card h3 {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   margin-bottom: var(--space-sm);
   color: var(--text-primary);
+  letter-spacing: 0.5px;
 }
 
 .cap-card p {
   color: var(--text-secondary);
   font-size: 0.9rem;
-  line-height: 1.5;
+  line-height: 1.6;
   margin: 0;
 }
 
-/* Industries We Serve */
-.industries-grid {
+/* 3. Industries We Serve (Lightweight Technical Matrix) */
+.industries-matrix {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-md);
+  gap: 2rem 3rem;
+  margin-top: var(--space-xl);
 }
 
-.industry-item {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-sm);
-  padding: var(--space-sm) var(--space-md);
-  text-align: center;
-  font-size: 0.85rem;
-  font-weight: 600;
+.industry-line {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 500;
   color: var(--text-primary);
-  letter-spacing: 0.02em;
-  transition: background var(--duration) var(--ease);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.industry-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+.ind-marker {
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  margin-right: 12px;
+  border-radius: 50%;
 }
 
-/* Quality & Supply Assurance */
+/* 4. Quality & Supply Assurance (Sequential Process) */
 .quality-wrapper {
   display: flex;
   flex-direction: column;
   gap: var(--space-2xl);
 }
 
-.quality-header p {
-  color: var(--text-secondary);
-  max-width: 600px;
+.quality-pathway {
+  display: flex;
+  gap: 0;
+  position: relative;
+  justify-content: space-between;
 }
 
-.quality-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-xl);
+.quality-pathway::before {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  z-index: 0;
 }
 
-.quality-pillar {
-  padding-left: var(--space-lg);
-  border-left: 2px solid var(--border);
+.q-step {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  padding-right: 2rem;
 }
 
-.quality-pillar h4 {
-  font-size: 1.05rem;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
+.q-step:last-child {
+  padding-right: 0;
 }
 
-.quality-pillar p {
-  color: var(--text-secondary);
+.q-num {
+  font-family: 'Space Mono', monospace;
   font-size: 0.9rem;
-  line-height: 1.5;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--bg-primary);
+  display: inline-flex;
+  align-items: center;
+  padding-right: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.q-content h4 {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.q-content p {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.6;
   margin: 0;
+  max-width: 90%;
 }
 
 /* Responsive Overrides */
+@media (max-width: 1200px) {
+  .manufacturer-matrix { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .industries-matrix { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+}
+
 @media (max-width: 1024px) {
-  .manufacturer-grid { grid-template-columns: repeat(3, 1fr); }
   .capabilities-grid { grid-template-columns: repeat(2, 1fr); }
-  .industries-grid { grid-template-columns: repeat(2, 1fr); }
+  .quality-pathway {
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .quality-pathway::before {
+    top: 0;
+    left: 20px;
+    width: 1px;
+    height: 100%;
+  }
+  .q-num {
+    padding-right: 0;
+    padding-bottom: 0;
+    background: transparent;
+    position: absolute;
+    left: 8px;
+    top: 0;
+  }
+  .q-content {
+    padding-left: 3rem;
+  }
+  .q-step {
+    padding-right: 0;
+  }
 }
 
 @media (max-width: 768px) {
-  .manufacturer-grid { grid-template-columns: repeat(2, 1fr); }
+  .manufacturer-matrix { grid-template-columns: repeat(2, 1fr); }
+  .industries-matrix { grid-template-columns: repeat(2, 1fr); }
   .capabilities-grid { grid-template-columns: 1fr; }
-  .industries-grid { grid-template-columns: 1fr; }
-  .quality-grid { grid-template-columns: 1fr; }
-  .quality-pillar { padding-left: var(--space-md); }
+  .quality-header-flex { flex-direction: column; align-items: flex-start !important; }
+}
+
+@media (max-width: 480px) {
+  .manufacturer-matrix { grid-template-columns: 1fr; gap: 1rem; }
+  .industries-matrix { grid-template-columns: 1fr; }
 }
