@@ -3142,21 +3142,58 @@ p {
 
 /* ---------- Batch 3: Corporate Credibility & Capabilities ---------- */
 
-/* 1. Manufacturers We Source (Premium Typography Matrix) */
+/* 1. Manufacturers We Source (Premium Technical Directory) */
 .manufacturer-matrix {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2rem 4rem;
+  gap: 1.5rem 2.5rem;
   margin-top: var(--space-xl);
 }
 
 .mfr-entry {
-  padding: 1rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: flex-start;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: border-color var(--duration) var(--ease);
+}
+
+.mfr-idx {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: rgba(0, 240, 255, 0.6);
+  margin-right: 1rem;
+  margin-top: 2px;
+  transition: color var(--duration) var(--ease);
+}
+
+.mfr-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.mfr-name {
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 1.05rem;
   letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.mfr-cat {
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.mfr-entry:hover {
+  border-bottom-color: rgba(0, 240, 255, 0.4);
+}
+
+.mfr-entry:hover .mfr-idx {
+  color: rgba(0, 240, 255, 1);
 }
 
 /* 2. Sourcing Capabilities, Industries, Quality (Structured Service Cards) */
