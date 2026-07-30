@@ -3159,12 +3159,28 @@ p {
   letter-spacing: 0.5px;
 }
 
-/* 2. Sourcing Capabilities (Structured Service Cards) */
-.capabilities-grid {
+/* 2. Sourcing Capabilities, Industries, Quality (Structured Service Cards) */
+.capabilities-grid, .industries-card-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-xl);
   margin-top: var(--space-2xl);
+}
+
+.capabilities-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.quality-card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-xl);
+  margin-top: var(--space-xl);
+}
+
+.quality-card-grid > .cap-card {
+  flex: 0 1 calc(33.333% - (var(--space-xl) * 2/3));
 }
 
 .cap-card {
@@ -3218,140 +3234,36 @@ p {
   margin: 0;
 }
 
-/* 3. Industries We Serve (Lightweight Technical Matrix) */
-.industries-matrix {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem 3rem;
-  margin-top: var(--space-xl);
-}
-
-.industry-line {
-  display: flex;
-  align-items: center;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--text-primary);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.ind-marker {
-  width: 4px;
-  height: 4px;
-  background: var(--accent);
-  margin-right: 12px;
-  border-radius: 50%;
-}
-
-/* 4. Quality & Supply Assurance (Sequential Process) */
+/* Quality wrapper header */
 .quality-wrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xl);
-}
-
-.quality-pathway {
-  display: flex;
-  gap: 0;
-  position: relative;
-  justify-content: space-between;
-}
-
-.quality-pathway::before {
-  content: '';
-  position: absolute;
-  top: 18px;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  z-index: 0;
-}
-
-.q-step {
-  position: relative;
-  z-index: 1;
-  flex: 1;
-  padding-right: 2rem;
-}
-
-.q-step:last-child {
-  padding-right: 0;
-}
-
-.q-num {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--accent);
-  background: var(--bg-primary);
-  display: inline-flex;
-  align-items: center;
-  padding-right: 12px;
-  margin-bottom: 1.5rem;
-}
-
-.q-content h4 {
-  font-size: 1rem;
-  color: var(--text-primary);
-  margin-bottom: var(--space-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.q-content p {
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  line-height: 1.6;
-  margin: 0;
-  max-width: 90%;
 }
 
 /* Responsive Overrides */
 @media (max-width: 1200px) {
   .manufacturer-matrix { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-  .industries-matrix { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .industries-card-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 1024px) {
   .capabilities-grid { grid-template-columns: repeat(2, 1fr); }
-  .quality-pathway {
-    flex-direction: column;
-    gap: 3rem;
-  }
-  .quality-pathway::before {
-    top: 0;
-    left: 20px;
-    width: 1px;
-    height: 100%;
-  }
-  .q-num {
-    padding-right: 0;
-    padding-bottom: 0;
-    background: transparent;
-    position: absolute;
-    left: 8px;
-    top: 0;
-  }
-  .q-content {
-    padding-left: 3rem;
-  }
-  .q-step {
-    padding-right: 0;
+  .industries-card-grid { grid-template-columns: repeat(2, 1fr); }
+  .quality-card-grid > .cap-card {
+    flex: 0 1 calc(50% - (var(--space-xl) / 2));
   }
 }
 
 @media (max-width: 768px) {
   .manufacturer-matrix { grid-template-columns: repeat(2, 1fr); }
-  .industries-matrix { grid-template-columns: repeat(2, 1fr); }
   .capabilities-grid { grid-template-columns: 1fr; }
+  .industries-card-grid { grid-template-columns: 1fr; }
+  .quality-card-grid > .cap-card {
+    flex: 0 1 100%;
+  }
   .quality-header-flex { flex-direction: column; align-items: flex-start !important; }
 }
 
 @media (max-width: 480px) {
   .manufacturer-matrix { grid-template-columns: 1fr; gap: 1rem; }
-  .industries-matrix { grid-template-columns: 1fr; }
 }
