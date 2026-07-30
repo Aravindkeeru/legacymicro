@@ -19,3 +19,22 @@ yarn-error.log*
 
 # Zip files generated for deployment
 *.zip
+
+# Internal tools — must not be publicly deployed
+internal-calc.html
+
+# Extracted Excel XML data (debugging artifacts)
+extracted_*/
+
+# Environment and secrets
+.env
+.env.*
+.env.local
+.env.production
+
+# Supplier feed staging area (future use)
+supplier-feeds/
+private-data/
+
+# Sample/test inventory data
+inventory.csv
