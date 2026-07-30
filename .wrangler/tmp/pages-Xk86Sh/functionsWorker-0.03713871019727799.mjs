@@ -209,10 +209,24 @@ async function onRequestPost(context) {
 __name(onRequestPost, "onRequestPost");
 
 // api/search_v2.js
-async function onRequestPost2(context) {
+async function onRequest(context) {
+  const { request, env } = context;
+  if (request.method !== "POST") {
+    return new Response(JSON.stringify({ error: "Method Not Allowed" }), {
+      status: 405,
+      headers: { "Content-Type": "application/json", "Allow": "POST" }
+    });
+  }
   try {
-    const { request, env } = context;
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch (e) {
+      return new Response(JSON.stringify({ error: "Bad Request" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
     const query = typeof body.query === "string" ? body.query.trim() : "";
     if (!query || query.length < 3 || query.length > 50) {
       return new Response(JSON.stringify({
@@ -230,8 +244,9 @@ async function onRequestPost2(context) {
     if (!env.DB) {
       return new Response(JSON.stringify({ error: "env.DB is undefined", envKeys: Object.keys(env) }), { status: 500 });
     }
-    if (env.DB) {
-      try {
+    let dbErrMessage = null;
+    try {
+      if (env.DB) {
         const sql = `
           SELECT 
             p.mpn_original,
@@ -246,8 +261,10 @@ async function onRequestPost2(context) {
           JOIN manufacturers m ON p.manufacturer_id = m.id
           JOIN inventory i ON i.part_id = p.id
           JOIN suppliers s ON i.supplier_id = s.id
+          JOIN inventory_imports imp ON i.import_id = imp.id
           WHERE p.mpn_search_normalized LIKE ?
           AND i.is_active = 1
+          AND imp.status = 'ACTIVE'
           ORDER BY 
             -- 6. MPN match confidence (Overall search relevance)
             CASE WHEN p.mpn_search_normalized = ? THEN 1 ELSE 2 END,
@@ -270,7 +287,7 @@ async function onRequestPost2(context) {
             -- 4. Supplier trust level (Higher is better, assuming 1=high or maybe 100=high? Let's sort DESC if higher is better)
             s.trust_level DESC,
             -- 5. Freshness
-            COALESCE(i.source_updated_at, i.imported_at) DESC,
+            COALESCE(i.source_updated_at, i.created_at) DESC,
             -- 7. Usable quantity
             i.quantity_parsed DESC
         `;
@@ -293,9 +310,10 @@ async function onRequestPost2(context) {
             });
           }
         });
-      } catch (dbErr) {
-        console.error("D1 Query Error:", dbErr);
       }
+    } catch (dbErr) {
+      console.error("D1 Query Error:", dbErr);
+      dbErrMessage = dbErr.message || JSON.stringify(dbErr);
     }
     if (standardizedResults.length === 0) {
       externalFallbackUsed = true;
@@ -337,11 +355,23 @@ async function onRequestPost2(context) {
         }
       }
     }
+    let dbInventoryCount = -1;
+    if (env.DB) {
+      try {
+        const { results } = await env.DB.prepare("SELECT COUNT(*) as c FROM inventory").all();
+        dbInventoryCount = results[0].c;
+      } catch (e) {
+        dbInventoryCount = e.message;
+      }
+    }
     return new Response(JSON.stringify({
       results: standardizedResults,
       meta: {
         total: standardizedResults.length,
-        external_fallback_used: externalFallbackUsed
+        external_fallback_used: externalFallbackUsed,
+        db_inventory_count: dbInventoryCount,
+        db_err: dbErrMessage,
+        env_keys: Object.keys(env)
       }
     }), {
       status: 200,
@@ -359,7 +389,7 @@ async function onRequestPost2(context) {
     });
   }
 }
-__name(onRequestPost2, "onRequestPost");
+__name(onRequest, "onRequest");
 
 // ../.wrangler/tmp/pages-Xk86Sh/functionsRoutes-0.9358198841059961.mjs
 var routes = [
@@ -373,9 +403,9 @@ var routes = [
   {
     routePath: "/api/search_v2",
     mountPath: "/api",
-    method: "POST",
+    method: "",
     middlewares: [],
-    modules: [onRequestPost2]
+    modules: [onRequest]
   }
 ];
 
@@ -872,7 +902,7 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// ../.wrangler/tmp/bundle-Ft3m2u/middleware-insertion-facade.js
+// ../.wrangler/tmp/bundle-02S3Nu/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
@@ -904,7 +934,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// ../.wrangler/tmp/bundle-Ft3m2u/middleware-loader.entry.ts
+// ../.wrangler/tmp/bundle-02S3Nu/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;

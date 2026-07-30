@@ -5,18 +5,6 @@
   const emptyState = document.getElementById('searchEmpty');
   const popularTags = document.querySelectorAll('#popularTags .search-tag');
 
-  // Configuration: List of Excel/CSV files to load
-  const INVENTORY_FILES = [
-    'EMS Fabienne.xls',
-    'New XS_EU OEM_low prices.xlsx',
-    'RA Componenets latest.xlsx',
-    'STOCK_AGS200226.xlsx',
-    'XS_03.26.26.xlsx'
-  ];
-
-  let inventoryData = [];
-  let isInventoryLoaded = false;
-
   // Escape HTML utility
   function escapeHTML(str) {
     return String(str).replace(/[&<>'"]/g, 
@@ -33,73 +21,6 @@
   window.escapeAttr = function(str) {
     return String(str).replace(/"/g, '&quot;');
   };
-
-  // Extract the latest Date Code (YY+) from a messy string
-  function extractLatestDC(dcStr) {
-    if (!dcStr) return '';
-    const str = String(dcStr).trim();
-    // Match 4-digit date codes between 1000 and 2999 (e.g. 1944, 2033, 2305)
-    const regex = /\b(1[0-9]|2[0-9])([0-5][0-9])\b/g;
-    let matches;
-    let maxYear = -1;
-    
-    while ((matches = regex.exec(str)) !== null) {
-      const yy = parseInt(matches[1], 10); // extracts the 19, 20, 23 part
-      if (yy > maxYear) {
-        maxYear = yy;
-      }
-    }
-    
-    if (maxYear !== -1) {
-      return maxYear + '+';
-    }
-    
-    // Fallback if no 4-digit date code found but string is short
-    if (str.length < 15) return str;
-    
-    return 'Mixed';
-  }
-
-  // 1. Fetch and Parse Multiple Excel/CSV Files using SheetJS
-  async function loadExcelInventory() {
-    if (isInventoryLoaded) return;
-    
-    // Ensure SheetJS is loaded
-    if (typeof XLSX === 'undefined') {
-      console.warn("SheetJS not loaded, cannot parse Excel files.");
-      return;
-    }
-
-    try {
-      for (const fileName of INVENTORY_FILES) {
-        try {
-          const response = await fetch(fileName);
-          if (!response.ok) {
-            console.warn("Could not fetch " + fileName);
-            continue;
-          }
-          
-          const arrayBuffer = await response.arrayBuffer();
-          const workbook = XLSX.read(arrayBuffer);
-          const firstSheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[firstSheetName];
-          const json = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
-          
-          // Tag each item with its source file
-          json.forEach(item => {
-            item['SourceFile'] = fileName;
-            inventoryData.push(item);
-          });
-          
-        } catch (fileErr) {
-          console.warn("Error parsing " + fileName, fileErr);
-        }
-      }
-      isInventoryLoaded = true;
-    } catch (e) {
-      console.warn("Inventory Engine Warning:", e);
-    }
-  }
 
   function showLoading() {
     if (resultsDiv) {
@@ -138,19 +59,19 @@
     if (window.lucide) window.lucide.createIcons();
   }
 
-  function renderLocalResults(query, matches) {
-    let html = `<h3 style="margin-bottom: var(--space-lg);">Available Inventory</h3>`;
+  function renderLocalResults(query, matches, isFallback = false) {
+    const badgeText = isFallback ? 'EXTERNAL MARKET REFERENCE' : 'LEGACY NETWORK RESULT';
+    let html = `<h3 style="margin-bottom: var(--space-lg);">Available Inventory <span style="font-size: 0.8rem; font-weight: 500; color: var(--accent); margin-left: 12px; padding: 4px 8px; background: rgba(59, 130, 246, 0.1); border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.2); vertical-align: middle;">${badgeText}</span></h3>`;
     html += `<div style="display: flex; flex-direction: column; gap: var(--space-md);">`;
     
     matches.forEach(item => {
-      const pn = escapeHTML(item['Part Number'] || item['PN'] || item['MPN'] || item['CF.CPU DC#'] || '');
-      const mfg = escapeHTML(item['Manufacturer'] || item['Mfg'] || item['Brand'] || '');
-      const desc = escapeHTML(item['Description'] || item['Desc'] || '');
-      const rawDc = item['Date Code'] || item['D/C'] || item['DC'] || '';
-      const dc = escapeHTML(extractLatestDC(rawDc));
-      const qty = escapeHTML(item['Quantity'] || item['Qty'] || item['Stock On Hand'] || '');
-      const cond = escapeHTML(item['Condition'] || item['Cond'] || '');
-      const source = escapeHTML(item['SourceFile'] || 'Unknown Source');
+      const pn = escapeHTML(item.mpn || '');
+      const mfg = escapeHTML(item.manufacturer || '');
+      const desc = escapeHTML(item.description || '');
+      const dc = escapeHTML(item.date_code || '');
+      const qty = escapeHTML(item.public_quantity || '');
+      const cond = escapeHTML(item.condition || '');
+      const multipleSources = item.multiple_sources;
 
       html += `
         <div class="card result-card" style="display: flex; flex-wrap: wrap; gap: var(--space-lg); align-items: center; padding: var(--space-xl); animation: fadeInUp 0.5s ease forwards; border-left: 4px solid var(--accent);">
@@ -182,6 +103,7 @@
             <div style="color: #4ade80; font-weight: bold; font-size: 1.25rem; margin-bottom: 8px;">
               <i data-lucide="check-circle" style="width: 18px; height: 18px; vertical-align: -2px;"></i> ${qty} In Stock
             </div>
+            ${multipleSources ? '<div style="color: var(--accent); font-size: 0.85rem; margin-bottom: 4px; font-weight: 500;">Multiple sources available</div>' : ''}
             <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: var(--space-lg);">Available for immediate quote</div>
             <button class="btn btn-primary" style="width: 100%; font-weight: bold;" onclick="openQuoteModal('${escapeAttr(pn)}', '${escapeAttr(mfg)}')">
               Request Quote
@@ -208,29 +130,29 @@
     if (searchInput) searchInput.value = q;
     showLoading();
 
-    // Ensure CSV is loaded
-    await loadExcelInventory();
-
-    setTimeout(() => {
-      if (inventoryData.length > 0) {
-        // Filter CSV
-        const queryLower = q.toLowerCase();
-        const matches = inventoryData.filter(item => {
-          const pn = (item['Part Number'] || item['PN'] || item['MPN'] || item['CF.CPU DC#'] || item['Description'] || item['Desc'] || '').toLowerCase();
-          const mfg = (item['Manufacturer'] || item['Mfg'] || item['Brand'] || '').toLowerCase();
-          return pn.includes(queryLower) || mfg.includes(queryLower);
-        });
-
-        if (matches.length > 0) {
-          renderLocalResults(q, matches);
-        } else {
-          renderSourcingCard(q);
-        }
+    try {
+      const response = await fetch('/api/search_v2', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Search API returned ' + response.status);
+      }
+      
+      const data = await response.json();
+      
+      if (data.results && data.results.length > 0) {
+        const isFallback = data.meta && data.meta.external_fallback_used === true;
+        renderLocalResults(q, data.results, isFallback);
       } else {
-        // No CSV found or empty, just show global sourcing fallback
         renderSourcingCard(q);
       }
-    }, 600); // UI visual delay
+    } catch (e) {
+      console.warn("Search fetch failed:", e);
+      renderSourcingCard(q);
+    }
   }
 
   window.clearSearch = function() {
@@ -322,15 +244,12 @@
     }
   });
 
-  // Pre-load CSV in background on page init, and check URL params
   const urlParams = new URLSearchParams(window.location.search);
   const queryParam = urlParams.get('q');
   
   if (queryParam) {
     if (searchInput) searchInput.value = queryParam;
     executeSearch(queryParam);
-  } else {
-    loadExcelInventory();
   }
 
 })();
