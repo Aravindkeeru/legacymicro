@@ -1,45 +1,25 @@
 const fs = require('fs');
 const path = require('path');
 const XLSX = require('xlsx');
+const { FEEDS } = require('./supplier_profiles.js');
 
-// Configuration for local testing
-const DB_PATH = path.join(__dirname, '../.wrangler/state/v3/d1/miniflare-D1DatabaseObject/db.sqlite');
-// Note: In a real Cloudflare environment, this script would generate a .sql file 
-// to be executed via `wrangler d1 execute` or it would use `better-sqlite3` locally.
-// For this Phase 2 architecture, we are producing the structural logic.
+const DRY_RUN = process.argv.includes('--dry-run');
+const REJECTION_THRESHOLD_PERCENT = 20;
 
-const SUPPLIERS = {
-  'EMS Fabienne.xls': { id: 1, internal_code: 'EMS' },
-  'New XS_EU OEM_low prices.xlsx': { id: 2, internal_code: 'NEW_XS' },
-  'RA Componenets latest.xlsx': { id: 3, internal_code: 'RA' },
-  'STOCK_AGS200226.xlsx': { id: 4, internal_code: 'AGS' },
-  'XS_03.26.26.xlsx': { id: 5, internal_code: 'XS' }
+const SUPPLIERS_DB_MAPPING = {
+  'EMS': 1,
+  'NEW_XS': 2,
+  'RA': 3,
+  'AGS': 4,
+  'XS': 5,
+  'INDUS': 6
 };
 
-// 1. Identify Supplier & 2. Load Mapping
-function getSupplierConfig(filename) {
-  const supplier = SUPPLIERS[filename];
-  if (!supplier) throw new Error(`Unknown supplier file: ${filename}`);
-
-  // Hardcoded mappings for Phase 2 validation
-  const mappings = {
-    'NEW_XS': { mpn: 'MPN', mfr: 'Manufacturer', desc: 'Description', qty: 'Qty', dc: 'DC' },
-    'RA': { mpn: 'PART NUMBER', mfr: 'MAKE', desc: 'ITEM DESCRIPTION', qty: 'Stock Qty', dc: null },
-    'AGS': { mpn: 'CF.CPU DC#', mfr: 'CF.Brand Name#', desc: 'Description', qty: 'Stock On Hand', dc: 'CF.Year#' },
-    'XS': { mpn: 'MPN', mfr: 'Manufacturer', desc: 'Description', qty: 'Qty', dc: 'DC' },
-    'EMS': { mpn: 'Part Number', mfr: 'Manufacturer', desc: 'Description', qty: 'Quantity', dc: 'Date Code' } // Assumed mapping for EMS
-  };
-
-  return { supplier, mapping: mappings[supplier.internal_code] };
-}
-
-// 7. Generate search-normalized MPN
 function normalizeSearchMpn(mpn) {
   if (!mpn) return '';
   return String(mpn).toUpperCase().replace(/[\W_]+/g, '');
 }
 
-// 8. Parse Quantity (Conservative)
 function parseQuantity(rawQty) {
   if (rawQty === null || rawQty === undefined) return null;
   const str = String(rawQty).trim();
@@ -47,146 +27,219 @@ function parseQuantity(rawQty) {
   return isNaN(num) ? null : num;
 }
 
-// 9. Parse Date Code (Conservative for Semiconductors)
 function parseDateCode(rawDc) {
   if (!rawDc) return null;
   const str = String(rawDc).trim().toUpperCase();
-  
   if (str === 'N/A' || str === '' || str === 'NONE') return null;
   if (str.includes('MIXED') || str.includes('MIX')) return 'Mixed';
-  
-  // Explicit year with '+' (e.g. 21+, 2021+)
   const plusMatch = str.match(/^(?:20)?([0-9]{2})\+$/);
   if (plusMatch) return plusMatch[1] + '+';
-  
-  // 4-digit codes (e.g., 2334, 2033) are highly ambiguous in electronics.
-  // Could be YYWW (Year 23, Week 34) or YYYY (Year 2033).
-  // Safest action: preserve raw, normalize to NULL.
   return null;
 }
 
-// Main Importer Function
-async function importInventory() {
+// Safely normalize headers for matching ONLY
+function normalizeHeader(str) {
+  if (!str) return '';
+  return String(str).trim().toLowerCase();
+}
+
+async function runImport() {
   const dataDir = path.join(__dirname, '../');
-  const files = Object.keys(SUPPLIERS);
+  const filesInDir = fs.readdirSync(dataDir);
   
   let importResults = [];
   let sqlStatements = [];
-  let currentImportId = Date.now(); // Simple unique ID for this import run
+  let currentImportId = Date.now();
 
-  for (const file of files) {
+  for (const file of filesInDir) {
+    if (!file.match(/\.(xls|xlsx|csv)$/i)) continue;
+
+    console.log(`\nAnalyzing file: ${file}`);
     const filePath = path.join(dataDir, file);
-    if (!fs.existsSync(filePath)) {
-      console.warn(`File not found: ${filePath}`);
+    const workbook = XLSX.readFile(filePath);
+
+    // Find matching feeds for this file
+    const matchedFeeds = FEEDS.filter(f => f.filename_pattern.test(file));
+    if (matchedFeeds.length === 0) {
+      console.log(`  No feed profile matched filename. Skipping.`);
       continue;
     }
 
-    console.log(`Processing: ${file}`);
-    const { supplier, mapping } = getSupplierConfig(file);
-    
-    // 3. Parse spreadsheet
-    const workbook = XLSX.readFile(filePath);
-    const sheetName = workbook.SheetNames[0];
-    const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: null });
+    for (const feed of matchedFeeds) {
+      console.log(`  -> Feed profile matched: ${feed.feed_code}`);
+      
+      let sheetName;
+      if (feed.sheet_name_pattern) {
+        sheetName = workbook.SheetNames.find(sn => feed.sheet_name_pattern.test(sn));
+      } else {
+        sheetName = workbook.SheetNames[feed.sheet_index || 0];
+      }
 
-    let rowsTotal = rows.length;
-    let rowsImported = 0;
-    let rowsRejected = 0;
-    
-    // Log import start
-    sqlStatements.push(`INSERT INTO inventory_imports (id, supplier_id, filename, rows_total, status) VALUES (${currentImportId}, ${supplier.id}, '${file}', ${rowsTotal}, 'IN_PROGRESS');`);
-
-    for (const row of rows) {
-      // 4. Validate required columns
-      const rawMpn = row[mapping.mpn];
-      if (!rawMpn) {
-        rowsRejected++;
+      if (!sheetName) {
+        console.log(`  -> Sheet not found for feed ${feed.feed_code}. Skipping.`);
         continue;
       }
 
-      // 5. Normalize Manufacturer
-      let rawMfr = mapping.mfr ? row[mapping.mfr] : 'Unknown';
-      if (!rawMfr) rawMfr = 'Unknown';
-      const mfrCanonical = String(rawMfr).trim(); 
-      // Safely escape quotes
-      const mfrSafe = mfrCanonical.replace(/'/g, "''");
-
-      // 6. Preserve original MPN and Canonical Safety
-      const mpnOriginal = String(rawMpn).trim();
-      const mpnSafe = mpnOriginal.replace(/'/g, "''");
+      const sheet = workbook.Sheets[sheetName];
+      const rowsRaw = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: null });
       
-      // 7. Generate search-normalized MPN
-      const mpnSearchNormalized = normalizeSearchMpn(mpnOriginal);
-
-      // 8. Parse quantity
-      const rawQty = row[mapping.qty];
-      const quantityParsed = parseQuantity(rawQty);
-      
-      if (quantityParsed === null || quantityParsed <= 0) {
-        rowsRejected++;
+      if (rowsRaw.length <= feed.header_row) {
+        console.log(`  -> Not enough rows to reach header_row ${feed.header_row}.`);
         continue;
       }
 
-      // 9. Parse Date Code
-      const rawDc = mapping.dc ? row[mapping.dc] : null;
-      const dateCodeNormalized = parseDateCode(rawDc);
-      const dcSafe = dateCodeNormalized ? `'${dateCodeNormalized.replace(/'/g, "''")}'` : 'NULL';
-
-      const descSafe = row[mapping.desc] ? `'${String(row[mapping.desc]).trim().replace(/'/g, "''")}'` : 'NULL';
-
-      // 11. Generate SQL for Manufacturer (UPSERT pattern via INSERT IGNORE / ON CONFLICT)
-      // SQLite syntax for upsert:
-      sqlStatements.push(`INSERT OR IGNORE INTO manufacturers (canonical_name) VALUES ('${mfrSafe}');`);
+      // Map headers safely
+      const headerRow = rowsRaw[feed.header_row].map(normalizeHeader);
       
-      // 12. Generate SQL for Part
-      sqlStatements.push(`INSERT OR IGNORE INTO parts (manufacturer_id, mpn_original, mpn_search_normalized, description) 
-        SELECT id, '${mpnSafe}', '${mpnSearchNormalized}', ${descSafe} FROM manufacturers WHERE canonical_name = '${mfrSafe}';`);
+      // Build index map
+      const colIndexMap = {};
+      for (const [key, expectedName] of Object.entries(feed.mapping)) {
+        const normExpected = normalizeHeader(expectedName);
+        const idx = headerRow.indexOf(normExpected);
+        if (idx !== -1) colIndexMap[key] = idx;
+      }
 
-      // 13. Generate SQL for Inventory
-      sqlStatements.push(`INSERT INTO inventory (part_id, supplier_id, quantity_parsed, date_code_normalized, availability_type, verification_status, import_id)
-        SELECT p.id, ${supplier.id}, ${quantityParsed}, ${dcSafe}, 'NETWORK_AVAILABLE', 'IMPORTED', ${currentImportId}
-        FROM parts p WHERE p.mpn_original = '${mpnSafe}';`);
+      if (!('mpn' in colIndexMap)) {
+        console.log(`  -> Required column MPN (${feed.mapping.mpn}) not found in headers. (headerRow was: ${headerRow})`);
+        continue;
+      }
 
-      rowsImported++;
+      if (feed.feed_type === 'INVENTORY' && !('quantity' in colIndexMap)) {
+        console.log(`  -> Required column Qty (${feed.mapping.quantity}) not found in headers. Skipping feed.`);
+        continue;
+      }
+
+      const dataRows = rowsRaw.slice(feed.header_row + 1);
+      
+      let rowsTotal = dataRows.length;
+      let rowsImported = 0;
+      let rowsRejected = 0;
+      
+      const supplierId = SUPPLIERS_DB_MAPPING[feed.supplier_code];
+      const importId = currentImportId++;
+
+      if (feed.feed_type === 'CROSS_REFERENCE') {
+        console.log(`  -> [ANALYSIS] CROSS_REFERENCE feed detected. Persistence is deferred (Phase 2.7 logic). Validated ${rowsTotal} rows. Skipping D1 generation.`);
+        continue; // Option B: Defer persistence
+      }
+
+      if (!DRY_RUN) {
+        // Stage Import
+        sqlStatements.push(`INSERT INTO inventory_imports (id, supplier_id, filename, rows_total, status) VALUES (${importId}, ${supplierId}, '${file.replace(/'/g, "''")}', ${rowsTotal}, 'STAGED');`);
+      }
+
+      const duplicateCheck = new Set();
+
+      for (const row of dataRows) {
+        const rawMpn = row[colIndexMap.mpn];
+        if (!rawMpn || String(rawMpn).trim() === '') {
+          rowsRejected++;
+          continue;
+        }
+
+        const rawQty = row[colIndexMap.quantity];
+        const quantityParsed = parseQuantity(rawQty);
+        
+        if (quantityParsed === null || quantityParsed <= 0) {
+          rowsRejected++;
+          continue;
+        }
+
+        const mpnOriginal = String(rawMpn).trim();
+        const mpnSafe = mpnOriginal.replace(/'/g, "''");
+        const mpnSearchNormalized = normalizeSearchMpn(mpnOriginal);
+
+        const dupKey = mpnSearchNormalized;
+        if (duplicateCheck.has(dupKey)) {
+           // Allow multiple lines for the same MPN (different conditions/batches)
+           // Do not reject.
+        }
+        duplicateCheck.add(dupKey);
+
+        let rawMfr = colIndexMap.manufacturer !== undefined ? row[colIndexMap.manufacturer] : 'Unknown';
+        if (!rawMfr) rawMfr = 'Unknown';
+        const mfrSafe = String(rawMfr).trim().replace(/'/g, "''");
+
+        let rawDesc = colIndexMap.description !== undefined ? row[colIndexMap.description] : '';
+        const descSafe = rawDesc ? `'${String(rawDesc).trim().replace(/'/g, "''")}'` : 'NULL';
+
+        let rawDc = colIndexMap.date_code !== undefined ? row[colIndexMap.date_code] : '';
+        const dateCodeNormalized = parseDateCode(rawDc);
+        const dcSafe = dateCodeNormalized ? `'${dateCodeNormalized.replace(/'/g, "''")}'` : 'NULL';
+
+        if (!DRY_RUN) {
+          sqlStatements.push(`INSERT OR IGNORE INTO manufacturers (canonical_name) VALUES ('${mfrSafe}');`);
+          sqlStatements.push(`INSERT OR IGNORE INTO parts (manufacturer_id, mpn_original, mpn_search_normalized, description) 
+            SELECT id, '${mpnSafe}', '${mpnSearchNormalized}', ${descSafe} FROM manufacturers WHERE canonical_name = '${mfrSafe}';`);
+          
+          // Insert STAGED inventory (is_active = 0)
+          sqlStatements.push(`INSERT INTO inventory (part_id, supplier_id, quantity_parsed, date_code_normalized, availability_type, verification_status, import_id, is_active)
+            SELECT p.id, ${supplierId}, ${quantityParsed}, ${dcSafe}, '${feed.default_availability}', 'IMPORTED', ${importId}, 0
+            FROM parts p 
+            JOIN manufacturers m ON p.manufacturer_id = m.id
+            WHERE p.mpn_search_normalized = '${mpnSearchNormalized}' AND m.canonical_name = '${mfrSafe}';`);
+        }
+        
+        rowsImported++;
+      }
+
+      const rejectRatio = (rowsRejected / rowsTotal) * 100;
+      console.log(`  -> Validation: ${rowsImported} imported, ${rowsRejected} rejected (${rejectRatio.toFixed(1)}%).`);
+
+      if (rejectRatio > REJECTION_THRESHOLD_PERCENT && rowsTotal > 10) {
+        console.log(`  [!] WARNING: Rejection threshold exceeded (> ${REJECTION_THRESHOLD_PERCENT}%). REQUIRES REVIEW. Snapshot will NOT be activated.`);
+        if (!DRY_RUN) {
+          sqlStatements.push(`UPDATE inventory_imports SET status = 'FAILED', rows_imported = ${rowsImported}, rows_rejected = ${rowsRejected}, import_completed_at = CURRENT_TIMESTAMP WHERE id = ${importId};`);
+        }
+      } else {
+        if (!DRY_RUN) {
+          // Atomic Activation Sequence
+          // 1. Deactivate older snapshots for this supplier
+          sqlStatements.push(`UPDATE inventory SET is_active = 0 WHERE supplier_id = ${supplierId} AND import_id != ${importId};`);
+          // 2. Mark old imports as superseded
+          sqlStatements.push(`UPDATE inventory_imports SET status = 'SUPERSEDED' WHERE supplier_id = ${supplierId} AND id != ${importId} AND status = 'ACTIVE';`);
+          // 3. Activate new inventory
+          sqlStatements.push(`UPDATE inventory SET is_active = 1 WHERE import_id = ${importId};`);
+          // 4. Mark this import as ACTIVE
+          sqlStatements.push(`UPDATE inventory_imports SET status = 'ACTIVE', rows_imported = ${rowsImported}, rows_rejected = ${rowsRejected}, import_completed_at = CURRENT_TIMESTAMP WHERE id = ${importId};`);
+        }
+      }
+
+      importResults.push({
+        supplier: feed.supplier_code,
+        feed: feed.feed_code,
+        rowsTotal,
+        rowsImported,
+        rowsRejected,
+        status: (rejectRatio > REJECTION_THRESHOLD_PERCENT && rowsTotal > 10) ? 'REQUIRES REVIEW' : 'SUCCESS'
+      });
     }
-
-    // Update import status
-    sqlStatements.push(`UPDATE inventory_imports SET rows_imported = ${rowsImported}, rows_rejected = ${rowsRejected}, status = 'COMPLETED', import_completed_at = CURRENT_TIMESTAMP WHERE id = ${currentImportId};`);
-    currentImportId++;
-
-    importResults.push({
-      supplier: supplier.internal_code,
-      filename: file,
-      rowsTotal,
-      rowsImported,
-      rowsRejected,
-      status: 'SUCCESS'
-    });
-  }
-
-  // Write SQL to file
-  const sqlFilePath = path.join(__dirname, 'import.sql');
-  fs.writeFileSync(sqlFilePath, sqlStatements.join('\n'));
-  console.log(`Generated ${sqlStatements.length} SQL statements in import.sql`);
-
-  // Execute via Wrangler
-  console.log("Executing via Wrangler D1...");
-  const { execSync } = require('child_process');
-  try {
-    const output = execSync('npx.cmd wrangler d1 execute legacy-micro-inventory-staging --file=tools/import.sql --remote', { cwd: dataDir, stdio: 'pipe' });
-    console.log(output.toString());
-  } catch (err) {
-    console.error("Wrangler execution failed:", err.message);
-    if (err.stdout) console.error(err.stdout.toString());
-    if (err.stderr) console.error(err.stderr.toString());
   }
 
   console.table(importResults);
-  return importResults;
+
+  if (DRY_RUN) {
+    console.log(`\n[DRY RUN] Generated ${sqlStatements.length} SQL statements. NOT EXECUTED.`);
+    return;
+  }
+
+  if (sqlStatements.length > 0) {
+    const sqlFilePath = path.join(__dirname, 'import.sql');
+    fs.writeFileSync(sqlFilePath, sqlStatements.join('\n'));
+    console.log(`\nGenerated ${sqlStatements.length} SQL statements in import.sql`);
+    console.log("Executing via Wrangler D1...");
+    const { execSync } = require('child_process');
+    try {
+      const output = execSync('npx.cmd wrangler d1 execute legacy-micro-inventory-staging --file=tools/import.sql --remote', { cwd: dataDir, stdio: 'pipe' });
+      console.log(output.toString());
+    } catch (err) {
+      console.error("Wrangler execution failed:", err.message);
+      if (err.stdout) console.error(err.stdout.toString());
+      if (err.stderr) console.error(err.stderr.toString());
+    }
+  } else {
+    console.log("\nNo SQL statements generated.");
+  }
 }
 
-if (require.main === module) {
-  importInventory().catch(console.error);
-}
-
-module.exports = { importInventory };
+runImport().catch(console.error);
