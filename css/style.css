@@ -3130,12 +3130,13 @@ p {
 }
 
 /* Adjust Tidio chat to prevent collision with floating RFQ button */
-#tidio-chat-iframe {
-  margin-bottom: 75px !important;
+#tidio-chat, #tidio-chat-iframe {
+  bottom: 96px !important;
+  margin-bottom: 0 !important;
 }
 @media (max-width: 768px) {
-  #tidio-chat-iframe {
-    margin-bottom: 65px !important;
+  #tidio-chat, #tidio-chat-iframe {
+    bottom: 82px !important;
   }
 }
 
