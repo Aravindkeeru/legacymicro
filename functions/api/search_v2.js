@@ -24,6 +24,9 @@ export async function onRequestPost(context) {
     let externalFallbackUsed = false;
 
     // 1. QUERY LOCAL INVENTORY (Cloudflare D1)
+    if (!env.DB) {
+      return new Response(JSON.stringify({ error: "env.DB is undefined", envKeys: Object.keys(env) }), { status: 500 });
+    }
     if (env.DB) {
       try {
         // Find best representative inventory record per part
@@ -42,17 +45,33 @@ export async function onRequestPost(context) {
           FROM parts p
           JOIN manufacturers m ON p.manufacturer_id = m.id
           JOIN inventory i ON i.part_id = p.id
+          JOIN suppliers s ON i.supplier_id = s.id
           WHERE p.mpn_search_normalized LIKE ?
           AND i.is_active = 1
           ORDER BY 
-            -- Exact match first
+            -- 6. MPN match confidence (Overall search relevance)
             CASE WHEN p.mpn_search_normalized = ? THEN 1 ELSE 2 END,
-            -- Availability priority
+            -- 1. Inventory ownership / availability category
             CASE i.availability_type 
               WHEN 'LEGACY_MICRO_STOCK' THEN 1 
               WHEN 'NETWORK_AVAILABLE' THEN 2 
               ELSE 3 
             END,
+            -- 2. Supplier active status
+            CASE WHEN s.is_active = 1 THEN 1 ELSE 2 END,
+            -- 3. Verification status
+            CASE i.verification_status
+              WHEN 'VERIFIED' THEN 1
+              WHEN 'IMPORTED' THEN 2
+              WHEN 'UNVERIFIED' THEN 3
+              WHEN 'STALE' THEN 4
+              ELSE 5
+            END,
+            -- 4. Supplier trust level (Higher is better, assuming 1=high or maybe 100=high? Let's sort DESC if higher is better)
+            s.trust_level DESC,
+            -- 5. Freshness
+            COALESCE(i.source_updated_at, i.imported_at) DESC,
+            -- 7. Usable quantity
             i.quantity_parsed DESC
         `;
         
@@ -121,7 +140,7 @@ export async function onRequestPost(context) {
                     date_code: 'Mixed',
                     condition: 'New',
                     multiple_sources: false,
-                    source_category: 'SOURCING_NETWORK'
+                    source_category: 'EXTERNAL_MARKET'
                   });
                 }
               });

@@ -33,6 +33,13 @@ CREATE TABLE suppliers (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+INSERT OR REPLACE INTO suppliers (id, internal_code, internal_name, trust_level) VALUES
+(1, 'EMS', 'EMS Fabienne', 10),
+(2, 'NEW_XS', 'New XS', 8),
+(3, 'RA', 'RA Components', 9),
+(4, 'AGS', 'AGS Stock', 9),
+(5, 'XS', 'XS Regular', 7);
+
 CREATE TABLE parts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     manufacturer_id INTEGER NOT NULL,
@@ -59,7 +66,10 @@ CREATE TABLE inventory (
     currency TEXT DEFAULT 'USD',
     lead_time TEXT,
     availability_type TEXT NOT NULL,
-    source_updated_at DATETIME,
+    source_updated_at DATETIME, -- timestamp supplied by source, ONLY if authoritative
+    imported_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- when Legacy Micro imported the record
+    last_verified_at DATETIME, -- when the source/record was last independently verified
+    verification_status TEXT DEFAULT 'IMPORTED', -- UNVERIFIED, IMPORTED, VERIFIED, STALE, REJECTED
     import_id INTEGER,
     is_active BOOLEAN DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

@@ -1,0 +1,8 @@
+name = "legacymicro"
+pages_build_output_dir = "."
+compatibility_date = "2026-07-29"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "legacy-micro-inventory-staging"
+database_id = "505b801c-62c3-42d9-8514-5c704b9e26bd"
