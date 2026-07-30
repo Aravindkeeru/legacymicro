@@ -130,8 +130,10 @@ video::-webkit-media-controls-play-button { display: none !important; }
   left: 0;
   width: 100vw;
   height: 100vh;
-  /* Fades to black at the bottom to transition smoothly into the rest of the site */
-  background: linear-gradient(to bottom, rgba(9, 9, 11, 0.4) 0%, rgba(9, 9, 11, 0.8) 70%, rgba(9, 9, 11, 1) 100%);
+  /* Smoother tonal transition from a subtle navy to pure site background black */
+  background: 
+    radial-gradient(circle at center, transparent 30%, rgba(4, 7, 18, 0.6) 100%),
+    linear-gradient(to bottom, rgba(6, 10, 24, 0.4) 0%, rgba(9, 9, 11, 0.85) 75%, rgba(9, 9, 11, 1) 100%);
 }
 
 #circuit-bg {
