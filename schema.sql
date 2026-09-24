@@ -114,3 +114,22 @@ CREATE TABLE supplier_field_mappings (
     FOREIGN KEY(supplier_id) REFERENCES suppliers(id),
     UNIQUE(supplier_id, feed_code, field_internal)
 );
+
+CREATE TABLE IF NOT EXISTS search_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    query_raw TEXT NOT NULL,
+    query_normalized TEXT NOT NULL,
+    results_count INTEGER NOT NULL,
+    client_ip TEXT,
+    user_agent TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS visitor_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    path TEXT NOT NULL,
+    referrer TEXT,
+    client_ip TEXT,
+    user_agent TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

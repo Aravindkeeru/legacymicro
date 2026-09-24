@@ -58,7 +58,7 @@ export async function onRequest(context) {
             i.availability_type,
             COUNT(i.id) OVER(PARTITION BY p.mpn_search_normalized) as source_count
           FROM parts p
-          JOIN manufacturers m ON p.manufacturer_id = m.id
+          LEFT JOIN manufacturers m ON p.manufacturer_id = m.id
           JOIN inventory i ON i.part_id = p.id
           JOIN suppliers s ON i.supplier_id = s.id
           JOIN inventory_imports imp ON i.import_id = imp.id
@@ -68,6 +68,8 @@ export async function onRequest(context) {
           ORDER BY 
             -- 6. MPN match confidence (Overall search relevance)
             CASE WHEN p.mpn_search_normalized = ? THEN 1 ELSE 2 END,
+            -- 6.1 Resolved Canonical Manufacturer identity takes precedence
+            CASE WHEN p.manufacturer_id IS NOT NULL THEN 1 ELSE 2 END,
             -- 1. Inventory ownership / availability category
             CASE i.availability_type 
               WHEN 'LEGACY_MICRO_STOCK' THEN 1 
@@ -179,6 +181,15 @@ export async function onRequest(context) {
         const { results } = await env.DB.prepare('SELECT COUNT(*) as c FROM inventory').all();
         dbInventoryCount = results[0].c;
       } catch (e) { dbInventoryCount = e.message; }
+      
+      // Log the search query asynchronously
+      const clientIp = request.headers.get("CF-Connecting-IP") || "";
+      const userAgent = request.headers.get("User-Agent") || "";
+      context.waitUntil(
+        env.DB.prepare("INSERT INTO search_logs (query_raw, query_normalized, results_count, client_ip, user_agent) VALUES (?, ?, ?, ?, ?)")
+          .bind(query, queryNorm, standardizedResults.length, clientIp, userAgent)
+          .run().catch(e => console.error("Failed to log search:", e))
+      );
     }
 
     return new Response(JSON.stringify({ 

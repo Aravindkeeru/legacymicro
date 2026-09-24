@@ -109,6 +109,21 @@ module.exports = {
         description: 'Item Description',
         internal_reference: 'Item Code-MPN'
       }
+    },
+    {
+      feed_code: 'EMA_INVENTORY',
+      supplier_code: 'EMA',
+      filename_pattern: /EMA SRLS\.xls/i,
+      sheet_name_pattern: /Foglio1/i,
+      feed_type: 'INVENTORY',
+      header_row: 0,
+      mapping: {
+        mpn: 'P/N',
+        quantity: 'Q.TY',
+        manufacturer: 'CODICE INVENTARIO',
+        description: 'PRIMA DESCRIZIONE'
+      },
+      default_availability: 'NETWORK_AVAILABLE'
     }
   ]
 };

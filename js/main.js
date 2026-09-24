@@ -501,3 +501,23 @@ window.addEventListener('click', function(event) {
         closeQuoteModal();
     }
 });
+
+// Analytics: Track Page Views
+window.addEventListener('DOMContentLoaded', () => {
+    try {
+        fetch('/api/track', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                path: window.location.pathname,
+                referrer: document.referrer
+            })
+        }).catch(err => {
+            // Silently fail for analytics
+        });
+    } catch (e) {
+        // Ignore analytics errors
+    }
+});
