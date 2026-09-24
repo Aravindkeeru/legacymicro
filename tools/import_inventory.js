@@ -12,19 +12,81 @@ const SUPPLIERS_DB_MAPPING = {
   'RA': 3,
   'AGS': 4,
   'XS': 5,
-  'INDUS': 6
+  'INDUS': 6,
+  'EMA': 7
 };
+
+const MFR_ALIASES = {
+  'VISHAY': 'Vishay',
+  'KEMET': 'KEMET',
+  'AMD': 'AMD',
+  'HONEYWELL': 'Honeywell',
+  'ANALOG DEVICES': 'Analog Devices',
+  'TEXAS INSTRUMENT': 'Texas Instruments',
+  'TEXAS': 'Texas Instruments',
+  'TI': 'Texas Instruments',
+  'FARCHAILD': 'Fairchild'
+};
+
+const NON_MANUFACTURERS = new Set(['QPL', 'SML', 'VARIOUS', 'UNKNOWN', 'N/A']);
 
 function normalizeSearchMpn(mpn) {
   if (!mpn) return '';
   return String(mpn).toUpperCase().replace(/[\W_]+/g, '');
 }
 
-function parseQuantity(rawQty) {
-  if (rawQty === null || rawQty === undefined) return null;
+function parseQuantity(rawQty, acceptedUnitSuffixes = []) {
+  if (rawQty === null || rawQty === undefined || String(rawQty).trim() === '') {
+    return { val: null, diagnostic: 'BLANK' };
+  }
+
+  if (typeof rawQty === 'number') {
+    if (rawQty <= 0) return { val: null, diagnostic: rawQty === 0 ? 'ZERO' : 'NEGATIVE' };
+    
+    if (Number.isInteger(rawQty)) {
+      return { val: rawQty, diagnostic: 'VALID_INTEGER' };
+    }
+    
+    const rounded = Math.round(rawQty);
+    if (Math.abs(rawQty - rounded) < 0.0001) {
+      if (rounded <= 0) return { val: null, diagnostic: rounded === 0 ? 'ZERO' : 'NEGATIVE' };
+      return { val: rounded, diagnostic: 'FLOAT_ROUNDED' };
+    }
+    
+    return { val: null, diagnostic: 'FRACTIONAL_REVIEW' };
+  }
+
   const str = String(rawQty).trim();
-  const num = parseInt(str.replace(/[^0-9]/g, ''), 10);
-  return isNaN(num) ? null : num;
+  
+  if (str.startsWith('-')) {
+    return { val: null, diagnostic: 'NEGATIVE' };
+  }
+  
+  if (/^\d+\s*-\s*\d+$/.test(str)) {
+    return { val: null, diagnostic: 'AMBIGUOUS_RANGE' };
+  }
+  
+  if (str.includes(',') || str.includes('.')) {
+    return { val: null, diagnostic: 'AMBIGUOUS_SEPARATOR' };
+  }
+  
+  if (/^\d+$/.test(str)) {
+    const num = parseInt(str, 10);
+    if (num === 0) return { val: null, diagnostic: 'ZERO' };
+    return { val: num, diagnostic: 'VALID_INTEGER' };
+  }
+  
+  if (acceptedUnitSuffixes && acceptedUnitSuffixes.length > 0) {
+    const suffixRegex = new RegExp(`^(\\d+)\\s*(?:${acceptedUnitSuffixes.join('|')})$`, 'i');
+    const match = str.match(suffixRegex);
+    if (match) {
+      const num = parseInt(match[1], 10);
+      if (num === 0) return { val: null, diagnostic: 'ZERO' };
+      return { val: num, diagnostic: 'UNIT_QUANTITY_REVIEW' };
+    }
+  }
+
+  return { val: null, diagnostic: 'NON_NUMERIC' };
 }
 
 function parseDateCode(rawDc) {
@@ -44,7 +106,7 @@ function normalizeHeader(str) {
 }
 
 async function runImport() {
-  const dataDir = path.join(__dirname, '../');
+  const dataDir = path.join(__dirname, '../private_inventory_data');
   const filesInDir = fs.readdirSync(dataDir);
   
   let importResults = [];
@@ -114,6 +176,8 @@ async function runImport() {
       let rowsTotal = dataRows.length;
       let rowsImported = 0;
       let rowsRejected = 0;
+      let diagnosticCounts = {};
+      let parsedQuantities = [];
       
       const supplierId = SUPPLIERS_DB_MAPPING[feed.supplier_code];
       const importId = currentImportId++;
@@ -138,12 +202,17 @@ async function runImport() {
         }
 
         const rawQty = row[colIndexMap.quantity];
-        const quantityParsed = parseQuantity(rawQty);
+        const parsed = parseQuantity(rawQty, feed.accepted_unit_suffixes || []);
         
-        if (quantityParsed === null || quantityParsed <= 0) {
+        diagnosticCounts[parsed.diagnostic] = (diagnosticCounts[parsed.diagnostic] || 0) + 1;
+        
+        if (parsed.val === null || parsed.diagnostic === 'UNIT_QUANTITY_REVIEW' || parsed.diagnostic === 'FRACTIONAL_REVIEW') {
           rowsRejected++;
           continue;
         }
+        
+        const quantityParsed = parsed.val;
+        parsedQuantities.push({ q: quantityParsed, r: rawQty });
 
         const mpnOriginal = String(rawMpn).trim();
         const mpnSafe = mpnOriginal.replace(/'/g, "''");
@@ -156,9 +225,27 @@ async function runImport() {
         }
         duplicateCheck.add(dupKey);
 
-        let rawMfr = colIndexMap.manufacturer !== undefined ? row[colIndexMap.manufacturer] : 'Unknown';
-        if (!rawMfr) rawMfr = 'Unknown';
-        const mfrSafe = String(rawMfr).trim().replace(/'/g, "''");
+        let rawMfr = colIndexMap.manufacturer !== undefined ? row[colIndexMap.manufacturer] : '';
+        if (rawMfr === null || rawMfr === undefined) rawMfr = '';
+        const rawMfrTrimmed = String(rawMfr).trim();
+        const rawMfrUpper = rawMfrTrimmed.toUpperCase();
+
+        let resolutionStatus = 'UNRESOLVED';
+        let canonicalName = null;
+
+        if (NON_MANUFACTURERS.has(rawMfrUpper) || rawMfrUpper === '') {
+          resolutionStatus = 'NON_MANUFACTURER';
+        } else if (MFR_ALIASES[rawMfrUpper]) {
+          canonicalName = MFR_ALIASES[rawMfrUpper];
+          resolutionStatus = 'RESOLVED';
+        } else if (feed.supplier_code !== 'EMA') {
+          canonicalName = rawMfrTrimmed;
+          resolutionStatus = 'RESOLVED';
+        } else {
+          resolutionStatus = 'UNRESOLVED';
+        }
+
+        const rawMfrSafe = rawMfrTrimmed ? `'${rawMfrTrimmed.replace(/'/g, "''")}'` : 'NULL';
 
         let rawDesc = colIndexMap.description !== undefined ? row[colIndexMap.description] : '';
         const descSafe = rawDesc ? `'${String(rawDesc).trim().replace(/'/g, "''")}'` : 'NULL';
@@ -168,16 +255,25 @@ async function runImport() {
         const dcSafe = dateCodeNormalized ? `'${dateCodeNormalized.replace(/'/g, "''")}'` : 'NULL';
 
         if (!DRY_RUN) {
-          sqlStatements.push(`INSERT OR IGNORE INTO manufacturers (canonical_name) VALUES ('${mfrSafe}');`);
-          sqlStatements.push(`INSERT OR IGNORE INTO parts (manufacturer_id, mpn_original, mpn_search_normalized, description) 
-            SELECT id, '${mpnSafe}', '${mpnSearchNormalized}', ${descSafe} FROM manufacturers WHERE canonical_name = '${mfrSafe}';`);
-          
-          // Insert STAGED inventory (is_active = 0)
-          sqlStatements.push(`INSERT INTO inventory (part_id, supplier_id, quantity_parsed, date_code_normalized, availability_type, verification_status, import_id, is_active)
-            SELECT p.id, ${supplierId}, ${quantityParsed}, ${dcSafe}, '${feed.default_availability}', 'IMPORTED', ${importId}, 0
-            FROM parts p 
-            JOIN manufacturers m ON p.manufacturer_id = m.id
-            WHERE p.mpn_search_normalized = '${mpnSearchNormalized}' AND m.canonical_name = '${mfrSafe}';`);
+          if (resolutionStatus === 'RESOLVED' && canonicalName) {
+            const canonicalSafe = canonicalName.replace(/'/g, "''");
+            sqlStatements.push(`INSERT OR IGNORE INTO manufacturers (canonical_name) VALUES ('${canonicalSafe}');`);
+            sqlStatements.push(`INSERT OR IGNORE INTO parts (manufacturer_id, mpn_original, mpn_search_normalized, description) 
+              SELECT id, '${mpnSafe}', '${mpnSearchNormalized}', ${descSafe} FROM manufacturers WHERE canonical_name = '${canonicalSafe}';`);
+            
+            sqlStatements.push(`INSERT INTO inventory (part_id, supplier_id, quantity_parsed, date_code_normalized, availability_type, verification_status, import_id, is_active, manufacturer_raw, manufacturer_resolution_status)
+              SELECT p.id, ${supplierId}, ${quantityParsed}, ${dcSafe}, '${feed.default_availability}', 'IMPORTED', ${importId}, 0, ${rawMfrSafe}, '${resolutionStatus}'
+              FROM parts p 
+              JOIN manufacturers m ON p.manufacturer_id = m.id
+              WHERE p.mpn_search_normalized = '${mpnSearchNormalized}' AND m.canonical_name = '${canonicalSafe}';`);
+          } else {
+            sqlStatements.push(`INSERT OR IGNORE INTO parts (manufacturer_id, mpn_original, mpn_search_normalized, description) VALUES (NULL, '${mpnSafe}', '${mpnSearchNormalized}', ${descSafe});`);
+            
+            sqlStatements.push(`INSERT INTO inventory (part_id, supplier_id, quantity_parsed, date_code_normalized, availability_type, verification_status, import_id, is_active, manufacturer_raw, manufacturer_resolution_status)
+              SELECT id, ${supplierId}, ${quantityParsed}, ${dcSafe}, '${feed.default_availability}', 'IMPORTED', ${importId}, 0, ${rawMfrSafe}, '${resolutionStatus}'
+              FROM parts 
+              WHERE mpn_search_normalized = '${mpnSearchNormalized}' AND manufacturer_id IS NULL;`);
+          }
         }
         
         rowsImported++;
@@ -211,7 +307,9 @@ async function runImport() {
         rowsTotal,
         rowsImported,
         rowsRejected,
-        status: (rejectRatio > REJECTION_THRESHOLD_PERCENT && rowsTotal > 10) ? 'REQUIRES REVIEW' : 'SUCCESS'
+        status: (rejectRatio > REJECTION_THRESHOLD_PERCENT && rowsTotal > 10) ? 'REQUIRES REVIEW' : 'SUCCESS',
+        diagnostics: diagnosticCounts,
+        parsedQuantities
       });
     }
   }
